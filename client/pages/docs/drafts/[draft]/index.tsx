@@ -16,6 +16,7 @@ const Index = () => {
             task: '1',
             duedate:'22.07.2022',
             revNum:1,
+            doc:{_id: '62be13bffb627cc932eebe10',name: 'Рвизия 1',author: 'Bashun',status: 'canceled',key: '123',type: 'Sign',docRevisions:[], lastChangeDate:'20'}
         },
         {    _id: '2',
             name: 'Ревизия 2',
@@ -26,6 +27,7 @@ const Index = () => {
             task: '2',
             duedate:'22.07.2022',
             revNum:2,
+            doc:{_id: '62be13bffb627cc932eebe10',name: 'Рвизия 1',author: 'Bashun',status: 'canceled',key: '123',type: 'Sign',docRevisions:[], lastChangeDate:'20'}
         },
         {    _id: '3',
             name: 'Ревизия 3',
@@ -36,6 +38,7 @@ const Index = () => {
             task: '3',
             duedate:'22.07.2022',
             revNum:3,
+            doc:{_id: '62be13bffb627cc932eebe10',name: 'Рвизия 1',author: 'Bashun',status: 'canceled',key: '123',type: 'Sign',docRevisions:[], lastChangeDate:'20'}
         }
     ]
     return (
