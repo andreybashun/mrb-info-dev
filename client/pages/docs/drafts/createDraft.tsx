@@ -12,6 +12,8 @@ import {FormControl} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import {useRouter} from "next/router";
+import {router} from "next/client";
+
 
 
 
@@ -22,7 +24,7 @@ const CreateDraft = () => {
     const  name = useInput('')
     const  author = useInput('')
     const status = useInput('')
-    const  router = useRouter()
+    // const  router = useRouter()
 
     const next = () => {
         if (activeStep !== 2) {
@@ -40,7 +42,7 @@ const CreateDraft = () => {
                 status: status.value
             })
                 .then(resp => router.push('/docs/drafts'))
-                .catch(e => console.log(name.value))
+                .catch(e => console.log(e))
         }
     }
     const back = () => {

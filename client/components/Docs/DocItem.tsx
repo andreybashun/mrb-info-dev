@@ -23,7 +23,7 @@ const DocItem: React.FC<DocItemProps> = ({doc}) => {
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-                    <IconButton color="info"  onClick={() => router.push ('http://localhost:3000/docs/drafts/' + doc._id)}>
+                    <IconButton color="info"  onClick={() => router.push ('/docs/drafts/' + doc._id)}>
                         <AssignmentIcon/>
                     </IconButton>
                     {doc.name}

@@ -29,12 +29,12 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-start"
                       alignItems="center">
                     { docRevision.status === 'canceled' &&
-                        <IconButton color="warning"  onClick={() => router.push (`http://localhost:3000/docs/drafts/`+ docRevision.doc._id + '/' + docRevision._id)}>
+                        <IconButton color="warning"  onClick={() => router.push (`/docs/drafts/`+ docRevision.doc._id + '/' + docRevision._id)}>
                             <CancelIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'approved' &&
-                        <IconButton color="success"  onClick={() => router.push ('http://localhost:3000/docs/drafts/draft/'+ docRevision.doc._id + '/'+ docRevision._id)}>
+                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/draft/'+ docRevision.doc._id + '/'+ docRevision._id)}>
                             <CheckCircleOutlineIcon/>
                         </IconButton>
                     }
