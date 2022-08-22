@@ -35,7 +35,7 @@ const CreateDraft = () => {
             // formData.append('name', name.value)
             // formData.append('author', author.value)
             // formData.append('status', status.value)
-            axios.post('http://localhost:5000/document', {
+            axios.post('http://server:5000/document', {
                 type: type.value,
                 name: name.value,
                 author: author.value,
