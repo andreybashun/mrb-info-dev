@@ -5,11 +5,17 @@
 Сервер mrb-info-dev/server/
 
 API  разрабатывается на nestjs. БД – mongodb, для разработки используется локальная установка, для продакшена облачная на инфраструктуре Яндекс Cloud. Статика храниться в S3 Яндекс Cloud. API в части первого этапа реализована кроме  раздачи и удаления статики.
+
  API лежит здесь: mrb-info-dev/server/src/document/document.controller.ts
+ 
 Реализация здесь: mrb-info-dev/server/src/document/document.service.ts
+
 Модель данных и схемы данных запросов соответственно:
+
 mrb-info-dev/server/src/document/schemas/
+
 mrb-info-dev/server/src/document/dto/
+
 
 Клиент mrb-info-dev/client/
 
@@ -19,8 +25,11 @@ mrb-info-dev/server/src/document/dto/
 Докер  https://hub.docker.com/repository/docker/andreybashun/mrb-info
 Поднимается сервер, клиент и БД.
 В контейнере работает только метод getAll. Create на сервере работает, поэтому видимо проблема на клиенте, возможно с маршрутизацией в файлах 
+
 mrb-info-dev/client/store/actions-creators/doc.ts (9)
+
 mrb-info-dev/client/pages/docs/drafts/createDraft.tsx (38)
+
 
 
  
