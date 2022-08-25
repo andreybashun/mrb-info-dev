@@ -1,8 +1,10 @@
-import {Body, Controller, Get, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {DocumentService} from "./document.service";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {CreateDocDto} from "./dto/create-doc.dto";
 import {CreateDocRevisionDto} from "./dto/create-docRevision.dto";
+import {ObjectId, Schema} from "mongoose";
+
 
 @Controller('document')
 export class DocumentController {
@@ -14,22 +16,28 @@ export class DocumentController {
         return this.documentService.create (dto);
     }
 
-    getOne () {
-
+    @Get(':id')
+    getOne (@Param('id') id:ObjectId) {
+        return this.documentService.getOne(id)
     }
 
     @Get ()
     getAll () {
         return this.documentService.getAll ();
     }
-
-    delete () {
-
+    @Delete(':id')
+    delete (@Param('id') id:ObjectId) {
+        return this.documentService.delete(id);
     }
 
-    @Post('/[revision]')
-    @UseInterceptors (FileInterceptor ('file'))
-    createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
-        return this.documentService.createRevision(dto, file);
+    // @Post('/[revision]')
+    // @UseInterceptors (FileInterceptor ('file'))
+    // createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
+    //     return this.documentService.createRevision(dto, file);
+    // }
+
+    @Post('/revision')
+    createRevision(@Body() dto:CreateDocRevisionDto){
+        return this.documentService.createRevision(dto)
     }
 }

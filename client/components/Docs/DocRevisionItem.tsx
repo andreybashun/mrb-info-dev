@@ -34,7 +34,7 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                         </IconButton>
                     }
                     { docRevision.status === 'approved' &&
-                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/draft/'+ docRevision.doc._id + '/'+ docRevision._id)}>
+                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/'+ docRevision.doc._id + '/'+ docRevision._id)}>
                             <CheckCircleOutlineIcon/>
                         </IconButton>
                     }
