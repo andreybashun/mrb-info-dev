@@ -3,6 +3,7 @@
 Сейчас первая стадия проекта на которой надо реализовать облачный сервис для хранения файлов с их версионированием.
 
 Сервер mrb-info-dev/server/
+
 API  разрабатывается на nestjs. БД – mongodb, для разработки используется локальная установка, для продакшена облачная на инфраструктуре Яндекс Cloud. Статика храниться в S3 Яндекс Cloud. API в части первого этапа реализована кроме  раздачи и удаления статики.
  API лежит здесь: mrb-info-dev/server/src/document/document.controller.ts
 Реализация здесь: mrb-info-dev/server/src/document/document.service.ts
@@ -11,6 +12,7 @@ mrb-info-dev/server/src/document/schemas/
 mrb-info-dev/server/src/document/dto/
 
 Клиент mrb-info-dev/client/
+
 Разрабатывается на nextjs с использованием redux
 В части первого этапа реализованы только методы getAll и create.
 
