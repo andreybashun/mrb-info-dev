@@ -22,8 +22,10 @@ export class DocRevision {
     @Prop ()
     key: string;
 
+
+
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Doc'})
-    doc: Doc;
+    docId: Doc;
 }
 
 export const DocRevisionSchema = SchemaFactory.createForClass (DocRevision);

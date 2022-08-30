@@ -8,7 +8,7 @@ export interface IDocRevision{
     revNum: number;
     task:string;
     duedate:string;
-    doc: IDoc;
+    docId: string;
 
     // task: Task;
     // docRevisionInherit: DocRevision;

@@ -5,23 +5,29 @@ import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import AddCardIcon from '@mui/icons-material/AddCard';
 import DocRevisionItem from "./DocRevisionItem";
 import {IDocRevision} from "../../types/doc";
-import {router} from "next/client";
+import {useRouter} from "next/router";
+
 
 interface DocRevisionListProps{
     docRevisions:IDocRevision[]
 }
 
+
+
+
 const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
+    const router = useRouter();
+    const {draft} = router.query;
+    console.log(draft);
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
             <Stack direction="row" spacing={2}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/docs/drafts/draft/createRevision')}
+                    router.push ('/docs/drafts/' + draft + '/createRevision/')}
                 >
                     Создать ревизию
                 </Button>
@@ -65,7 +71,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                           alignItems="center"
                           fontSize={'0.75rem'}>
                         <Box sx={{marginTop:2}}>
-                            Дата изменнеия
+                            Дата изменения
                         </Box>
                     </Grid>
                     <Grid xs={1} container></Grid>

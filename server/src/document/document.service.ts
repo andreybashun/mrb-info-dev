@@ -24,7 +24,8 @@ export class DocumentService {
 
     async getOne (id: ObjectId): Promise<Doc> {
         return this.docModel.findById (id).populate('docRevisions');
-    }
+}
+
 
     async getAll (): Promise<Doc[]> {
         return this.docModel.find ();

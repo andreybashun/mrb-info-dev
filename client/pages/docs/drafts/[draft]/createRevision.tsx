@@ -8,9 +8,18 @@ import Credentials from "../../../../components/Tasks/Credentials";
 import FileUpload from "../../../../components/FileUpload";
 import {useInput} from "../../../../hooks/useInput";
 import {useRouter} from "next/router";
+import axios from "axios";
+import Box from "@mui/material/Box";
+import {FormControl} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import {IDoc, IDocRevision} from "../../../../types/doc";
 
 
-const CreateRevision: React.FC = () => {
+interface DocItemProps {
+    doc: IDoc;
+}
+
+const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState(null)
     const  type = useInput('')
@@ -18,9 +27,29 @@ const CreateRevision: React.FC = () => {
     const  author = useInput('')
     const status = useInput('')
     const  router = useRouter()
+    const {draft} = router.query
+
+
 
     const next = () => {
-        setActiveStep (prev => prev + 1)
+        if (activeStep !== 2) {
+            setActiveStep (prev => prev + 1)
+        } else  {
+            // const  formData = new FormData()
+            // formData.append('type', type.value)
+            // formData.append('name', name.value)
+            // formData.append('author', author.value)
+            // formData.append('status', status.value)
+            axios.post('http://localhost:5000/document/revision', {
+                type: type.value,
+                name: name.value,
+                author: author.value,
+                status: status.value,
+                docId: draft
+            })
+                .then(resp => router.push('/docs/drafts/' + draft))
+                .catch(e => console.log(e))
+        }
     }
     const back = () => {
         setActiveStep (prev => prev - 1)
@@ -29,7 +58,62 @@ const CreateRevision: React.FC = () => {
     return (
         <MainLayout>
             <StepWrapper activeStep={activeStep}>
-                {activeStep === 0 && <Credentials/>}
+                {activeStep === 0 &&
+
+                    <Box>
+                        <FormControl fullWidth sx={{p:1}}>
+                            <TextField
+                                {...type}
+                                id={"task_revision_type"}
+                                label={"тип"}
+                                variant="outlined"
+                                size={"small"}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ p: 1}}>
+                            <TextField
+
+                                id="task_revision_id"
+                                label="идентификатор"
+                                variant="outlined"
+                                size="small"/>
+                        </FormControl>
+                        <FormControl fullWidth sx={{ p: 1}}>
+                            <TextField
+                                {...name}
+                                id="task_revision_name"
+                                label={"имя"}
+                                variant={"outlined"}
+                                size={"small"}
+                            />
+                        </FormControl>
+                        <FormControl  sx={{ p: 1, width: '50ch' }}>
+                            <TextField
+                                {...author}
+                                id={"task_revision_author"}
+                                label={"автор"}
+                                variant={"outlined"}
+                                size={"small"}
+                            />
+                        </FormControl>
+                        <FormControl  sx={{ p: 1, marginLeft:10, width: '25ch',}}>
+                            <TextField id="task_revision_author" label="дата создания" variant="outlined" size="small"/>
+                        </FormControl>
+                        <FormControl  sx={{ p: 1, width: '50ch' }}>
+                            <TextField
+                                {...status}
+                                id="task_revision_author"
+                                label="статус"
+                                variant="outlined"
+                                size="small"/>
+                        </FormControl>
+                        <FormControl  sx={{ p: 1, marginLeft:10, width: '25ch',}}>
+                            <TextField id="task_revision_author" label="дата модификации" variant="outlined" size="small"/>
+                        </FormControl>
+
+                    </Box>
+
+                }
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
                     <FileUpload file={''} setFile={setFile}>

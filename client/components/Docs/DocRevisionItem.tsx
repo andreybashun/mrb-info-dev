@@ -2,13 +2,14 @@ import React from 'react';
 import Grid from "@mui/material/Grid";
 import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
-import {router} from "next/client";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Divider from "@mui/material/Divider";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DraftsIcon from '@mui/icons-material/Drafts';
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
+
 
 
 
@@ -19,8 +20,8 @@ interface DocRevisionItemProps{
 
 
 const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
-    const  rout = useRouter()
-    const {id} = rout.query
+    const  router = useRouter()
+    console.log("Ревизия документа", docRevision)
     return (
         <Grid container spacing={2}>
             <ListItemButton>
@@ -29,13 +30,18 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-start"
                       alignItems="center">
                     { docRevision.status === 'canceled' &&
-                        <IconButton color="warning"  onClick={() => router.push (`/docs/drafts/`+ docRevision.doc._id + '/' + docRevision._id)}>
+                        <IconButton color="warning"  onClick={() => router.push (`/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
                             <CancelIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'approved' &&
-                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/'+ docRevision.doc._id + '/'+ docRevision._id)}>
+                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
                             <CheckCircleOutlineIcon/>
+                        </IconButton>
+                    }
+                    { docRevision.status === 'open' &&
+                        <IconButton color="info"  onClick={() => router.push ('/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
+                            <DraftsIcon/>
                         </IconButton>
                     }
                     {docRevision.name}

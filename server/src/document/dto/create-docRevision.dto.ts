@@ -6,5 +6,5 @@ export class CreateDocRevisionDto{
     readonly type;
     readonly author;
     readonly status;
-    readonly docId:ObjectId;
+    readonly docId: ObjectId;
 }

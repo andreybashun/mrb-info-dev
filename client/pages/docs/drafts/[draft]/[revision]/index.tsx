@@ -2,24 +2,22 @@ import React from 'react';
 import MainLayout from "../../../../../layouts/MainLayout";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
-import {Folder} from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {router} from "next/client";
+
 import GradingIcon from '@mui/icons-material/Grading';
 import SummarizeIcon from '@mui/icons-material/Summarize';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ArticleIcon from '@mui/icons-material/Article';
+import {useRouter} from "next/router";
 
 const Index: React.FC = () => {
+    const router = useRouter()
     return (
         <MainLayout>
             <Stack direction={"column"} spacing={2} sx={{
