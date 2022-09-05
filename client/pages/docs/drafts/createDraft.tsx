@@ -30,17 +30,13 @@ const CreateDraft = () => {
         if (activeStep !== 2) {
             setActiveStep (prev => prev + 1)
         } else  {
-            // const  formData = new FormData()
-            // formData.append('type', type.value)
-            // formData.append('name', name.value)
-            // formData.append('author', author.value)
-            // formData.append('status', status.value)
-            axios.post('http://localhost:5000/document', {
-                type: type.value,
-                name: name.value,
-                author: author.value,
-                status: status.value
-            })
+            const  formData = new FormData()
+            formData.append('type', type.value)
+            formData.append('name', name.value)
+            formData.append('author', author.value)
+            formData.append('status', status.value)
+            formData.append('file', file)
+            axios.post('http://localhost:5000/document/', formData)
                 .then(resp => router.push('/docs/drafts'))
                 .catch(e => console.log(e))
         }
@@ -105,7 +101,7 @@ const CreateDraft = () => {
                 }
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
-                    <FileUpload file={''} setFile={setFile}>
+                    <FileUpload setFile={setFile}>
                         <Button>Загрузите</Button>
                     </FileUpload>}
 

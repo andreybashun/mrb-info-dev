@@ -30,18 +30,12 @@ export class S3Service {
         });
     }
 
-    async getFile (key) {
+    async getFile (key): Promise<string>{
+        const path = 'C:\\Users\\root\\Downloads\\' + key
+        const file = require('fs').createWriteStream(path);
         const s3 = this.getS3 ()
-        await s3.getObject (
-            {Bucket: process.env.BUCKET_S3, Key: key},
-            function (error, data) {
-                if (error != null) {
-                    alert ("Failed to retrieve an object: " + error);
-                } else {
-                    return data
-                }
-            }
-        );
+        await s3.getObject ({Bucket: process.env.BUCKET_S3, Key: key}).createReadStream().pipe(file);
+        return path
     }
 
     getS3 () {

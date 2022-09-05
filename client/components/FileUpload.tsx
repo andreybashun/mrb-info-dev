@@ -1,15 +1,15 @@
 import React, {useRef} from 'react';
 
 interface  FileUploadProps{
-    file: any;
     setFile: Function;
     children: JSX.Element|JSX.Element[];
 }
 
-const FileUpload : React.FC<FileUploadProps>= ({file, setFile, children}) => {
+const FileUpload : React.FC<FileUploadProps>= ({setFile, children}) => {
     const ref = useRef<HTMLInputElement>()
     const  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFile(e.target.files[0])
+        console.log(e.target.files)
     }
 
     return (

@@ -13,6 +13,8 @@ import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import {IDoc, IDocRevision} from "../../../../types/doc";
+import {renderToString} from "react-dom/server";
+import {string} from "prop-types";
 
 
 interface DocItemProps {
@@ -28,6 +30,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
     const status = useInput('')
     const  router = useRouter()
     const {draft} = router.query
+    const docId = draft + ''
 
 
 
@@ -35,18 +38,23 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
         if (activeStep !== 2) {
             setActiveStep (prev => prev + 1)
         } else  {
-            // const  formData = new FormData()
-            // formData.append('type', type.value)
-            // formData.append('name', name.value)
-            // formData.append('author', author.value)
-            // formData.append('status', status.value)
-            axios.post('http://localhost:5000/document/revision', {
-                type: type.value,
-                name: name.value,
-                author: author.value,
-                status: status.value,
-                docId: draft
-            })
+            const  formData = new FormData()
+            console.log('path:',docId)
+            formData.append('type', type.value)
+            formData.append('name', name.value)
+            formData.append('author', author.value)
+            formData.append('status', status.value)
+            formData.append('docId',docId)
+            formData.append('file', file)
+            axios.post('http://localhost:5000/document/revision', formData)
+            // axios.post('http://localhost:5000/document/revision', {
+            //     type: type.value,
+            //     name: name.value,
+            //     author: author.value,
+            //     status: status.value,
+            //     docId: draft,
+            //     file: file
+            // })
                 .then(resp => router.push('/docs/drafts/' + draft))
                 .catch(e => console.log(e))
         }
@@ -116,7 +124,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
                 }
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
-                    <FileUpload file={''} setFile={setFile}>
+                    <FileUpload setFile={setFile}>
                         <Button>Загрузите</Button>
                     </FileUpload>}
 

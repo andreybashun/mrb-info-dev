@@ -12,8 +12,9 @@ export class DocumentController {
     }
 
     @Post()
-    create (@Body () dto: CreateDocDto) {
-        return this.documentService.create (dto);
+    @UseInterceptors (FileInterceptor ('file'))
+    create (@UploadedFile () file, @Body () dto: CreateDocDto) {
+        return this.documentService.create (dto,file);
     }
 
     @Get(':id')
@@ -30,14 +31,19 @@ export class DocumentController {
         return this.documentService.delete(id);
     }
 
-    // @Post('/[revision]')
-    // @UseInterceptors (FileInterceptor ('file'))
-    // createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
-    //     return this.documentService.createRevision(dto, file);
-    // }
-
     @Post('/revision')
-    createRevision(@Body() dto:CreateDocRevisionDto){
-        return this.documentService.createRevision(dto)
+    @UseInterceptors (FileInterceptor ('file'))
+    createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
+        return this.documentService.createRevision(dto, file);
     }
+
+    @Get(':id/:key')
+    getFile(@Param('key') key:string){
+        return this.documentService.getFile(key)
+    }
+
+    // @Post('/revision')
+    // createRevision(@Body() dto:CreateDocRevisionDto){
+    //     return this.documentService.createRevision(dto)
+    // }
 }

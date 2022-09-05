@@ -18,8 +18,9 @@ export class DocumentService {
     ) {
     }
 
-    async create (dto: CreateDocDto): Promise<Doc> {
-        return await this.docModel.create ({...dto});
+    async create (dto: CreateDocDto, key): Promise<Doc> {
+        const fileKey = await this.s3Servise.upload (key)
+        return await this.docModel.create ({...dto,key: fileKey});
     }
 
     async getOne (id: ObjectId): Promise<Doc> {
@@ -36,22 +37,28 @@ export class DocumentService {
         return doc._id
     }
 
-    async createRevision(dto: CreateDocRevisionDto): Promise<DocRevision>{
+    // async createRevision(dto: CreateDocRevisionDto): Promise<DocRevision>{
+    //     const doc = await this.docModel.findById (dto.docId)
+    //     const docRevision = await this.docRevisionModel.create ({...dto});
+    //     doc.docRevisions.push (docRevision._id);
+    //     await doc.save ();
+    //     return docRevision;
+    // }
+
+    async createRevision (dto: CreateDocRevisionDto, key): Promise<DocRevision> {
         const doc = await this.docModel.findById (dto.docId)
-        const docRevision = await this.docRevisionModel.create ({...dto});
+        const fileKey = await this.s3Servise.upload (key)
+        const docRevision = await this.docRevisionModel.create ({...dto, key: fileKey});
         doc.docRevisions.push (docRevision._id);
         await doc.save ();
         return docRevision;
     }
 
-    // async createRevision (dto: CreateDocRevisionDto, key): Promise<DocRevision> {
-    //     const doc = await this.docModel.findById (dto.docId)
-    //     const fileKey = await this.s3Servise.upload (key)
-    //     const docRevision = await this.docRevisionModel.create ({...dto, key: fileKey});
-    //     doc.docRevisions.push (docRevision._id);
-    //     await doc.save ();
-    //     return docRevision;
-    // }
+    async getFile(key){
+        const filePath = await this.s3Servise.getFile(key)
+        console.log('путь', filePath)
+        return filePath
+    }
 
 }
 
