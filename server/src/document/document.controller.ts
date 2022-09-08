@@ -36,11 +36,16 @@ export class DocumentController {
     createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
         return this.documentService.createRevision(dto, file);
     }
+    @Get('/revision/:id')
+    getRevisison(@Param('id') id:ObjectId){
+        return this.documentService.getRevision(id);
+    }
 
     @Get(':id/:key')
     getFile(@Param('key') key:string){
         return this.documentService.getFile(key)
     }
+
 
     // @Post('/revision')
     // createRevision(@Body() dto:CreateDocRevisionDto){

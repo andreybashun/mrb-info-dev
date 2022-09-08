@@ -56,9 +56,11 @@ export class DocumentService {
 
     async getFile(key){
         const filePath = await this.s3Servise.getFile(key)
-        console.log('путь', filePath)
         return filePath
     }
 
+    async getRevision(id:ObjectId):Promise<DocRevision>{
+        return this.docRevisionModel.findById (id);
+    }
 }
 

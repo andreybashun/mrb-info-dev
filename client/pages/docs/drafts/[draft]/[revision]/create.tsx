@@ -9,7 +9,7 @@ import TaskDescription from "../../../../../components/Tasks/TaskDescription";
 
 const Create: React.FC = () => {
     const [activeStep, setActiveStep] = useState (0)
-    const [file, setFile] = useState(null)
+    const [setFile] = useState(null)
 
     const next = () => {
         setActiveStep (prev => prev + 1)
@@ -24,7 +24,7 @@ const Create: React.FC = () => {
                 {activeStep === 0 && <Credentials/>}
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
-                    <FileUpload file={''} setFile={setFile}>
+                    <FileUpload setFile={setFile}>
                         <Button>Загрузите</Button>
                     </FileUpload>}
 

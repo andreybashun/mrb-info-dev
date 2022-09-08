@@ -15,9 +15,14 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ArticleIcon from '@mui/icons-material/Article';
 import {useRouter} from "next/router";
+import axios from "axios";
+import {GetServerSideProps} from "next";
 
-const Index: React.FC = () => {
+
+
+const Index = ({docRevision}) => {
     const router = useRouter()
+    const path =  'http://localhost:5000/document/' + docRevision.docId + '/'+ docRevision.key
     return (
         <MainLayout>
             <Stack direction={"column"} spacing={2} sx={{
@@ -129,7 +134,10 @@ const Index: React.FC = () => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                    <IconButton color="info" onClick={() => router.push ('/docs/drafts')}>
+                                    <IconButton color="info" onClick={() =>  axios.get(path)
+                                        .then(resp => router.push('/docs/drafts'))
+                                        .catch(e => console.log(e))
+                                    }>
                                         <ArticleIcon/>
                                     </IconButton>
                                     Техническое описание изменения
@@ -214,7 +222,11 @@ const Index: React.FC = () => {
                                       justifyContent="center"
                                       alignItems="center"
                                 >
-                                    <IconButton color="warning">
+                                    <IconButton color="info" onClick={() =>  {
+                                        const response = axios.get(path)
+                                        .then(resp => router.push('/docs/drafts'))
+                                        .catch(e => console.log(e))
+                                    }}>
                                         <PictureAsPdfIcon/>
                                     </IconButton>
                                 </Grid>
@@ -236,3 +248,13 @@ const Index: React.FC = () => {
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps = async ({params}) =>{
+
+    const response = await  axios.get('http://localhost:5000/document/revision/' + params.revision)
+    return {
+        props:{
+            docRevision: response.data
+        }
+    }
+}

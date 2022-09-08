@@ -30,7 +30,7 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-start"
                       alignItems="center">
                     { docRevision.status === 'canceled' &&
-                        <IconButton color="warning"  onClick={() => router.push (`/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="warning"  onClick ={() => router.push (`/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
                             <CancelIcon/>
                         </IconButton>
                     }
