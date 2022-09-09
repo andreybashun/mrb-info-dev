@@ -8,6 +8,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemButton from "@mui/material/ListItemButton";
 import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
+import DocOptionMenu from "./DocOptionMenu";
+import docs from "../../pages/docs";
 
 
 interface DocItemProps {
@@ -45,9 +47,7 @@ const DocItem: React.FC<DocItemProps> = ({doc}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <IconButton>
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <DocOptionMenu doc={doc}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

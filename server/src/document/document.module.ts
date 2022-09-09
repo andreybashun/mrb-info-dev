@@ -7,6 +7,7 @@ import {S3Service} from "../s3/s3.service";
 import {DocRevision, DocRevisionSchema} from "./schemas/docrevision.schema";
 import {Task, TaskSchema} from "../task/schemas/task.schema";
 import {TaskRevision, TaskRevisionSchema} from "../task/schemas/taskRevision.schema";
+import {S3Controller} from "../s3/s3.controller";
 
 @Module ({
     imports: [
@@ -16,7 +17,7 @@ import {TaskRevision, TaskRevisionSchema} from "../task/schemas/taskRevision.sch
         MongooseModule.forFeature ([{name: TaskRevision.name, schema: TaskRevisionSchema}],),
     ],
 
-    controllers: [DocumentController],
+    controllers: [DocumentController, S3Controller],
     providers: [DocumentService, S3Service]
 })
 export class DocumentModule {

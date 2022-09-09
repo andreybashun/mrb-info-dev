@@ -12,6 +12,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
+import OptionMenu from "../../components/OptionMenu";
 
 const Index: React.FC = () => {
     const router = useRouter ()
@@ -22,7 +23,7 @@ const Index: React.FC = () => {
 
             }}>
                 <Stack direction="row" spacing={2}>
-                    <Button size="small" variant="contained" startIcon={<CreateNewFolderOutlinedIcon/>}>
+                    <Button size="small" variant="contained">
                         Создать каталог
                     </Button>
                 </Stack>
@@ -84,9 +85,7 @@ const Index: React.FC = () => {
                                       direction="row"
                                       justifyContent="flex-end"
                                       alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
+                                    <OptionMenu/>
                                 </Grid>
                             </ListItemButton>
                         </Grid>
@@ -114,9 +113,7 @@ const Index: React.FC = () => {
                                       direction="row"
                                       justifyContent="flex-end"
                                       alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
+                                    <OptionMenu/>
                                 </Grid>
                             </ListItemButton>
                         </Grid>
@@ -143,9 +140,7 @@ const Index: React.FC = () => {
                                       direction="row"
                                       justifyContent="flex-end"
                                       alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
+                                        <OptionMenu/>
                                 </Grid>
                             </ListItemButton>
                         </Grid>
