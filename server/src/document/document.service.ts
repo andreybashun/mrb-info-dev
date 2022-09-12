@@ -18,9 +18,8 @@ export class DocumentService {
     ) {
     }
 
-    async create (dto: CreateDocDto, key): Promise<Doc> {
-        const fileKey = await this.s3Servise.upload (key)
-        return await this.docModel.create ({...dto,key: fileKey});
+    async create (dto: CreateDocDto): Promise<Doc> {
+        return await this.docModel.create ({...dto});
     }
 
     async getOne (id: ObjectId): Promise<Doc> {
@@ -35,6 +34,16 @@ export class DocumentService {
     async delete (id: ObjectId): Promise<ObjectId>{
         const doc = await this.docModel.findByIdAndDelete(id)
         return doc._id
+    }
+
+    async deleteRevision (id: ObjectId): Promise<ObjectId>{
+
+        const revision = await this.docRevisionModel.findByIdAndDelete(id)
+        const doc = await this.docModel.findById (revision.docId)
+        await this.s3Servise.deleteFile(revision.key)
+        doc.docRevisions.pop();
+        await doc.save ();
+        return revision._id
     }
 
     // async createRevision(dto: CreateDocRevisionDto): Promise<DocRevision>{

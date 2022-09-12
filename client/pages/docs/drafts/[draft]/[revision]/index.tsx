@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MainLayout from "../../../../../layouts/MainLayout";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
@@ -9,7 +9,6 @@ import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
 import GradingIcon from '@mui/icons-material/Grading';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -17,6 +16,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import {useRouter} from "next/router";
 import axios from "axios";
 import {GetServerSideProps} from "next";
+
 
 
 
@@ -134,10 +134,10 @@ const Index = ({docRevision}) => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                    <IconButton color="info" onClick={() =>  axios.get(path)
+                                     <IconButton color="info" onClick={() =>  axios.get(path)
                                         .then(resp => router.push('/docs/drafts'))
-                                        .catch(e => console.log(e))
-                                    }>
+                                         .catch(e => console.log(e))
+                                     }>
                                         <ArticleIcon/>
                                     </IconButton>
                                     Техническое описание изменения
@@ -155,7 +155,10 @@ const Index = ({docRevision}) => {
                                       justifyContent="center"
                                       alignItems="center"
                                 >
-                                    <IconButton color="warning">
+                                    <IconButton color="warning" onClick={() =>  axios.get(path)
+                                        .then(resp => router.push('/docs/drafts/pdfFilePage'))
+                                        .catch(e => console.log(e))
+                                    }>
                                         <PictureAsPdfIcon/>
                                     </IconButton>
                                 </Grid>

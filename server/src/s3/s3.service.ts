@@ -9,16 +9,24 @@ export class S3Service {
         const fileName = uuid.v4 ();
         const bucketS3 = 'mrb-doc';
         await this.uploadS3 (file.buffer, bucketS3, fileName);
-        return fileName
+       return fileName
     }
 
     async uploadS3 (file, bucket, name) {
         const s3 = this.getS3 ();
         const params = {
             Bucket: bucket,
+            ACL: 'public-read',
             Key: String (name),
             Body: file,
+            ContentType: 'application/pdf',
+            ContentDisposition: 'inline',
         };
+        // const params = {
+        //     Bucket: bucket,
+        //     Key: String (name),
+        //     Body: file,
+        // };
         return new Promise ((resolve, reject) => {
             s3.upload (params, (err, data) => {
                 if (err) {
@@ -36,8 +44,12 @@ export class S3Service {
         const file = require('fs').createWriteStream(path);
         const s3 = this.getS3 ()
         await s3.getObject ({Bucket: process.env.BUCKET_S3, Key: key}).createReadStream().pipe(file);
-
         return path
+    }
+
+    async deleteFile (key): Promise<any>{
+        const s3 = this.getS3 ()
+        return s3.deleteObject ({Bucket: process.env.BUCKET_S3, Key: key});
     }
 
     getS3 () {

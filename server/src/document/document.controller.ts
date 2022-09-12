@@ -12,9 +12,8 @@ export class DocumentController {
     }
 
     @Post()
-    @UseInterceptors (FileInterceptor ('file'))
-    create (@UploadedFile () file, @Body () dto: CreateDocDto) {
-        return this.documentService.create (dto,file);
+    create (@Body () dto: CreateDocDto) {
+        return this.documentService.create (dto);
     }
 
     @Get(':id')
@@ -44,6 +43,11 @@ export class DocumentController {
     @Get(':id/:key')
     getFile(@Param('key') key:string){
         return this.documentService.getFile(key)
+    }
+
+    @Delete(':id/:id')
+    deleteRevision (@Param('id') id:ObjectId) {
+        return this.documentService.deleteRevision(id);
     }
 
 

@@ -9,6 +9,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
+import DocOptionMenu from "./DocOptionMenu";
+import DocRevisionOptionMenu from "./DocRevisionOptionMenu";
 
 
 
@@ -68,9 +70,10 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <IconButton>
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <DocRevisionOptionMenu docRevision={docRevision}/>
+                    {/*<IconButton>*/}
+                    {/*    <MoreVertIcon/>*/}
+                    {/*</IconButton>*/}
                 </Grid>
                 <Divider/>
             </ListItemButton>

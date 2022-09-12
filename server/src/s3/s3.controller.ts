@@ -1,4 +1,4 @@
-import {Body, Controller, Get} from '@nestjs/common';
+import {Body, Controller, Delete, Get} from '@nestjs/common';
 import {Post, UseInterceptors, UploadedFile} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
 import {S3Service} from "./s3.service";
@@ -18,5 +18,10 @@ export class S3Controller {
     @Get ()
     getFile (@Body ('key') key: string) {
         return this.s3service.getFile (key);
+    }
+
+    @Delete()
+    deleteFile (@Body ('key') key: string) {
+        return this.s3service.deleteFile(key);
     }
 }

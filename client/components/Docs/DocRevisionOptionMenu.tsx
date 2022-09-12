@@ -1,18 +1,28 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Menu, { MenuProps } from '@mui/material/Menu';
+import {styled, alpha} from '@mui/material/styles';
+import Menu, {MenuProps} from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {fontSize} from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {IDoc, IDocRevision} from "../../types/doc";
+import {useRouter} from "next/router";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
 
-const StyledMenu = styled((props: MenuProps) => (
+interface DocRevisionItemProps {
+    docRevision: IDocRevision;
+}
+
+const StyledMenu = styled ((props: MenuProps) => (
     <Menu
         elevation={0}
         anchorOrigin={{
@@ -25,10 +35,10 @@ const StyledMenu = styled((props: MenuProps) => (
         }}
         {...props}
     />
-))(({ theme }) => ({
+)) (({theme}) => ({
     '& .MuiPaper-root': {
         borderRadius: 6,
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing (1),
         minWidth: 10,
         color:
             theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
@@ -41,10 +51,10 @@ const StyledMenu = styled((props: MenuProps) => (
             '& .MuiSvgIcon-root': {
                 fontSize: 18,
                 color: theme.palette.text.secondary,
-                marginRight: theme.spacing(1.5),
+                marginRight: theme.spacing (1.5),
             },
             '&:active': {
-                backgroundColor: alpha(
+                backgroundColor: alpha (
                     theme.palette.primary.main,
                     theme.palette.action.selectedOpacity,
                 ),
@@ -53,16 +63,38 @@ const StyledMenu = styled((props: MenuProps) => (
     },
 }));
 
-export default function DocRevisionOptionMenu() {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 450,
+    bgcolor: 'background.paper',
+    border: '1px solid #757575',
+    boxShadow: 24,
+    p: 2,
+    borderRadius: 2
+};
+
+const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) => {
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
+    const open = Boolean (anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl (event.currentTarget);
     };
     const handleClose = () => {
-        setAnchorEl(null);
-
+        setAnchorEl (null);
     };
+    const router = useRouter ();
+
+    const [modalOpen, setModalOpen] = React.useState (false);
+    const handleModalOpen = () => setModalOpen (true);
+    const handleModalClose = () => setModalOpen (false);
+
+    const [dialogOpen, setDialogOpen] = React.useState (false);
+    const handleDialogOpen = () => setDialogOpen (true);
+    const handleDialogClose = () => setDialogOpen (false);
 
     return (
         <div>
@@ -85,20 +117,100 @@ export default function DocRevisionOptionMenu() {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={() => {
+                    handleClose()
+                    router.push ('/docs/drafts/createDraft')
+                }
+                } disableRipple>
                     <EditIcon />
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
-                    <DeleteIcon />
+                <MenuItem>
+                    <Modal
+                        open={modalOpen}
+                        onClose={handleModalClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
+                                Внимание
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
+                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
+                                все его ревизии и попробуйте снова.
+                            </Typography>
+                            <Button onClick={() => {
+                                handleModalClose ()
+                                handleClose ()
+                            }
+                            }
+                                    variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок
+                            </Button>
+                        </Box>
+                    </Modal>
+                    <Modal
+                        open={dialogOpen}
+                        onClose={handleDialogClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
+                                Удалить документ
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
+                                Вы действительно хотите удалить документ?
+                            </Typography>
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Grid>
+                                    <Button onClick={() => {
+                                        handleDialogClose ()
+                                        handleClose ()
+
+                                    }
+                                    }
+                                            variant="outlined" color={"info"}
+                                            sx={{mt: 2, marginTop: 2}}>Нет
+                                    </Button>
+                                </Grid>
+                                <Grid >
+                                    <Button onClick={() => {
+                                        handleDialogClose ()
+                                        handleClose ()
+                                        axios.delete('http://localhost:5000/document/' + docRevision.docId + '/' + docRevision._id)
+                                            .then(resp => router.push('/docs/drafts/' + docRevision.docId))
+                                            .catch(e => console.log(e))
+                                        // router.push ('/docs/drafts/' + doc._id)
+                                    }
+                                    }
+                                            variant="outlined" color={"info"}
+                                            sx={{mt: 2, marginTop: 2}}
+                                    >Да
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Modal>
+                    <DeleteIcon onClick={() => {
+                            handleDialogOpen ()
+                    }
+                    }/>
                 </MenuItem>
-                <Divider sx={{ my: 0.5 }} />
+                <Divider sx={{my: 0.5}}/>
                 <MenuItem onClick={handleClose} disableRipple>
-                    <ArchiveIcon />
+                    <ArchiveIcon/>
                 </MenuItem>
                 <MenuItem onClick={handleClose} disableRipple>
-                    <MoreHorizIcon />
+                    <MoreHorizIcon/>
                 </MenuItem>
             </StyledMenu>
         </div>
     );
 }
+
+export default DocRevisionOptionMenu

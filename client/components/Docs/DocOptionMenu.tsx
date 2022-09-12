@@ -11,14 +11,17 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
-import {useState} from "react"
-import Modal from "./Modal";
 
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
 
 interface DocItemProps {
     doc: IDoc;
 }
-
 
 const StyledMenu = styled ((props: MenuProps) => (
     <Menu
@@ -61,18 +64,38 @@ const StyledMenu = styled ((props: MenuProps) => (
     },
 }));
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 450,
+    bgcolor: 'background.paper',
+    border: '1px solid #757575',
+    boxShadow: 24,
+    p: 2,
+    borderRadius: 2
+};
+
 const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
-    const [showModal, setShowModal] = useState (false);
     const open = Boolean (anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl (event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl (null);
-
     };
     const router = useRouter ();
+
+    const [modalOpen, setModalOpen] = React.useState (false);
+    const handleModalOpen = () => setModalOpen (true);
+    const handleModalClose = () => setModalOpen (false);
+
+    const [dialogOpen, setDialogOpen] = React.useState (false);
+    const handleDialogOpen = () => setDialogOpen (true);
+    const handleDialogClose = () => setDialogOpen (false);
 
     return (
         <div>
@@ -95,24 +118,95 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose} disableRipple>
-                    <EditIcon/>
-                </MenuItem>
                 <MenuItem onClick={() => {
                     handleClose()
-                    if (doc.docRevisions.length === 0) {
-                        router.push ('/docs/drafts/' + doc._id)
-                    } else {
-                        setShowModal (true)
-                    }
+                    router.push ('/docs/drafts/createDraft')
                 }
-                }>
-                    <DeleteIcon/>
+                } disableRipple>
+                    <EditIcon />
                 </MenuItem>
-                {showModal && <Modal
-                    onClose={() => setShowModal (false)} show={true} title={"Для удаления документа удалите все его ревизии и повторите попытку"}>
+                <MenuItem>
+                    <Modal
+                        open={modalOpen}
+                        onClose={handleModalClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
+                                Внимание
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
+                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
+                                все его ревизии и попробуйте снова.
+                            </Typography>
+                            <Button onClick={() => {
+                                handleModalClose ()
+                                handleClose ()
+                            }
+                            }
+                                    variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок
+                            </Button>
+                        </Box>
+                    </Modal>
+                    <Modal
+                        open={dialogOpen}
+                        onClose={handleDialogClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
+                                Удаление документа
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
+                                Вы действительно хотите удалить документ? Документ будет помещен в архив. Восстановление документа будет возможно из архивной версии в течении 120 дней
+                            </Typography>
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Grid>
+                                    <Button onClick={() => {
+                                        handleDialogClose ()
+                                        handleClose ()
 
-                </Modal>}
+                                    }
+                                    }
+                                            variant="outlined" color={"info"}
+                                            sx={{mt: 2, marginTop: 2}}>Отменить
+                                    </Button>
+                                </Grid>
+                                <Grid >
+                                    <Button onClick={() => {
+                                        handleDialogClose ()
+                                        handleClose ()
+                                        axios.delete('http://localhost:5000/document/' + doc._id)
+                                            .then(resp => router.push('/docs/drafts'))
+                                            .catch(e => console.log(e))
+                                        // router.push ('/docs/drafts/' + doc._id)
+                                    }
+                                    }
+                                            variant="contained" color={"info"}
+                                            sx={{mt: 2, marginTop: 2}}
+                                    >Удалить
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Modal>
+                    <DeleteIcon onClick={() => {
+
+                        if (doc.docRevisions.length === 0) {
+                            handleDialogOpen ()
+                        } else {
+                            handleModalOpen ()
+                        }
+                    }
+                    }/>
+                </MenuItem>
                 <Divider sx={{my: 0.5}}/>
                 <MenuItem onClick={handleClose} disableRipple>
                     <ArchiveIcon/>
