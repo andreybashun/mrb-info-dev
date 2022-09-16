@@ -88,9 +88,9 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
     };
     const router = useRouter ();
 
-    const [modalOpen, setModalOpen] = React.useState (false);
-    const handleModalOpen = () => setModalOpen (true);
-    const handleModalClose = () => setModalOpen (false);
+    // const [modalOpen, setModalOpen] = React.useState (false);
+    // const handleModalOpen = () => setModalOpen (true);
+    // const handleModalClose = () => setModalOpen (false);
 
     const [dialogOpen, setDialogOpen] = React.useState (false);
     const handleDialogOpen = () => setDialogOpen (true);
@@ -125,29 +125,29 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
                     <EditIcon />
                 </MenuItem>
                 <MenuItem>
-                    <Modal
-                        open={modalOpen}
-                        onClose={handleModalClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Внимание
-                            </Typography>
-                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
-                                все его ревизии и попробуйте снова.
-                            </Typography>
-                            <Button onClick={() => {
-                                handleModalClose ()
-                                handleClose ()
-                            }
-                            }
-                                    variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок
-                            </Button>
-                        </Box>
-                    </Modal>
+                    {/*<Modal*/}
+                    {/*    open={modalOpen}*/}
+                    {/*    onClose={handleModalClose}*/}
+                    {/*    aria-labelledby="modal-modal-title"*/}
+                    {/*    aria-describedby="modal-modal-description"*/}
+                    {/*>*/}
+                    {/*    <Box sx={style}>*/}
+                    {/*        <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>*/}
+                    {/*            Внимание*/}
+                    {/*        </Typography>*/}
+                    {/*        <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>*/}
+                    {/*            Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите*/}
+                    {/*            все его ревизии и попробуйте снова.*/}
+                    {/*        </Typography>*/}
+                    {/*        <Button onClick={() => {*/}
+                    {/*            handleModalClose ()*/}
+                    {/*            handleClose ()*/}
+                    {/*        }*/}
+                    {/*        }*/}
+                    {/*                variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок*/}
+                    {/*        </Button>*/}
+                    {/*    </Box>*/}
+                    {/*</Modal>*/}
                     <Modal
                         open={dialogOpen}
                         onClose={handleDialogClose}

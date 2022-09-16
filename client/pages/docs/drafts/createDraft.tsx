@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import MainLayout from "../../../layouts/MainLayout";
-import StepWrapper from "../../../components/Tasks/StepWrapper";
 import Credentials from "../../../components/Tasks/Credentials";
 import TaskDescription from "../../../components/Tasks/TaskDescription";
 import FileUpload from "../../../components/FileUpload";
@@ -12,6 +11,10 @@ import {FormControl} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import {useRouter} from "next/router";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Snackbar from "@mui/material/Snackbar";
+import DocStepWrapper from "../../../components/Docs/DocStepWraper";
 
 
 const CreateDraft = () => {
@@ -23,6 +26,30 @@ const CreateDraft = () => {
     const status = useInput ('')
     const router = useRouter ()
 
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    const action = (
+        <React.Fragment>
+            <Button color="secondary" size="small" onClick={handleClose}>
+                UNDO
+            </Button>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
     const next = () => {
         if (activeStep !== 1) {
             setActiveStep (prev => prev + 1)
@@ -33,7 +60,10 @@ const CreateDraft = () => {
                 author: author.value,
                 status: status.value,
             })
-                .then (resp => router.push ('/docs/drafts'))
+                .then (resp => {
+                    setOpen(true)
+                    router.push ('/docs/drafts')
+                })
                 .catch (e => console.log (e))
         }
     }
@@ -43,26 +73,26 @@ const CreateDraft = () => {
 
     return (
         <MainLayout>
-            <StepWrapper activeStep={activeStep}>
+            <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
                     <Box>
                         <FormControl fullWidth sx={{p: 1}}>
                             <TextField
                                 {...type}
-                                id={"task_revision_type"}
+                                id={"task_type"}
                                 label={"тип"}
                                 variant="outlined"
                                 size={"small"}
                             />
                         </FormControl>
                         <FormControl fullWidth sx={{p: 1}}>
-                            <TextField id="task_revision_id" label="идентификатор" variant="outlined" size="small"/>
+                            <TextField id="task_id" label="идентификатор" variant="outlined" size="small"/>
                         </FormControl>
                         <FormControl fullWidth sx={{p: 1}}>
                             <TextField
                                 {...name}
-                                id="task_revision_name"
+                                id="task_name"
                                 label={"имя"}
                                 variant={"outlined"}
                                 size={"small"}
@@ -71,36 +101,45 @@ const CreateDraft = () => {
                         <FormControl sx={{p: 1, width: '50ch'}}>
                             <TextField
                                 {...author}
-                                id={"task_revision_author"}
+                                id={"task_author"}
                                 label={"автор"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
                         </FormControl>
                         <FormControl sx={{p: 1, marginLeft: 10, width: '25ch',}}>
-                            <TextField id="task_revision_author" label="дата создания" variant="outlined" size="small"/>
+                            <TextField id="task_author" label="дата создания" variant="outlined" size="small"/>
                         </FormControl>
                         <FormControl sx={{p: 1, width: '50ch'}}>
                             <TextField
                                 {...status}
-                                id="task_revision_author"
+                                id="task_author"
                                 label="статус"
                                 variant="outlined"
                                 size="small"/>
                         </FormControl>
                         <FormControl sx={{p: 1, marginLeft: 10, width: '25ch',}}>
-                            <TextField id="task_revision_author" label="дата модификации" variant="outlined"
+                            <TextField id="task_author" label="дата модификации" variant="outlined"
                                        size="small"/>
                         </FormControl>
 
                     </Box>
                 }
                 {activeStep === 1 && <TaskDescription/>}
-            </StepWrapper>
+            </DocStepWrapper>
             <Grid container justifyContent={"space-between"}>
                 <Button size="small" variant="contained" disabled={activeStep === 0} onClick={back}> назад </Button>
                 <Button size="small" variant="contained" disabled={activeStep === 2} onClick={next}> вперед </Button>
             </Grid>
+            <div>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    message="Note archived"
+                    action={action}
+                />
+            </div>
         </MainLayout>
     );
 };

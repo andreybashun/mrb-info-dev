@@ -138,6 +138,7 @@ const Index = ({docRevision}) => {
                                         .then(resp => router.push('/docs/drafts'))
                                          .catch(e => console.log(e))
                                      }>
+
                                         <ArticleIcon/>
                                     </IconButton>
                                     Техническое описание изменения
@@ -156,7 +157,7 @@ const Index = ({docRevision}) => {
                                       alignItems="center"
                                 >
                                     <IconButton color="warning" onClick={() =>  axios.get(path)
-                                        .then(resp => router.push('/docs/drafts/pdfFilePage'))
+                                        .then(resp => router.push('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
                                         .catch(e => console.log(e))
                                     }>
                                         <PictureAsPdfIcon/>
