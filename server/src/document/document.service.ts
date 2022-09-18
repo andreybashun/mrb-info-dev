@@ -6,8 +6,8 @@ import {CreateDocDto} from "./dto/create-doc.dto";
 import {S3Service} from "../s3/s3.service";
 import {DocRevision, DocRevisionDocument} from "./schemas/docrevision.schema";
 import {CreateDocRevisionDto} from "./dto/create-docRevision.dto";
-
-
+import * as crypto from "crypto";
+import * as fs from "fs";
 
 
 @Injectable ()
@@ -23,25 +23,25 @@ export class DocumentService {
     }
 
     async getOne (id: ObjectId): Promise<Doc> {
-        return this.docModel.findById (id).populate('docRevisions');
-}
+        return this.docModel.findById (id).populate ('docRevisions');
+    }
 
 
     async getAll (): Promise<Doc[]> {
         return this.docModel.find ();
     }
 
-    async delete (id: ObjectId): Promise<ObjectId>{
-        const doc = await this.docModel.findByIdAndDelete(id)
+    async delete (id: ObjectId): Promise<ObjectId> {
+        const doc = await this.docModel.findByIdAndDelete (id)
         return doc._id
     }
 
-    async deleteRevision (id: ObjectId): Promise<ObjectId>{
+    async deleteRevision (id: ObjectId): Promise<ObjectId> {
 
-        const revision = await this.docRevisionModel.findByIdAndDelete(id)
+        const revision = await this.docRevisionModel.findByIdAndDelete (id)
         const doc = await this.docModel.findById (revision.docId)
-        await this.s3Servise.deleteFile(revision.key)
-        doc.docRevisions.pop();
+        await this.s3Servise.deleteFile (revision.key)
+        doc.docRevisions.pop ();
         await doc.save ();
         return revision._id
     }
@@ -63,12 +63,12 @@ export class DocumentService {
         return docRevision;
     }
 
-    async getFile(key){
-        const filePath = await this.s3Servise.getFile(key)
+    async getFile (key) {
+        const filePath = await this.s3Servise.getFile (key)
         return filePath
     }
 
-    async getRevision(id:ObjectId):Promise<DocRevision>{
+    async getRevision (id: ObjectId): Promise<DocRevision> {
         return this.docRevisionModel.findById (id);
     }
 }

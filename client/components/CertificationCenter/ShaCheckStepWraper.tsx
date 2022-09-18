@@ -10,7 +10,7 @@ interface StepWrapperProps{
 }
 
 const steps= [
-    'Загрузка файла', 'Загрузка сертификата'];
+    'Загрузка файла', 'Загрузка Сертификата', 'Проверка Сертификата'];
 
 const DocStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     return (

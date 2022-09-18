@@ -26,7 +26,7 @@ const CreateDraft = () => {
     const status = useInput ('')
     const router = useRouter ()
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -50,6 +50,7 @@ const CreateDraft = () => {
         </React.Fragment>
     );
 
+
     const next = () => {
         if (activeStep !== 1) {
             setActiveStep (prev => prev + 1)
@@ -62,7 +63,7 @@ const CreateDraft = () => {
             })
                 .then (resp => {
                     setOpen(true)
-                    router.push ('/docs/drafts')
+                    router.push ({pathname: '/docs/drafts/'+ resp.data._id})
                 })
                 .catch (e => console.log (e))
         }

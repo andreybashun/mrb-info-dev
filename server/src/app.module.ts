@@ -4,6 +4,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {S3Module} from './s3/s3.module';
 import { ConfigModule } from '@nestjs/config';
 import { TaskModule } from './task/task.module';
+import { CryptoModule } from './crypto/crypto.module';
 import * as path from "path";
 
 const MONGODB_SSLCA = path.join (__dirname, '..', 'CA.pem');
@@ -31,7 +32,8 @@ const {
         //MongooseModule.forRoot(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}?readPreference=primary&directConnection=true&ssl=false`),
         DocumentModule,
         S3Module,
-        TaskModule]
+        TaskModule,
+        CryptoModule]
 
 })
 export class AppModule {

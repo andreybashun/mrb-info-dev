@@ -10,7 +10,7 @@ interface StepWrapperProps{
 }
 
 const steps= [
-    'Учетные данные', 'Описание задачи'];
+    'Учетные данные', 'Описание документа'];
 
 const DocStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     return (

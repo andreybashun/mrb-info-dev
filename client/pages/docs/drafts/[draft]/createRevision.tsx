@@ -39,7 +39,6 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
             setActiveStep (prev => prev + 1)
         } else  {
             const  formData = new FormData()
-            console.log('path:',docId)
             formData.append('type', type.value)
             formData.append('name', name.value)
             formData.append('author', author.value)
@@ -125,7 +124,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
                     <FileUpload setFile={setFile}>
-                        <Button>Загрузите</Button>
+                        <Button>Загрузите Файл</Button>
                     </FileUpload>}
 
                 {activeStep === 3 && <h1>step3</h1>}

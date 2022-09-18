@@ -36,7 +36,7 @@ export class DocumentController {
         return this.documentService.createRevision(dto, file);
     }
     @Get('/revision/:id')
-    getRevisison(@Param('id') id:ObjectId){
+    getRevision(@Param('id') id:ObjectId){
         return this.documentService.getRevision(id);
     }
 
@@ -49,6 +49,8 @@ export class DocumentController {
     deleteRevision (@Param('id') id:ObjectId) {
         return this.documentService.deleteRevision(id);
     }
+
+
 
 
     // @Post('/revision')
