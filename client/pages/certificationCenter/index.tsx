@@ -6,15 +6,14 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {Popover, Stack} from "@mui/material";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import InfoIcon from '@mui/icons-material/Info';
 import {useRouter} from "next/router";
+import PolicyIcon from "@mui/icons-material/Policy";
 
 type IconType = (props: IconType) => JSX.Element;
 
@@ -74,6 +73,9 @@ const Index = () => {
 
     return (
         <MainLayout>
+            <Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>
+                <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256
+            </Typography>
             <Box sx={{flexGrow: 1, marginTop: 4}}>
                 <Grid container spacing={4}>
                     <Grid xs={4}>

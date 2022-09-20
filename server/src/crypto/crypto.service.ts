@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import * as crypto from "crypto";
+import * as PDFParser from "pdf2json"
+
+
 
 
 
@@ -18,5 +21,10 @@ export class CryptoService {
         const fileBuffer = Buffer.from(file.buffer, "utf-8");
         return fileBuffer.toString()
 
+    }
+
+     getPDFhash(file){
+        const pdfParser = new PDFParser(this, 1);
+        pdfParser.loadPDF(file.buffer);
     }
 }

@@ -1,6 +1,5 @@
 import {Controller, Get, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
-import {DocumentService} from "../document/document.service";
 import {CryptoService} from "./crypto.service";
 
 @Controller('crypto')
@@ -17,5 +16,11 @@ export class CryptoController {
     @UseInterceptors (FileInterceptor ('file'))
     getHash (@UploadedFile () file) {
         return  this.cryptoService.getHash(file);
+    }
+
+    @Post ('/pdf')
+    @UseInterceptors (FileInterceptor ('file'))
+    getPDFhash(@UploadedFile () file) {
+        return this.cryptoService.getPDFhash (file);
     }
 }

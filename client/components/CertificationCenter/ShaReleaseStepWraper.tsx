@@ -4,15 +4,15 @@ import Grid from "@mui/material/Grid";
 import {StepperThem} from "../../StepperThem";
 import {auto} from "@popperjs/core";
 
-interface ShaCheckStepWraperProps{
+interface ShaReleaseStepWraperProps{
     activeStep: number;
     children: JSX.Element|JSX.Element[];
 }
 
 const steps= [
-    'Загрузка файла', 'Загрузка Сертификата', 'Проверка Сертификата'];
+    'Загрузка файла', 'Выпуск Сертификата'];
 
-const ShaCheckStepWraper:React.FC<ShaCheckStepWraperProps> = ({activeStep, children }) => {
+const ShaReleaseStepWraper:React.FC<ShaReleaseStepWraperProps> = ({activeStep, children }) => {
     return (
         <ThemeProvider theme={StepperThem}>
             <Container sx={{p:2, marginTop: 1}}>
@@ -38,4 +38,4 @@ const ShaCheckStepWraper:React.FC<ShaCheckStepWraperProps> = ({activeStep, child
     );
 };
 
-export default ShaCheckStepWraper;
+export default ShaReleaseStepWraper;
