@@ -17,14 +17,21 @@ export class CryptoService {
         return crypto.createHash('sha256').update(fileBuffer).digest('hex');
     }
 
+    // txt hash
     async getHash(file){
         const fileBuffer = Buffer.from(file.buffer, "utf-8");
         return fileBuffer.toString()
 
     }
 
+    // pdf hash
      getPDFhash(file){
-        const pdfParser = new PDFParser(this, 1);
-        pdfParser.loadPDF(file.buffer);
-    }
+         const fileBuffer = Buffer.from(file.buffer, "utf-8");
+         let raw = file.buffer.toString();
+         return raw.slice(raw.indexOf('Tj')-66,raw.indexOf('Tj')-2)
+
+         }
+
+
+
 }

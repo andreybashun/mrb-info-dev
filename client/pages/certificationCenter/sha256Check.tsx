@@ -21,6 +21,7 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 import PolicyIcon from '@mui/icons-material/Policy';
 import {auto} from "@popperjs/core";
 import { jsPDF } from "jspdf";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 interface DocItemProps {
@@ -76,7 +77,7 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
         } else {
             const HashData = new FormData ()
             HashData.append ('file', certificate)
-            axios.post ('http://localhost:5000/crypto/hash', HashData)
+            axios.post ('http://localhost:5000/crypto/pdf', HashData)
                 .then (resp => {
                     const uploadedHash = resp.data
                     const SHA256Data = new FormData ()
@@ -85,7 +86,9 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
                         .then (resp => {
                             const calculatedHash = resp.data
                             setpdf(calculatedHash)
-                            if (uploadedHash === calculatedHash) {
+                            console.log(uploadedHash)
+                            console.log(calculatedHash)
+                            if (uploadedHash.toString() === calculatedHash.toString()) {
                                 setSuccessModalOpen (true)
                             } else {
                                 setFailModalOpen (true)
@@ -101,6 +104,16 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
 
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'certificationCenter', to: 'Удостоверяющий центр'},
+                        {from: 'sha256Check', to: 'SHA256. Проверка сертификата'},
+                    ]
+                    }
+                />
+            </div>
             <Typography  variant="h5" sx={{mt: 0, marginTop:2, color: ' #757575',  paddingLeft:2}} >
                 <PolicyIcon sx={{ fontSize: 30 }}/> Удостоверяющий центр. Проверка сертифиата. Агоритм SHA256
             </Typography>

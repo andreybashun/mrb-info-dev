@@ -131,7 +131,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
                     {/*    aria-labelledby="modal-modal-title"*/}
                     {/*    aria-describedby="modal-modal-description"*/}
                     {/*>*/}
-                    {/*    <Box sx={style}>*/}
+                    {/*    <Box sx={styles}>*/}
                     {/*        <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>*/}
                     {/*            Внимание*/}
                     {/*        </Typography>*/}

@@ -18,6 +18,8 @@ import {Stack} from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PolicyIcon from '@mui/icons-material/Policy';
+import Breadcrumbs from "nextjs-breadcrumbs";
+import {jsPDF} from "jspdf";
 
 
 interface DocItemProps {
@@ -38,6 +40,10 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
     const [FailModalOpen, setFailModalOpen] = React.useState (false);
     const handleFailModalOpen = () => setFailModalOpen (true);
     const handleFailModalClose = () => setFailModalOpen (false);
+
+    const [checked, setChecked] = React.useState(false);
+
+    const [pdf, setpdf] = React.useState(null)
 
     const buttonStyle = {
         marginTop: 4,
@@ -75,6 +81,7 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                     if (calculatedHash) {
                         setModalText(calculatedHash)
                         setSuccessModalOpen (true)
+                        setpdf(calculatedHash)
                     } else {
                         setFailModalOpen (true)
                     }
@@ -89,6 +96,16 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
 
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'certificationCenter', to: 'Удостоверяющий центр'},
+                        {from: 'sha256Release', to: 'SHA256. Выпуск сертификата'},
+                    ]
+                    }
+                />
+            </div>
             <Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>
                 <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256
             </Typography>
@@ -131,7 +148,7 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                         <Typography id="modal-modal-description" variant="caption" sx={{mt: 2, marginBottom: 2}} align={"center"}>
                         {modalText}
                         </Typography>
-                        <FormGroup  sx={{paddingTop:4}}>
+                        <FormGroup  sx={{paddingTop:4}}  onChange={() => setChecked(!checked)}>
                             <FormControlLabel control={<Checkbox color="info"/>} label=
                                 {
                                     <Typography id="modal-modal-description" variant="caption" sx={{mt: 0}}
@@ -150,6 +167,19 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                             />
                         </FormGroup>
                         <Button onClick={() => {
+
+                            setChecked(false)
+                            if (checked === true){
+                                const doc = new jsPDF();
+                                const date = new Date();
+                                doc.text(pdf, 10, 10);
+                                doc.text("Certificate released:" , 10, 20 )
+                                doc.text("id: " + Date.now() , 10, 30 )
+                                doc.text("date: " + date.toLocaleDateString() +" "+ date.toLocaleTimeString(),10, 40);
+                                doc.text("file: " + file.name, 10, 50);
+                                doc.cell(10,280,190,10,"Creation Request                    MRB Platform                https://mrb-info.ru",1,"")
+                                doc.save();
+                            }
                             handleSuccessModalClose ()
                         }
                         } variant="outlined" color={"info"}

@@ -16,6 +16,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import {useRouter} from "next/router";
 import axios from "axios";
 import {GetServerSideProps} from "next";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 
@@ -25,6 +26,19 @@ const Index = ({docRevision}) => {
     const path =  'http://localhost:5000/document/' + docRevision.docId + '/'+ docRevision.key
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'docs', to: 'мои документы'},
+                        {from: 'drafts', to: 'проекты'},
+                        {from: docRevision.docId, to: 'документ'},
+                        {from: docRevision._id, to: 'ревизия'}
+
+                    ]
+                }
+                />
+            </div>
             <Stack direction={"column"} spacing={2} sx={{
                 padding: 5,
 

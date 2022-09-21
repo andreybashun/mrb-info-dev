@@ -14,6 +14,7 @@ import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import InfoIcon from '@mui/icons-material/Info';
 import {useRouter} from "next/router";
 import PolicyIcon from "@mui/icons-material/Policy";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 type IconType = (props: IconType) => JSX.Element;
 
@@ -73,8 +74,17 @@ const Index = () => {
 
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'certificationCenter', to: 'Удостоверяющий центр'},
+                    ]
+                    }
+                />
+            </div>
             <Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>
-                <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256
+                <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр
             </Typography>
             <Box sx={{flexGrow: 1, marginTop: 4}}>
                 <Grid container spacing={4}>
@@ -96,31 +106,40 @@ const Index = () => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
                                             icon={<VerifiedUserIcon
                                                 fontSize="medium"
                                                 sx={{color: "cornflowerblue"}}
-                                                onClick={() => router.push ('/certificationCenter/sha256Check')}
+
                                             />}
                                             text="Проверить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            проверить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
                                             icon={<HistoryEduIcon
                                                 fontSize="medium"
                                                 sx={{color: "cornflowerblue"}}
-                                                onClick={() => router.push ('/certificationCenter/sha256Release')}
+
                                             />}
                                             text="Выпустить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            выпустить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}>
                                         <MouseOverPopover
                                             icon={<InfoIcon  fontSize="medium" sx={{color: "cornflowerblue"}}/>}
                                             text="Дополнительная информация"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            инфо
+                                        </Typography>
                                     </IconButton>
                                 </Stack>
 
@@ -145,23 +164,40 @@ const Index = () => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
-                                            icon={<VerifiedUserIcon fontSize="medium" sx={{color: "cornflowerblue"}}/>}
+                                            icon={<VerifiedUserIcon
+                                                fontSize="medium"
+                                                sx={{color: "cornflowerblue"}}
+
+                                            />}
                                             text="Проверить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            проверить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
-                                            icon={<HistoryEduIcon fontSize="medium" sx={{color: "cornflowerblue"}}/>}
+                                            icon={<HistoryEduIcon
+                                                fontSize="medium"
+                                                sx={{color: "cornflowerblue"}}
+
+                                            />}
                                             text="Выпустить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            выпустить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}>
                                         <MouseOverPopover
                                             icon={<InfoIcon  fontSize="medium" sx={{color: "cornflowerblue"}}/>}
                                             text="Дополнительная информация"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            инфо
+                                        </Typography>
                                     </IconButton>
                                 </Stack>
                             </CardActions>
@@ -191,23 +227,40 @@ const Index = () => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
-                                            icon={<VerifiedUserIcon fontSize="medium" sx={{color: "cornflowerblue"}}/>}
+                                            icon={<VerifiedUserIcon
+                                                fontSize="medium"
+                                                sx={{color: "cornflowerblue"}}
+
+                                            />}
                                             text="Проверить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            проверить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
-                                            icon={<HistoryEduIcon fontSize="medium" sx={{color: "cornflowerblue"}}/>}
+                                            icon={<HistoryEduIcon
+                                                fontSize="medium"
+                                                sx={{color: "cornflowerblue"}}
+
+                                            />}
                                             text="Выпустить сертификат"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            выпустить
+                                        </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small">
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}>
                                         <MouseOverPopover
                                             icon={<InfoIcon  fontSize="medium" sx={{color: "cornflowerblue"}}/>}
                                             text="Дополнительная информация"
                                         />
+                                        <Typography variant="caption" color="text.secondary">
+                                            инфо
+                                        </Typography>
                                     </IconButton>
                                 </Stack>
                             </CardActions>

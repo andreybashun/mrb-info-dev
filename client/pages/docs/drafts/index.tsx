@@ -4,6 +4,7 @@ import DocList from "../../../components/Docs/DocList";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
 import {NextThunkDispatch, wrapper} from "../../../store";
 import {fetchDocs} from "../../../store/actions-creators/doc";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 
@@ -19,6 +20,16 @@ const Index = () => {
 
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'docs', to: 'мои документы'},
+                        {from: 'drafts', to: 'проекты'},
+                    ]
+                    }
+                />
+            </div>
             <DocList docs={docs}/>
         </MainLayout>
     );

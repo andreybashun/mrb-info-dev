@@ -13,11 +13,22 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
 import OptionMenu from "../../components/OptionMenu";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 const Index: React.FC = () => {
     const router = useRouter ()
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'docs', to: 'мои документы'},
+                        {from: 'drafts', to: 'проекты'},
+                    ]
+                    }
+                />
+            </div>
             <Stack direction={"column"} spacing={2} sx={{
                 padding: 5,
 
