@@ -8,13 +8,16 @@ import {DocRevision, DocRevisionDocument} from "./schemas/docrevision.schema";
 import {CreateDocRevisionDto} from "./dto/create-docRevision.dto";
 import * as crypto from "crypto";
 import * as fs from "fs";
+import { jsPDF } from "jspdf";
+import {CryptoService} from "../crypto/crypto.service";
 
 
 @Injectable ()
 export class DocumentService {
     constructor (@InjectModel (Doc.name) private docModel: Model<DocDocument>,
                  @InjectModel (DocRevision.name) private docRevisionModel: Model<DocRevisionDocument>,
-                 private s3Servise: S3Service
+                 private s3Servise: S3Service,
+                 private CryptoService: CryptoService
     ) {
     }
 
@@ -55,9 +58,27 @@ export class DocumentService {
     // }
 
     async createRevision (dto: CreateDocRevisionDto, key): Promise<DocRevision> {
+        const cert = await new jsPDF();
+        const date = new Date();
+        const fileHash =  await this.CryptoService.getSHA256hash(key)
+        cert.text(fileHash, 10, 10);
+        cert.text("Certificate released:" , 10, 20 )
+        cert.text("id: " + Date.now() , 10, 30 )
+        cert.text("date: " + date.toLocaleDateString() +" "+ date.toLocaleTimeString(),10, 40);
+        cert.text("revision name: " + key.name, 10, 50);
+        cert.text("author: " + dto.author, 10, 60);
+        cert.text("Document ID: " + dto.docId, 10, 70);
+        cert.text("Document type: " + dto.type, 10, 80);
+        cert.text("Document status: " + dto.status, 10, 90);
+        //cert.text("Document type: " + dto.description, 10, 100);
+        cert.cell(10,280,190,10,"Creation Request                    MRB Platform                https://mrb-info.ru",1,"")
+        cert.save('fileHash.pdf');
+
+        const fileContent =  Buffer.from(fs.readFileSync("fileHash.pdf", "utf8"));
         const doc = await this.docModel.findById (dto.docId)
-        const fileKey = await this.s3Servise.upload (key)
-        const docRevision = await this.docRevisionModel.create ({...dto, key: fileKey});
+        const fileKey = await this.s3Servise.upload (key.buffer)
+        const fileHashKey = await  this.s3Servise.upload(fileContent)
+        const docRevision = await this.docRevisionModel.create ({...dto, key: fileKey, certificateFile: fileHashKey, hash:fileHash});
         doc.docRevisions.push (docRevision._id);
         await doc.save ();
         return docRevision;

@@ -83,9 +83,9 @@ const Index = () => {
                     }
                 />
             </div>
-            <Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>
-                <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр
-            </Typography>
+            {/*<Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>*/}
+            {/*    <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр*/}
+            {/*</Typography>*/}
             <Box sx={{flexGrow: 1, marginTop: 4}}>
                 <Grid container spacing={4}>
                     <Grid xs={4}>
@@ -93,13 +93,22 @@ const Index = () => {
                         <Card sx={{maxWidth: 345}}>
 
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Алгоритм SHA-256
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    SHA-256 представляет собой однонаправленную функцию для создания цифровых отпечатков
-                                    фиксированной длины из входных данных
-                                </Typography>
+                                <Stack direction="row" spacing={2}>
+                                    <Box
+                                        component="img"
+                                        sx={{
+                                            width: 45,
+                                            height:45,
+                                            paddingBottom:2
+                                        }}
+                                        src="/static/images/cards/crypto_1.png"
+                                    />
+                                    <Typography gutterBottom variant="body2" color="text.black" sx={{align:"center"}}>
+                                        Сертификация целостности файла внешним ключом
+                                    </Typography>
+
+                                </Stack>
+
                             </CardContent>
                             <CardActions>
                                 <Stack direction="row"
@@ -150,14 +159,23 @@ const Index = () => {
                     <Grid xs={4}>
 
                         <Card sx={{maxWidth: 345}}>
+
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Алгоритм SHA-256
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    SHA-256 представляет собой однонаправленную функцию для создания цифровых отпечатков
-                                    фиксированной длины из входных данных
-                                </Typography>
+                                <Stack direction="row" spacing={2}>
+                                    <Box
+                                        component="img"
+                                        sx={{
+                                            width: 45,
+                                            height:45,
+                                            paddingBottom:2
+                                        }}
+                                        src="/static/images/cards/crypto_2.png"
+                                    />
+                                    <Typography gutterBottom variant="body2" color="text.black" sx={{align:"center"}}>
+                                        Сертификация целостности файла вложенным ключом
+                                    </Typography>
+
+                                </Stack>
                             </CardContent>
                             <CardActions>
                                 <Stack direction="row"
@@ -207,20 +225,22 @@ const Index = () => {
                     <Grid xs={4}>
 
                         <Card sx={{maxWidth: 345}}>
-                            <CardMedia
-                                component="img"
-                                height="40"
-                                image="/static/images/cards/6db8885e143be3f40386e225aed13438.png"
-                                alt="green iguana"
-                            />
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Алгоритм
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                    species
-                                </Typography>
+                                <Stack direction="row" spacing={2}>
+                                    <Box
+                                        component="img"
+                                        sx={{
+                                            width: 45,
+                                            height:45,
+                                            paddingBottom:2
+                                        }}
+                                        src="/static/images/cards/crypto_7.png"
+                                    />
+                                    <Typography gutterBottom variant="body2" color="text.black" sx={{align:"center"}}>
+                                        Сертификация целостности и подлинности файла.
+                                    </Typography>
+
+                                </Stack>
                             </CardContent>
                             <CardActions>
                                 <Stack direction="row"

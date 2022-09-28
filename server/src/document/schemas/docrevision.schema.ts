@@ -20,8 +20,13 @@ export class DocRevision {
     status: string;
 
     @Prop ()
-    key: string;
+    key: string; // s3 key
 
+    @Prop ()
+    certificateFile: string // s3 key
+
+    @Prop()
+    hash:string
 
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Doc'})

@@ -13,8 +13,8 @@ import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import {IDoc, IDocRevision} from "../../../../types/doc";
-import {renderToString} from "react-dom/server";
-import {string} from "prop-types";
+import {jsPDF} from "jspdf";
+
 
 
 interface DocItemProps {
@@ -31,13 +31,31 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
     const  router = useRouter()
     const {draft} = router.query
     const docId = draft + ''
+    const [certificateFile, setCertificateFile] = useState(null)
+    const [hash, setHash] = useState(null)
 
 
 
     const next = () => {
+
         if (activeStep !== 2) {
             setActiveStep (prev => prev + 1)
         } else  {
+            axios.post('http://localhost:5000/crypto/sha256', file)
+                .then(resp => {
+                    setHash(resp.data)
+                    const doc = new jsPDF();
+                    const date = new Date();
+                    doc.text(resp.data, 10, 10);
+                    doc.text("Certificate released:" , 10, 20 )
+                    doc.text("id: " + Date.now() , 10, 30 )
+                    doc.text("date: " + date.toLocaleDateString() +" "+ date.toLocaleTimeString(),10, 40);
+                    doc.text("file: " + file.name, 10, 50);
+                    doc.cell(10,280,190,10,"Creation Request                    MRB Platform                https://mrb-info.ru",1,"")
+                    setCertificateFile(doc)
+
+                })
+                .catch(e => console.log(e))
             const  formData = new FormData()
             formData.append('type', type.value)
             formData.append('name', name.value)
@@ -45,6 +63,8 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
             formData.append('status', status.value)
             formData.append('docId',docId)
             formData.append('file', file)
+            formData.append('hash', hash)
+            formData.append('certificateList', certificateFile)
             axios.post('http://localhost:5000/document/revision', formData)
             // axios.post('http://localhost:5000/document/revision', {
             //     type: type.value,
@@ -123,7 +143,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
                 }
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
-                    <FileUpload setFile={setFile}>
+                    <FileUpload setFile={setFile}  next={next}>
                         <Button>Загрузите Файл</Button>
                     </FileUpload>}
 

@@ -8,7 +8,7 @@ export class S3Service {
     async upload (file): Promise<string> {
         const fileName = uuid.v4 ();
         const bucketS3 = 'mrb-doc';
-        await this.uploadS3 (file.buffer, bucketS3, fileName);
+        await this.uploadS3 (file, bucketS3, fileName);
        return fileName
     }
 

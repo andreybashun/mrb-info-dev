@@ -8,6 +8,7 @@ import {DocRevision, DocRevisionSchema} from "./schemas/docrevision.schema";
 import {Task, TaskSchema} from "../task/schemas/task.schema";
 import {TaskRevision, TaskRevisionSchema} from "../task/schemas/taskRevision.schema";
 import {S3Controller} from "../s3/s3.controller";
+import {CryptoService} from "../crypto/crypto.service";
 
 @Module ({
     imports: [
@@ -18,7 +19,7 @@ import {S3Controller} from "../s3/s3.controller";
     ],
 
     controllers: [DocumentController, S3Controller],
-    providers: [DocumentService, S3Service]
+    providers: [DocumentService, S3Service, CryptoService]
 })
 export class DocumentModule {
 }

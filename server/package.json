@@ -29,6 +29,7 @@
     "aws-sdk": "^2.1157.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
+    "jspdf": "^2.5.1",
     "mongoose": "^6.3.8",
     "nestjs-config": "^1.4.10",
     "pdf2json": "^2.0.1",

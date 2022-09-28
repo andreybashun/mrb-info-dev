@@ -12,7 +12,6 @@ const FileUpload : React.FC<FileUploadProps>= ({next, setFile, children}) => {
         setFile(e.target.files[0])
         //console.log(e.target.files)
         next()
-
     }
 
     return (

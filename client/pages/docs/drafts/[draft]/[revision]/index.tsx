@@ -19,11 +19,10 @@ import {GetServerSideProps} from "next";
 import Breadcrumbs from "nextjs-breadcrumbs";
 
 
-
-
 const Index = ({docRevision}) => {
-    const router = useRouter()
-    const path =  'http://localhost:5000/document/' + docRevision.docId + '/'+ docRevision.key
+    const router = useRouter ()
+    const path = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.key
+    const certificatePath = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.certificateFile
     return (
         <MainLayout>
             <div>
@@ -36,7 +35,7 @@ const Index = ({docRevision}) => {
                         {from: docRevision._id, to: 'ревизия'}
 
                     ]
-                }
+                    }
                 />
             </div>
             <Stack direction={"column"} spacing={2} sx={{
@@ -46,7 +45,7 @@ const Index = ({docRevision}) => {
                 <Stack direction="row" spacing={2}>
                     <Button size="small" variant="contained" onClick={() =>
                         router.push ('/docs/drafts/draft/revision/create')}
-                            >
+                    >
                         Редактировать
                     </Button>
                     <Button size="small" variant="contained">
@@ -148,10 +147,10 @@ const Index = ({docRevision}) => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                     <IconButton color="info" onClick={() =>  axios.get(path)
-                                        .then(resp => router.push('/docs/drafts'))
-                                         .catch(e => console.log(e))
-                                     }>
+                                    <IconButton color="info" onClick={() => axios.get (path)
+                                        .then (resp => router.push ('/docs/drafts'))
+                                        .catch (e => console.log (e))
+                                    }>
 
                                         <ArticleIcon/>
                                     </IconButton>
@@ -170,9 +169,9 @@ const Index = ({docRevision}) => {
                                       justifyContent="center"
                                       alignItems="center"
                                 >
-                                    <IconButton color="warning" onClick={() =>  axios.get(path)
-                                        .then(resp => router.push('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
-                                        .catch(e => console.log(e))
+                                    <IconButton color="warning" onClick={() => axios.get (path)
+                                        .then (resp => router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
+                                        .catch (e => console.log (e))
                                     }>
                                         <PictureAsPdfIcon/>
                                     </IconButton>
@@ -187,35 +186,7 @@ const Index = ({docRevision}) => {
                                 </Grid>
                             </ListItemButton>
                         </Grid>
-                        {/*<Grid container spacing={2}>*/}
-                        {/*    <ListItemButton>*/}
-                        {/*        <Grid xs={8} container*/}
-                        {/*              direction="row"*/}
-                        {/*              justifyContent="flex-start"*/}
-                        {/*              alignItems="center">*/}
-                        {/*            <IconButton color="info">*/}
-                        {/*                <Folder/>*/}
-                        {/*            </IconButton>*/}
-                        {/*            Удостоверяющий лист*/}
-                        {/*        </Grid>*/}
-                        {/*        <Grid xs={2} container*/}
-                        {/*              direction="row"*/}
-                        {/*              justifyContent="center"*/}
-                        {/*              alignItems="center"*/}
-                        {/*              fontSize={'0.8rem'}*/}
-                        {/*        >*/}
-                        {/*            21.07.2022*/}
-                        {/*        </Grid>*/}
-                        {/*        <Grid xs={2} container*/}
-                        {/*              direction="row"*/}
-                        {/*              justifyContent="flex-end"*/}
-                        {/*              alignItems="center">*/}
-                        {/*            <IconButton>*/}
-                        {/*                <MoreVertIcon/>*/}
-                        {/*            </IconButton>*/}
-                        {/*        </Grid>*/}
-                        {/*    </ListItemButton>*/}
-                        {/*</Grid>*/}
+
                         <Grid container spacing={2}>
                             <ListItemButton>
                                 <Grid xs={7} container
@@ -240,11 +211,10 @@ const Index = ({docRevision}) => {
                                       justifyContent="center"
                                       alignItems="center"
                                 >
-                                    <IconButton color="info" onClick={() =>  {
-                                        const response = axios.get(path)
-                                        .then(resp => router.push('/docs/drafts'))
-                                        .catch(e => console.log(e))
-                                    }}>
+                                    <IconButton color="warning" onClick={() => axios.get (certificatePath)
+                                        .then (resp => router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/certificateView'))
+                                        .catch (e => console.log (e))
+                                    }>
                                         <PictureAsPdfIcon/>
                                     </IconButton>
                                 </Grid>
@@ -267,11 +237,11 @@ const Index = ({docRevision}) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({params}) =>{
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
-    const response = await  axios.get('http://localhost:5000/document/revision/' + params.revision)
+    const response = await axios.get ('http://localhost:5000/document/revision/' + params.revision)
     return {
-        props:{
+        props: {
             docRevision: response.data
         }
     }

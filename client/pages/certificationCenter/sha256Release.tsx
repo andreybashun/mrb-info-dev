@@ -106,9 +106,9 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                     }
                 />
             </div>
-            <Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>
-                <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256
-            </Typography>
+            {/*<Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>*/}
+            {/*    <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256*/}
+            {/*</Typography>*/}
             <Box sx={{border: '1px solid #757575', margin: 2, padding: 4, borderRadius: 3}}>
 
                 <ShaReleaseStepWraper activeStep={activeStep}>

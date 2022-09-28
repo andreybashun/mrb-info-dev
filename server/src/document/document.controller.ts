@@ -31,8 +31,9 @@ export class DocumentController {
     }
 
     @Post('/revision')
-    @UseInterceptors (FileInterceptor ('file'))
-    createRevision (@UploadedFile () file, @Body () dto: CreateDocRevisionDto) {
+    @UseInterceptors (
+        FileInterceptor ('file'))
+    createRevision (@UploadedFile () file,  @Body () dto: CreateDocRevisionDto) {
         return this.documentService.createRevision(dto, file);
     }
     @Get('/revision/:id')

@@ -2,15 +2,15 @@ import React from 'react';
 import {GetServerSideProps} from "next";
 import axios from "axios";
 
-const DocViewer=({docRevision}) => {
+const CertificateViewer=({docRevision}) => {
 
-    const  path = 'https://storage.yandexcloud.net/mrb-doc/' + docRevision.key
+    const  path = 'https://storage.yandexcloud.net/mrb-doc/' + docRevision.certificateFile
 
     return (
-            <iframe  src={path} height="760px" width="100%"/>
+        <iframe  src={path} height="760px" width="100%"/>
     )
 }
-export default DocViewer
+export default CertificateViewer
 
 export const getServerSideProps: GetServerSideProps = async ({params}) =>{
 

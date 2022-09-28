@@ -8,6 +8,12 @@ import Divider from "@mui/material/Divider";
 import DocRevisionItem from "./DocRevisionItem";
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
+import ListItemButton from "@mui/material/ListItemButton";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ArticleIcon from "@mui/icons-material/Article";
 
 
 interface DocRevisionListProps{
@@ -78,9 +84,43 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-                    {docRevisions.map(docRevisions =>
-                        <DocRevisionItem key={docRevisions._id} docRevision={docRevisions}/>
-                    )}
+
+                        <Grid container spacing={2}>
+                            <ListItemButton onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>
+                            <Grid xs={11} container
+                                  direction="row"
+                                  justifyContent="flex-start">
+                                <Box sx={{ marginLeft:1}}>
+                                    <ArticleIcon color="info"/>
+                                </Box>
+
+                                <Box sx={{ marginLeft:2}}>
+                                    Карточка документа
+                                </Box>
+                                <Divider/>
+
+                            </Grid>
+                            <Grid xs={1} container
+                                  direction="row"
+                                  justifyContent="flex-end"
+                                  alignItems="center"
+                                  fontSize={'0.75rem'}
+                            >
+                                <Box sx={{}}>
+                                    <IconButton>
+                                        <MoreVertIcon/>
+                                    </IconButton>
+                                </Box>
+
+                            </Grid>
+                            </ListItemButton>
+                        </Grid>
+
+                        {docRevisions.map(docRevisions =>
+                            <DocRevisionItem key={docRevisions._id} docRevision={docRevisions}/>
+                        )}
+
+
                 </Box>
             </List>
         </Stack>
