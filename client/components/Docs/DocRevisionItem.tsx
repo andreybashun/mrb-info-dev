@@ -23,7 +23,6 @@ interface DocRevisionItemProps{
 
 const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
     const  router = useRouter()
-    console.log("Ревизия документа", docRevision)
     return (
         <Grid container spacing={2}>
             <ListItemButton>

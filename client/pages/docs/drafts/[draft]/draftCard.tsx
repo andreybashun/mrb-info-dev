@@ -37,7 +37,7 @@ const DraftCard = (props) => {
                         Редактировать
                     </Button>
                 </Stack>
-                Document data
+                Учетные данные документа
                 <Divider/>
 
 
@@ -53,7 +53,7 @@ const DraftCard = (props) => {
                             Децимальный номер документа
                         </Grid>
                         <Grid item xs={8}  fontSize={12}>
-                            {props.doc._id}
+                            {props.doc.decId}
                         </Grid>
 
 
@@ -75,24 +75,24 @@ const DraftCard = (props) => {
                             Описнаие документа
                         </Grid>
                         <Grid item xs={8}  fontSize={12}>
-                            {props.doc.name}
+                            {props.doc.discription}
                         </Grid>
 
                         <Grid item xs={4} fontSize={12}>
                             Дата создаия
                         </Grid>
                         <Grid item xs={8}  fontSize={12}>
-                            {props.doc.name}
+                            {props.doc.creationDate}
                         </Grid>
 
                         <Grid item xs={4} fontSize={12}>
                             Дата последнего изменения
                         </Grid>
                         <Grid item xs={8}  fontSize={12}>
-                            {props.doc.name}
+                            {props.doc.lastChangeDate}
                         </Grid>
                     </Grid>
-                User data
+                Учетные данные пользователя
                 <Divider/>
 
                 <Grid container spacing={1}  sx={{padding: 1, marginTop:0.5,marginBottom:1}}>
@@ -108,11 +108,11 @@ const DraftCard = (props) => {
                         Организация
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.doc.author}
+                        {props.doc.organization}
                     </Grid>
                 </Grid>
 
-                Aircraft Data
+                Применимость документа
                 <Divider/>
 
                 <Grid container spacing={1}  sx={{padding: 1, marginTop:0.5}}>
@@ -121,20 +121,20 @@ const DraftCard = (props) => {
                         АТА
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.doc.type}
+                        {props.doc.ata}
                     </Grid>
                     <Grid item xs={4} fontSize={12}>
                         Тип воздушного судна
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.doc._id}
+                        {props.doc.aircraftType}
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
                         Тип двигателя
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.doc._id}
+                        {props.doc.engineType}
                     </Grid>
                 </Grid>
 

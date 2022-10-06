@@ -100,6 +100,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                                 <Divider/>
 
                             </Grid>
+
                             <Grid xs={1} container
                                   direction="row"
                                   justifyContent="flex-end"

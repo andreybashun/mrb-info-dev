@@ -22,19 +22,14 @@ import DocDescription from "../../../components/Docs/docDescription";
 const CreateDraft = () => {
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
-
-    const type = useInput ('');
     const name = useInput ('');
-    const author = useInput ('Bashun');
+    const author = useInput ('A.Bashun');
     const discription = useInput ('');
     const decId = useInput ('');
     const lastChangeDate = useInput ('');
-    const organization = useInput ('');
+    const organization = useInput ('ФРС');
     const ata = useInput ('');
-    const aircraftType = useInput ('');
-    const engineType = useInput ('');
     const creationDate = useInput ('');
-
     const router = useRouter ();
 
 
@@ -53,7 +48,7 @@ const CreateDraft = () => {
         setName (event.target.value);
     };
 
-    const [documentType, setType] = React.useState ('');
+    const [type, setType] = React.useState ('');
 
     const handleTypeChange = (event: SelectChangeEvent) => {
         setType (event.target.value);
@@ -69,16 +64,16 @@ const CreateDraft = () => {
         console.log('document status',event.target.value);
     };
 
-    const [aircraft, setAircraft] = React.useState ('');
+    const [aircraftType, setAircraftType] = React.useState ('');
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
-        setAircraft(event.target.value);
+        setAircraftType(event.target.value);
     };
 
-    const [engine, setEngine] = React.useState ('');
+    const [engineType, setEngineType] = React.useState ('');
 
     const handleEngineChange = (event: SelectChangeEvent) => {
-        setEngine(event.target.value);
+        setEngineType(event.target.value);
     };
 
     const action = (
@@ -106,17 +101,17 @@ const CreateDraft = () => {
         } else {
 
             axios.post ('http://localhost:5000/document/', {
-                type: type.value,
+                type: type,
                 name: name.value,
                 author: author.value,
-                status: {status},
+                status: status,
                 discription: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
                 organization: organization.value,
                 ata: ata.value,
-                aircraftType: aircraftType.value,
-                engineType: engineType.value,
+                aircraftType: aircraftType,
+                engineType: engineType,
                 creationDate:  date.toLocaleDateString (),
             })
                 .then (resp => {
@@ -139,18 +134,17 @@ const CreateDraft = () => {
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
                             <Select
-                                {...type}
+                                onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
-                                value={documentType}
+                                value={type}
                                 label="Тип документа"
-                                onChange={handleTypeChange}
                             >
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>MSG-3</MenuItem>\
-                                <MenuItem value={10}>Tech-doc</MenuItem>
+                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>\
+                                <MenuItem value={"Tech-doc"}>Tech-doc</MenuItem>
                             </Select>
                         </FormControl>
 
@@ -174,7 +168,19 @@ const CreateDraft = () => {
                             />
                         </FormControl>
 
-                        <DocDescription/>
+                        {/*<DocDescription/>*/}
+
+                        <Box  sx={{p:1, width:'95ch'}}>
+                            <TextField
+                                {...discription}
+                                id="task_revision_name"
+                                label="описание документа"
+                                multiline
+                                fullWidth
+                                rows={3}
+                                sx={{marginRight:1, display:'flex'}}
+                            />
+                        </Box>
 
                         <FormControl sx={{paddingBottom: 2, paddingTop: 2,width: '25ch'}}>
                             <TextField
@@ -240,7 +246,7 @@ const CreateDraft = () => {
                                 label={"организация"}
                                 variant={"outlined"}
                                 size={"small"}
-                                value={"ФРС"}
+                                value={"FRS"}
                                // disabled={true}
                             />
                         </FormControl>
@@ -251,35 +257,34 @@ const CreateDraft = () => {
                         <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип самолета</InputLabel>
                             <Select
-                                {...aircraftType}
                                 labelId="select-small"
                                 id="select-small"
                                 label="Тип самолета"
                                 onChange={handleAircraftChange}
-                                value={aircraft}
+                                value={aircraftType}
                             >
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>RRJ</MenuItem>\
-                                <MenuItem value={10}>RRJ-NEW</MenuItem>
+                                <MenuItem value={"RRJ"}>RRJ</MenuItem>\
+                                <MenuItem value={"RRJ-NEW"}>RRJ-NEW</MenuItem>
                             </Select>
                         </FormControl>
                         <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип двигателя</InputLabel>
                             <Select
-                                {...engineType}
+                                onChange={handleEngineChange}
                                 labelId="select-small"
                                 id="select-small"
-                                value={engine}
-                                label="Тип самолета"
-                                onChange={handleEngineChange}
+                                label="Тип двигателя"
+                                value={engineType}
+
                             >
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>PD-8</MenuItem>\
-                                <MenuItem value={10}>CFM56</MenuItem>
+                                <MenuItem value={"PD-8"}>PD-8</MenuItem>\
+                                <MenuItem value={"CFM56"}>CFM56</MenuItem>
                             </Select>
                         </FormControl>
                         <FormControl fullWidth sx={{p: 0}} size="small">

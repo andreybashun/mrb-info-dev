@@ -8,7 +8,6 @@ const DocDescription : React.FC= () => {
 
     return (
         <Box  sx={{p:1, width:'95ch'}}>
-
             <TextField
                 id="task_revision_name"
                 label="описание документа"
@@ -17,7 +16,6 @@ const DocDescription : React.FC= () => {
                 rows={3}
                 sx={{marginRight:1, display:'flex'}}
             />
-
         </Box>
     );
 };
