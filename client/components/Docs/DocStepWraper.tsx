@@ -10,7 +10,7 @@ interface StepWrapperProps{
 }
 
 const steps= [
-    'Учетные данные', 'Описание документа'];
+    'Учетные данные документа', 'Персональные данные автора', 'Применяемость документа'];
 
 const DocStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     return (

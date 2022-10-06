@@ -21,23 +21,32 @@ export class DocumentService {
     ) {
     }
 
+    // создание нового документа
+
     async create (dto: CreateDocDto): Promise<Doc> {
+        console.log(dto)
         return await this.docModel.create ({...dto});
     }
+
+    // получние документа
 
     async getOne (id: ObjectId): Promise<Doc> {
         return this.docModel.findById (id).populate ('docRevisions');
     }
-
+    // получение всех документов
 
     async getAll (): Promise<Doc[]> {
         return this.docModel.find ();
     }
 
+    // удаление документа
+
     async delete (id: ObjectId): Promise<ObjectId> {
         const doc = await this.docModel.findByIdAndDelete (id)
         return doc._id
     }
+
+    // удаление ревизии
 
     async deleteRevision (id: ObjectId): Promise<ObjectId> {
 
@@ -56,6 +65,8 @@ export class DocumentService {
     //     await doc.save ();
     //     return docRevision;
     // }
+
+    //создание ревизии
 
     async createRevision (dto: CreateDocRevisionDto, key): Promise<DocRevision> {
         const cert = await new jsPDF();
@@ -84,10 +95,14 @@ export class DocumentService {
         return docRevision;
     }
 
+    // получение файла из s3
+
     async getFile (key) {
         const filePath = await this.s3Servise.getFile (key)
         return filePath
     }
+
+    //получение ревизии
 
     async getRevision (id: ObjectId): Promise<DocRevision> {
         return this.docRevisionModel.findById (id);

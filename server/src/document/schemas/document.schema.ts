@@ -8,26 +8,54 @@ export type DocDocument = Doc & Document;
 @Schema ()
 export class Doc {
 
-    @Prop ()
-    name: string;
+    // document data
 
     @Prop ()
-    type: string;
+    name: string;     // наименование документа
 
     @Prop ()
-    author: string;
+    type: string;     // тип документа
+
 
     @Prop ()
-    status: string;
+    status: string;   // статус документа
+
+    // @Prop ()
+    // key: string;      // ключ хранения в s3
+
+    @Prop()
+    decId: string;     // децимальный ID (партийный номер)
+
+    @Prop()
+    creationDate: string; // дата создания
 
     @Prop ()
-    key: string;
+    lastChangeDate: string; // дата последнего изменения
 
     @Prop ()
-    lastChangeDate: string;
+    discription: string;   // описание документа
 
     @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'}]})
-    docRevisions: DocRevision[];
+    docRevisions: DocRevision[];                                                            // ревизии документа
+
+    // user data
+
+    @Prop()
+    organization:string;  // организация автора документа
+    @Prop ()
+    author: string;   // автор документа
+
+
+    // aircraft data
+
+    @Prop()
+    ata: string;   //ATA chapter
+
+    @Prop()
+    aircraftType: string;   // тип воздушного судна
+
+    @Prop()
+    engineType:string;   // тип воздушного судна
 }
 
 export const DocSchema = SchemaFactory.createForClass (Doc);

@@ -65,9 +65,11 @@ const DocList: React.FC<DocListProps> = ({docs}) => {
 
                 <Box p={2}>
                     {docs.map (docs => {
-                            if (docs.author === 'Bashun') {
+                            // if (docs.author === 'A.Bashun')
+                            // {
+                            //     return (<DocItem key={docs._id} doc={docs}/>)
+                            // }
                                 return (<DocItem key={docs._id} doc={docs}/>)
-                            }
                         }
                     )}
                 </Box>
