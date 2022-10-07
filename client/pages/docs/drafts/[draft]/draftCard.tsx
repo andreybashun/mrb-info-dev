@@ -32,7 +32,7 @@ const DraftCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/' + draft + '/createRevision/')}
+                        router.push ('/docs/drafts/' + draft + '/editDraft/')}
                     >
                         Редактировать
                     </Button>

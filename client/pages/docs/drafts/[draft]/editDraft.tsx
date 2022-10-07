@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../layouts/MainLayout";
-import Credentials from "../../../components/Tasks/Credentials";
-import FileUpload from "../../../components/FileUpload";
-import {useInput} from "../../../hooks/useInput";
+import MainLayout from "../../../../layouts/MainLayout";
+import {useInput} from "../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -13,23 +11,25 @@ import {useRouter} from "next/router";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
-import DocStepWrapper from "../../../components/Docs/DocStepWraper";
+import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
-import DocDescription from "../../../components/Docs/docDescription";
+import {IDoc} from "../../../../types/doc";
+import {GetServerSideProps} from "next";
 
 
-const CreateDraft = () => {
+
+const EditDraft = (props) => {
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
-    const name = useInput ('');
+    const name = useInput (props.doc.name);
     const author = useInput ('A.Bashun');
-    const discription = useInput ('');
-    const decId = useInput ('');
-    const lastChangeDate = useInput ('');
+    const discription = useInput (props.doc.discription);
+    const decId = useInput (props.doc.decId);
+    const lastChangeDate = useInput (props.doc.lastChangeDate);
     const organization = useInput ('ФРС');
-    const ata = useInput ('');
-    const creationDate = useInput ('');
+    const ata = useInput (props.doc.ata);
+    const creationDate = props.doc.creationDate;
     const router = useRouter ();
 
 
@@ -48,29 +48,25 @@ const CreateDraft = () => {
         setName (event.target.value);
     };
 
-    const [type, setType] = React.useState ('');
+    const [type, setType] = React.useState (props.doc.type);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
         setType (event.target.value);
     };
 
-    const [status, setStatus] = React.useState ('');
+    const [status, setStatus] = React.useState (props.doc.status);
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log('document status',event.target.value);
-
-          setStatus (event.target.value);
-
-        console.log('document status',event.target.value);
+        setStatus (event.target.value);
     };
 
-    const [aircraftType, setAircraftType] = React.useState ('');
+    const [aircraftType, setAircraftType] = React.useState (props.doc.aircraftType);
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
         setAircraftType(event.target.value);
     };
 
-    const [engineType, setEngineType] = React.useState ('');
+    const [engineType, setEngineType] = React.useState (props.doc.engineType);
 
     const handleEngineChange = (event: SelectChangeEvent) => {
         setEngineType(event.target.value);
@@ -100,7 +96,7 @@ const CreateDraft = () => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post ('http://localhost:5000/document/', {
+            axios.put ('http://localhost:5000/document/' + props.document, {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -112,7 +108,7 @@ const CreateDraft = () => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  date.toLocaleDateString (),
+                creationDate:  creationDate,
             })
                 .then (resp => {
                     setOpen (true)
@@ -246,11 +242,11 @@ const CreateDraft = () => {
                                 variant={"outlined"}
                                 size={"small"}
                                 value={"FRS"}
-                               // disabled={true}
+                                // disabled={true}
                             />
                         </FormControl>
                     </Box>
-                    }
+                }
                 {activeStep === 2 &&
                     <Box sx={{p:1, width:'800px'}}>
                         <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
@@ -316,4 +312,14 @@ const CreateDraft = () => {
     );
 };
 
-export default CreateDraft;
+export default EditDraft;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/document/' + params.draft);
+    return {
+        props: {
+            doc: response.data,
+            document: params.draft
+        }
+    }
+}

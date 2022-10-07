@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {DocumentService} from "./document.service";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {CreateDocDto} from "./dto/create-doc.dto";
@@ -49,6 +49,11 @@ export class DocumentController {
     @Delete(':id/:id')
     deleteRevision (@Param('id') id:ObjectId) {
         return this.documentService.deleteRevision(id);
+    }
+
+    @Put(':id')
+    editRevision(@Param('id') id:ObjectId, @Body () dto: CreateDocDto){
+        return this.documentService.editRevision(id, dto);
     }
 
 

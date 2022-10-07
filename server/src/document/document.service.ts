@@ -24,7 +24,6 @@ export class DocumentService {
     // создание нового документа
 
     async create (dto: CreateDocDto): Promise<Doc> {
-        console.log(dto)
         return await this.docModel.create ({...dto});
     }
 
@@ -106,6 +105,11 @@ export class DocumentService {
 
     async getRevision (id: ObjectId): Promise<DocRevision> {
         return this.docRevisionModel.findById (id);
+    }
+
+    async editRevision (id: ObjectId, dto: CreateDocDto){
+        const doc = await this.docModel.findOneAndUpdate(id, {...dto})
+        return doc
     }
 }
 
