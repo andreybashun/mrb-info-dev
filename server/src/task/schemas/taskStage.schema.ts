@@ -1,14 +1,14 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
+import {Task} from "./task.schema";
 import {TaskStageRevision} from "./taskStageRevision.schema";
-import {TaskStage} from "./taskStage.schema";
 
 
-export type TaskDocument = Task & Document;
+export type TaskStageDocument = TaskStage & Document;
 
 @Schema ()
-export class Task {
+export class TaskStage {
     // document data
 
     @Prop ()
@@ -36,14 +36,16 @@ export class Task {
     @Prop ()
     discription: string;   // описание документа
 
-    @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'TaskStage'}]})
-    taskStages: TaskStage[];
+    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
+    task: Task;
+
+    @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'TaskStageRevision'}]})
+    taskStageRevisions: TaskStageRevision[];
 
     // user data
 
     @Prop()
     organization:string;  // организация автора документа
-
     @Prop ()
     author: string;   // автор документа
 
@@ -58,6 +60,7 @@ export class Task {
 
     @Prop()
     engineType:string;   // тип воздушного судна
+
 }
 
-export const TaskSchema = SchemaFactory.createForClass (Task);
+export const TaskStageSchema = SchemaFactory.createForClass (TaskStage);

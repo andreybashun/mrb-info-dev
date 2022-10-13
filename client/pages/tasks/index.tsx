@@ -13,7 +13,8 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
 
-const Index: React.FC = () => {
+
+const Index = () => {
     const router = useRouter ()
     return (
         <MainLayout>
@@ -157,3 +158,4 @@ const Index: React.FC = () => {
 };
 
 export default Index;
+

@@ -25,8 +25,8 @@ const Index: React.FC = () => {
 
             }}>
                 <Stack direction="row" spacing={2}>
-                    <Button size="small" variant="contained" onClick={() =>
-                        router.push ('/tasks/outbox/task/revisions/create')}
+                    <Button size="small" variant="contained"
+                            // onClick={() => router.push ('/tasks/outbox/task/revisions/create')}
                             startIcon={<CreateNewFolderOutlinedIcon/>}>
                         Редактировать
                     </Button>

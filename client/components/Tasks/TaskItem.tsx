@@ -6,13 +6,14 @@ import IconButton from "@mui/material/IconButton";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemButton from "@mui/material/ListItemButton";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
-interface TaskItemProps {
-    tasks: ITasks;
-}
 
-const TaskItem: React.FC<TaskItemProps> = ({tasks}) => {
+
+const TaskItem= ({task}) => {
+    const router = useRouter();
+    console.log('/tasks/outbox/' + task._id)
+
     return (
         <Grid container spacing={2}>
             <ListItemButton>
@@ -20,22 +21,22 @@ const TaskItem: React.FC<TaskItemProps> = ({tasks}) => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="center">
-                <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/task')}>
+                <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + task._id)}>
                     <AssignmentIcon/>
                 </IconButton>
-                {tasks.name}
+                {task.name}
             </Grid>
             <Grid xs={4}  container
                   direction="row"
                   justifyContent="center"
                   alignItems="center">
-                {tasks.author}
+                {task.author}
             </Grid>
             <Grid xs={2} container
                   direction="row"
                   justifyContent="center"
                   alignItems="center">
-                {tasks.lastchangedate}
+                {task.lastChangeDate}
             </Grid>
             <Grid xs={1} container
                   direction="row"

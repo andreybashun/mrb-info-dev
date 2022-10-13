@@ -1,5 +1,4 @@
 import React from 'react';
-import {ITaskRevision} from "../../types/task";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddTaskIcon from "@mui/icons-material/AddTask";
@@ -7,14 +6,12 @@ import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import TaskRevisionItem from "./TaskRevisionItem";
+import TaskStageItem from "./TaskStageItem";
 import AddCardIcon from '@mui/icons-material/AddCard';
 
-interface TaskRevisionListProps{
-    taskRevisions:ITaskRevision[]
-}
 
-const TaskRevisionList: React.FC<TaskRevisionListProps> = ({taskRevisions}) => {
+
+const TaskStageList = ({taskStage}) => {
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
@@ -70,8 +67,8 @@ const TaskRevisionList: React.FC<TaskRevisionListProps> = ({taskRevisions}) => {
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-                    {taskRevisions.map(taskRevisions =>
-                        <TaskRevisionItem key={taskRevisions._id} taskRevision={taskRevisions}/>
+                    {taskStage.map(taskStage =>
+                        <TaskStageItem key={taskStage._id} taskStage={taskStage}/>
                     )}
                 </Box>
             </List>
@@ -79,4 +76,4 @@ const TaskRevisionList: React.FC<TaskRevisionListProps> = ({taskRevisions}) => {
     );
 };
 
-export default TaskRevisionList;
+export default TaskStageList;

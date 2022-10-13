@@ -63,7 +63,7 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {docRevision.duedate}
+
                 </Grid>
                 <Grid xs={1} container
                       direction="row"

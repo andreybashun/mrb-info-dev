@@ -3,12 +3,14 @@ import {Document} from 'mongoose';
 import * as mongoose from "mongoose";
 import {Task} from "./task.schema";
 import {DocRevision} from "../../document/schemas/docrevision.schema";
+import {TaskService} from "../task.service";
+import {TaskStage} from "./taskStage.schema";
 
 
-export type TaskRevisionDocument = TaskRevision & Document;
+export type TaskStageRevisionDocument = TaskStageRevision & Document;
 
 @Schema ()
-export class TaskRevision {
+export class TaskStageRevision {
     @Prop ()
     name: string;
 
@@ -27,9 +29,15 @@ export class TaskRevision {
     @Prop ()
     revNum: number;
 
+    @Prop ()
+    taskStageId: string;
 
-    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
-    task: Task;
+
+    // @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
+    // task: Task;
+
+    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'TaskStage'})
+    taskStage: TaskStage;
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'})
     docRevisionInherit: DocRevision;
@@ -42,4 +50,4 @@ export class TaskRevision {
 
 }
 
-export const TaskRevisionSchema = SchemaFactory.createForClass (TaskRevision);
+export const TaskStageRevisionSchema = SchemaFactory.createForClass (TaskStageRevision);

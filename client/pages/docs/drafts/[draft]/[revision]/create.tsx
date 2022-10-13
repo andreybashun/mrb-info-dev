@@ -24,7 +24,7 @@ const Create: React.FC = () => {
                 {activeStep === 0 && <Credentials/>}
                 {activeStep === 1 && <TaskDescription/>}
                 {activeStep === 2 &&
-                    <FileUpload setFile={setFile}>
+                    <FileUpload next={next} setFile={setFile}>
                         <Button>Загрузите</Button>
                     </FileUpload>}
 

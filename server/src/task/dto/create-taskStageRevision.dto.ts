@@ -1,11 +1,11 @@
 import {ObjectId} from "mongoose";
 
-export  class CreateTaskRevisionDto{
+export  class CreateTaskStageRevisionDto{
     readonly name;
     readonly type;
     readonly author;
     readonly status;
-    readonly taskId: ObjectId;
+    readonly taskStageId: ObjectId;
     readonly docRevForSignId: ObjectId;
     readonly docRevForAttachId: ObjectId;
 }

@@ -1,4 +1,27 @@
-export interface ITaskRevision{
+export  interface ITasks{
+    _id: string;
+    name: string;
+    type: string;
+    author: string;
+    status: string;
+    key: string;
+    taskStages: ITaskStage[];
+    lastchangedate:string;
+}
+
+export interface ITaskStage{
+    _id: string;
+    name: string;
+    type: string;
+    author: string;
+    status: string;
+    key: string;
+    taskStageRevisions: ITaskStageRevision[];
+    lastchangedate:string;
+}
+
+
+export interface ITaskStageRevision{
     _id: string;
     name: string;
     type: string;
@@ -16,13 +39,5 @@ export interface ITaskRevision{
     // docRevForAttachId: DocRevision[];
 }
 
-export  interface ITasks{
-    _id: string;
-    name: string;
-    type: string;
-    author: string;
-    status: string;
-    key: string;
-    taskRevisions: ITaskRevision[];
-    lastchangedate:string;
-}
+
+

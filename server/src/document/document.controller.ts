@@ -25,6 +25,8 @@ export class DocumentController {
     getAll () {
         return this.documentService.getAll ();
     }
+
+
     @Delete(':id')
     delete (@Param('id') id:ObjectId) {
         return this.documentService.delete(id);
@@ -36,6 +38,8 @@ export class DocumentController {
     createRevision (@UploadedFile () file,  @Body () dto: CreateDocRevisionDto) {
         return this.documentService.createRevision(dto, file);
     }
+
+
     @Get('/revision/:id')
     getRevision(@Param('id') id:ObjectId){
         return this.documentService.getRevision(id);

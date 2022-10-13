@@ -1,4 +1,4 @@
-export class CreateTaskDto{
+export class CreateTaskStageDto {
     readonly name;
     readonly type;
     readonly author;
@@ -11,4 +11,5 @@ export class CreateTaskDto{
     readonly aircraftType;
     readonly engineType;
     readonly creationDate;
+    readonly taskId
 }

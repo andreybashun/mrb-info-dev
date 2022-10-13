@@ -9,11 +9,8 @@ import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddTaskIcon from '@mui/icons-material/AddTask';
 
-interface TaskListProps {
-    tasks: ITasks[]
-}
 
-const TaskList: React.FC<TaskListProps> = ({tasks}) => {
+const TaskList= ({tasks}) => {
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
@@ -62,9 +59,7 @@ const TaskList: React.FC<TaskListProps> = ({tasks}) => {
 
                 <Box p={2}>
                     {tasks.map (tasks => {
-                            if (tasks.author === 'Bashun') {
-                                return (<TaskItem key={tasks._id} tasks={tasks}/>)
-                            }
+                                return(<TaskItem key={tasks._id} task={tasks}/>)
                         }
                     )}
                 </Box>
