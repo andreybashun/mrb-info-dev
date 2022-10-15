@@ -4,10 +4,10 @@ import TaskStageList from "../../../../components/Tasks/TaskStageList";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 
-const Index = ({taskStage}) => {
+const Index = ({taskStage, taskId}) => {
     return (
         <MainLayout>
-            <TaskStageList taskStage={taskStage}/>
+            <TaskStageList taskStage={taskStage} taskId={taskId}/>
         </MainLayout>
     );
 };
@@ -22,6 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     return {
         props: {
             taskStage: response.data.taskStages,
+            taskId: params.task
         }
     }
 }

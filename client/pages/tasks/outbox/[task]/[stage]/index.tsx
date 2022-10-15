@@ -16,184 +16,28 @@ import GradingIcon from '@mui/icons-material/Grading';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import TaskStageRevisionList from "../../../../../components/Tasks/TaskStageRevisionList";
 
-const Index: React.FC = () => {
+const Index = ({taskStageRevision, taskId}) => {
     return (
         <MainLayout>
-            <Stack direction={"column"} spacing={2} sx={{
-                padding: 5,
-
-            }}>
-                <Stack direction="row" spacing={2}>
-                    <Button size="small" variant="contained"
-                            // onClick={() => router.push ('/tasks/outbox/task/revisions/create')}
-                            startIcon={<CreateNewFolderOutlinedIcon/>}>
-                        Редактировать
-                    </Button>
-                    <Button size="small" variant="contained" startIcon={<StopIcon/>}>
-                        Отозвать
-                    </Button>
-                    <Button size="small" variant="contained" startIcon={<PlayArrowIcon/>}>
-                        Запустить
-                    </Button>
-                </Stack>
-                <List sx={{padding: 1, border: '1px  solid grey', borderRadius: 2}}>
-                    <Grid container spacing={2}>
-                        <Grid xs={8} container
-                              direction="row"
-                              justifyContent="flex-start"
-                              alignItems="center"
-                              fontSize={'0.75rem'}>
-                            <Box sx={{marginTop: 2, marginLeft: 12}}>
-                                Имя
-                            </Box>
-
-                        </Grid>
-                        <Grid xs={2} container
-                              direction="row"
-                              justifyContent="center"
-                              alignItems="center"
-                              fontSize={'0.75rem'}
-                        >
-                            <Box sx={{marginTop: 2}}>
-                                Дата изменения
-                            </Box>
-
-                        </Grid>
-                        <Grid xs={2} container
-                              direction="row"
-                              justifyContent="flex-end"
-                              alignItems="center">
-                        </Grid>
-                    </Grid>
-                    <Divider/>
-                    <Box p={2}>
-                        <Grid container spacing={2}
-                              justifyContent="space-between"
-                              alignItems="center">
-
-                            <ListItemButton>
-                                <Grid xs={8} container
-                                      direction="row"
-                                      justifyContent="flex-start"
-                                      alignItems="center"
-                                >
-                                    <IconButton color="info">
-                                        <SummarizeIcon/>
-                                    </IconButton>
-                                    Карточка задачи
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      fontSize={'0.8rem'}
-                                >
-                                    21.07.2022
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="flex-end"
-                                      alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </ListItemButton>
-                        </Grid>
-                        <Grid container spacing={2}>
-
-                            <ListItemButton>
-                                <Grid xs={8} container
-                                      direction="row"
-                                      justifyContent="flex-start"
-                                      alignItems="center">
-                                    <IconButton color="info" onClick={() => router.push ('/tasks/outbox')}>
-                                        <Folder/>
-                                    </IconButton>
-                                    Документы на подпись
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      fontSize={'0.8rem'}
-                                >
-                                    21.07.2022
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="flex-end"
-                                      alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </ListItemButton>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <ListItemButton>
-                                <Grid xs={8} container
-                                      direction="row"
-                                      justifyContent="flex-start"
-                                      alignItems="center">
-                                    <IconButton color="info">
-                                        <Folder/>
-                                    </IconButton>
-                                    Сопроводительные документы
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      fontSize={'0.8rem'}
-                                >
-                                    21.07.2022
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="flex-end"
-                                      alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </ListItemButton>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <ListItemButton>
-                                <Grid xs={8} container
-                                      direction="row"
-                                      justifyContent="flex-start"
-                                      alignItems="center">
-                                    <IconButton color="info">
-                                        <GradingIcon/>
-                                    </IconButton>
-                                    Удостоверяющий лист
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      fontSize={'0.8rem'}
-                                >
-                                    21.07.2022
-                                </Grid>
-                                <Grid xs={2} container
-                                      direction="row"
-                                      justifyContent="flex-end"
-                                      alignItems="center">
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </ListItemButton>
-                        </Grid>
-                    </Box>
-                </List>
-            </Stack>
+            <TaskStageRevisionList taskStageRevision={taskStageRevision} taskId={taskId}/>
         </MainLayout>
     );
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+
+    const response = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
+    console.log('данные таски',response.data.taskStages)
+    return {
+        props: {
+            taskStageRevision: response.data.taskStageRevisions,
+            taskId: params.task
+        }
+    }
+}

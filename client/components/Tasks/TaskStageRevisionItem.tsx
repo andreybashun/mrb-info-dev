@@ -1,19 +1,16 @@
 import React from 'react';
+import {useRouter} from "next/router";
 import Grid from "@mui/material/Grid";
 import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
-import {router} from "next/client";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Divider from "@mui/material/Divider";
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import {useRouter} from "next/router";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import ListItemIcon from "@mui/material/ListItemIcon";
 
-
-
-
-const TaskStageItem = ({taskStage, taskId}) => {
+const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -22,25 +19,28 @@ const TaskStageItem = ({taskStage, taskId}) => {
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-
-                        <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + taskId + '/' + taskStage._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + taskId + '/'+ taskStageRevision.taskStageId)}>
                             <AssignmentIcon/>
                         </IconButton>
-
-                    {taskStage.name}
+                    {taskStageRevision.name}
                 </Grid>
-                <Grid xs={3}  container
+                <Grid xs={2}  container
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStage.author}
+                    {taskStageRevision.author}
                 </Grid>
-
-                <Grid xs={3} container
+                <Grid xs={2} container
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStage.creationDate}
+                    {taskStageRevision.signer}
+                </Grid>
+                <Grid xs={2} container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center">
+                    {taskStageRevision.duedate}
                 </Grid>
                 <Grid xs={1} container
                       direction="row"
@@ -56,4 +56,4 @@ const TaskStageItem = ({taskStage, taskId}) => {
     );
 };
 
-export default TaskStageItem;
+export default TaskStageRevisionItem;
