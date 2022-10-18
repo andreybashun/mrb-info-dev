@@ -3,10 +3,22 @@ import MainLayout from "../../../../layouts/MainLayout";
 import TaskStageList from "../../../../components/Tasks/TaskStageList";
 import {GetServerSideProps} from "next";
 import axios from "axios";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 const Index = ({taskStage, taskId}) => {
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'tasks', to: 'мои задачи'},
+                        {from: 'outbox', to: 'исходящие задачи'},
+                        {from: taskId, to: 'этапы задачи'},
+                    ]
+                    }
+                />
+            </div>
             <TaskStageList taskStage={taskStage} taskId={taskId}/>
         </MainLayout>
     );

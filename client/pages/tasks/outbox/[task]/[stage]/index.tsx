@@ -19,10 +19,23 @@ import StopIcon from '@mui/icons-material/Stop';
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import TaskStageRevisionList from "../../../../../components/Tasks/TaskStageRevisionList";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
-const Index = ({taskStageRevision, taskId}) => {
+const Index = ({taskStageRevision, taskId, stageId}) => {
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'tasks', to: 'мои задачи'},
+                        {from: 'outbox', to: 'исходящие задачи'},
+                        {from: taskId, to: 'этапы задачи'},
+                        {from: stageId, to: 'ревизии этапа'},
+                    ]
+                    }
+                />
+            </div>
             <TaskStageRevisionList taskStageRevision={taskStageRevision} taskId={taskId}/>
         </MainLayout>
     );
@@ -37,7 +50,8 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     return {
         props: {
             taskStageRevision: response.data.taskStageRevisions,
-            taskId: params.task
+            taskId: params.task,
+            stageId: params.stage
         }
     }
 }

@@ -29,7 +29,7 @@ const TaskStageList = ({taskStage, taskId}) => {
                           alignItems="center"
                           fontSize={'0.75rem'}>
                         <Box sx={{marginTop:2, marginLeft:8}}>
-                            Наименование стадии
+                            Наименование этапа
                         </Box>
                         <Divider/>
 

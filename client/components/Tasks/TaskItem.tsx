@@ -7,6 +7,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemButton from "@mui/material/ListItemButton";
 import {useRouter} from "next/router";
+import TaskOptionMenu from "./TaskOptionMenu";
 
 
 
@@ -42,9 +43,9 @@ const TaskItem= ({task}) => {
                   direction="row"
                   justifyContent="flex-end"
                   alignItems="center">
-                <IconButton>
-                    <MoreVertIcon/>
-                </IconButton>
+
+                    <TaskOptionMenu task={task}/>
+
             </Grid>
             <Divider/>
                 </ListItemButton>

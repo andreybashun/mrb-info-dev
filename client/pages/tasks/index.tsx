@@ -12,18 +12,29 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 const Index = () => {
     const router = useRouter ()
     return (
         <MainLayout>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'tasks', to: 'мои задачи'},
+                        {from: 'drafts', to: 'проекты'},
+                    ]
+                    }
+                />
+            </div>
             <Stack direction={"column"} spacing={2} sx={{
                 padding: 5,
 
             }}>
                 <Stack direction="row" spacing={2}>
-                    <Button size="small" variant="contained" startIcon={<CreateNewFolderOutlinedIcon/>}>
+                    <Button size="small" variant="contained" >
                         Создать каталог
                     </Button>
                 </Stack>
