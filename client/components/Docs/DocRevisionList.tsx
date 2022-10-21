@@ -31,12 +31,28 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
-            <Stack direction="row" spacing={2}>
-                <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/docs/drafts/' + draft + '/createRevision/')}
-                >
-                    Создать ревизию
+            <Stack direction="row"  justifyContent={"space-between"}>
+
+                    <Button size="small" variant="contained" onClick={() =>
+                        router.push ('/docs/drafts/' + draft + '/createRevision/')}
+                    >
+                        Создать ревизию
+                    </Button>
+
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>
+                    Карточка документа
                 </Button>
+
+
+
+                    {/*<ListItemButton onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>*/}
+                    {/*    <ArticleIcon color="info"/>*/}
+                    {/*    Карточка документа*/}
+                    {/*    <Divider/>*/}
+                    {/*</ListItemButton>*/}
+
+
+
             </Stack>
             <List  sx={{padding:1, border: '1px  solid grey', borderRadius: 2}}>
                 <Grid container spacing={2}>
@@ -85,37 +101,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                 <Divider/>
                 <Box p={2}>
 
-                        <Grid container spacing={2}>
-                            <ListItemButton onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>
-                            <Grid xs={11} container
-                                  direction="row"
-                                  justifyContent="flex-start">
-                                <Box sx={{ marginLeft:1}}>
-                                    <ArticleIcon color="info"/>
-                                </Box>
 
-                                <Box sx={{ marginLeft:2}}>
-                                    Карточка документа
-                                </Box>
-                                <Divider/>
-
-                            </Grid>
-
-                            <Grid xs={1} container
-                                  direction="row"
-                                  justifyContent="flex-end"
-                                  alignItems="center"
-                                  fontSize={'0.75rem'}
-                            >
-                                <Box sx={{}}>
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Box>
-
-                            </Grid>
-                            </ListItemButton>
-                        </Grid>
 
                         {docRevisions.map(docRevisions =>
                             <DocRevisionItem key={docRevisions._id} docRevision={docRevisions}/>

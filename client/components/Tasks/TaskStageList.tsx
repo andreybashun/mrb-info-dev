@@ -8,17 +8,24 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TaskStageItem from "./TaskStageItem";
 import AddCardIcon from '@mui/icons-material/AddCard';
+import ArticleIcon from "@mui/icons-material/Article";
+import {useRouter} from "next/router";
 
 
 
 const TaskStageList = ({taskStage, taskId}) => {
+    const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
-            <Stack direction="row" spacing={2}>
-                <Button size="small" variant="contained">
+            <Stack direction="row"  justifyContent={"space-between"}>
+                <Button size="small" variant="contained"onClick={() =>
+                    router.push ('/tasks/outbox/' + taskId + '/createStage')}>
                     Создать этап
+                </Button>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/tasks/outbox/' + taskId + '/taskCard')}>
+                    Карточка задачи
                 </Button>
             </Stack>
             <List  sx={{padding:1, border: '1px  solid grey', borderRadius: 2}}>

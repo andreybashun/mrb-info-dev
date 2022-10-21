@@ -24,20 +24,35 @@ export class TaskStageRevision {
     status: string;
 
     @Prop ()
-    key: string;
+    readonly discription: string;
 
     @Prop ()
-    revNum: number;
+    readonly decId: string;
 
     @Prop ()
-    taskStageId: string;
+    readonly lastChangeDate: string;
+
+    @Prop ()
+    readonly organization: string;
+
+    @Prop ()
+    readonly ata: string;
+
+    @Prop ()
+    readonly aircraftType: string;
+
+    @Prop ()
+    readonly engineType: string;
+
+    @Prop ()
+    readonly creationDate: string;
 
 
-    // @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
-    // task: Task;
+    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
+    taskId: Task;
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'TaskStage'})
-    taskStage: TaskStage;
+    taskStageId: TaskStage;
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'})
     docRevisionInherit: DocRevision;

@@ -24,7 +24,7 @@ interface DocItemProps {
 const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState(null)
-    const  type = useInput(doc.type)
+    const  type = useInput('')
     const  name = useInput('')
     const  author = useInput('')
     const status = useInput('')

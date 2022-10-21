@@ -36,7 +36,7 @@ const Index = ({taskStageRevision, taskId, stageId}) => {
                     }
                 />
             </div>
-            <TaskStageRevisionList taskStageRevision={taskStageRevision} taskId={taskId}/>
+            <TaskStageRevisionList taskStageRevision={taskStageRevision} taskId={taskId} stageId={stageId}/>
         </MainLayout>
     );
 };

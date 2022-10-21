@@ -8,15 +8,18 @@ import Divider from "@mui/material/Divider";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import {useRouter} from "next/router";
 
 
 const TaskList= ({tasks}) => {
+    const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
             <Stack direction="row" spacing={2}>
-                <Button size="small" variant="contained" startIcon={<AddTaskIcon/>}>
+                <Button size="small" variant="contained" onClick={() =>
+                    router.push ('/tasks/outbox/createTask')}>
                     Создать задачу
                 </Button>
             </Stack>

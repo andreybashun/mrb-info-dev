@@ -37,7 +37,7 @@ export class TaskStage {
     discription: string;   // описание документа
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
-    task: Task;
+    taskId: Task;
 
     @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'TaskStageRevision'}]})
     taskStageRevisions: TaskStageRevision[];

@@ -7,15 +7,23 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TaskStageRevisionItem from "./TaskStageRevisionItem";
+import ArticleIcon from "@mui/icons-material/Article";
+import {useRouter} from "next/router";
 
-const TaskStageRevisionList = ({taskStageRevision, taskId}) => {
+const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
+    const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
-            <Stack direction="row" spacing={2}>
-                <Button size="small" variant="contained" >
+            <Stack direction="row" justifyContent={"space-between"}>
+                <Button size="small" variant="contained" onClick={() =>
+                    router.push ('/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision', taskId, stageId)}>
                     Создать ревизию
+                </Button>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
+                        onClick={()=> router.push('/tasks/outbox/' + taskId + '/taskCard')}>
+                    Карточка этапа
                 </Button>
             </Stack>
             <List  sx={{padding:1, border: '1px  solid grey', borderRadius: 2}}>
