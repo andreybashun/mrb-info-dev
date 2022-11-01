@@ -17,11 +17,11 @@ export  class CreateTaskStageRevisionDto{
 
 
 
-    readonly taskStageId: ObjectId;
-    readonly taskId: ObjectId;
+    readonly taskStageId;
+    readonly taskId;
 
-
-    readonly docRevForSignId: ObjectId;
-    readonly docRevForAttachId: ObjectId;
-    readonly docRevisionInherit: ObjectId;
+    readonly docForSignId;
+    readonly docRevForSignId;
+    readonly docRevForAttachId;
+    readonly docRevisionInherit;
 }

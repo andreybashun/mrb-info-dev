@@ -19,6 +19,7 @@ import {GetServerSideProps} from "next";
 import Breadcrumbs from "nextjs-breadcrumbs";
 
 
+
 const Index = ({docRevision}) => {
     const router = useRouter ()
     const path = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.key
@@ -51,7 +52,9 @@ const Index = ({docRevision}) => {
                     <Button size="small" variant="contained">
                         Создать УЛ
                     </Button>
-                    <Button size="small" variant="contained">
+                    <Button size="small" variant="contained" onClick={() =>
+                        router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/create')}
+                    >
                         Согласовать
                     </Button>
                 </Stack>

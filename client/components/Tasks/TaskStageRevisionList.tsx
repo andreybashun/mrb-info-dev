@@ -11,6 +11,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import {useRouter} from "next/router";
 
 const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
+    console.log('task',taskId, stageId)
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -18,7 +19,7 @@ const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
         }}>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision', taskId, stageId)}>
+                    router.push ('/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision')}>
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"

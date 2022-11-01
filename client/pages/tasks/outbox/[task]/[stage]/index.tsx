@@ -46,7 +46,7 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
 
     const response = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
-    console.log('данные таски',response.data.taskStages)
+    console.log('данные таски',response.data.taskStages, params.task, params.stage)
     return {
         props: {
             taskStageRevision: response.data.taskStageRevisions,

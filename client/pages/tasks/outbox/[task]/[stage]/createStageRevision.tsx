@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import MainLayout from "../../../../../layouts/MainLayout";
@@ -13,13 +13,16 @@ import {useRouter} from "next/router";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
-import DocStepWrapper from "../../../../../components/Docs/DocStepWraper";
+
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import DocDescription from "../../../../../components/Docs/docDescription";
+import {GetServerSideProps} from "next";
+import TaskStageStepWrapper from "../../../../../components/Tasks/TaskStageStepWrapper";
 
 
-const CreateSatgeRevision = ({taskId, stageId}) => {
+const CreateStageRevision = ({docs}) => {
+
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
     const name = useInput ('');
@@ -31,8 +34,12 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
     const ata = useInput ('');
     const creationDate = useInput ('');
     const router = useRouter ();
-    // const {stage} = router.query;
-    // const stageId = stage + '';
+    const docForSignId = useInput ('');
+    const docRevisionForSignId = useInput ('');
+    const {...id} = router.query;
+    const stageId = id.stage;
+    const taskId = id.task;
+
 
     const [open, setOpen] = useState (false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -77,6 +84,13 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
         setEngineType(event.target.value);
     };
 
+    const [doc, setDoc] = React.useState('');
+
+    const handleDocChange = (event: SelectChangeEvent) => {
+        setDoc(event.target.value.toString());
+        console.log('document value',typeof event.target.value);
+    };
+
     const action = (
         <React.Fragment>
             <Button color="secondary" size="small" onClick={handleClose}>
@@ -96,8 +110,9 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
 
 
     const next = () => {
+        console.log('props', docs)
 
-        if (activeStep !== 2) {
+        if (activeStep !== 5) {
             setActiveStep (prev => prev + 1)
         } else {
 
@@ -114,12 +129,12 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
                 aircraftType: aircraftType,
                 engineType: engineType,
                 creationDate:  date.toLocaleDateString (),
-                taskId:taskId,
-                stageId:stageId
+                taskStageId:stageId,
+                taskId:taskId
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/tasks/outbox/' + resp.data.taskId + '/' + resp.data.stageId + '/' + resp.data._id})
+                    router.push ({pathname: '/tasks/outbox/' + resp.data.taskId + '/' + resp.data.taskStageId + '/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -130,7 +145,7 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
 
     return (
         <MainLayout>
-            <DocStepWrapper activeStep={activeStep}>
+            <TaskStageStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
                     <Box sx={{p: 1}}>
@@ -301,10 +316,74 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
 
                     </Box>
                 }
-            </DocStepWrapper>
+                {activeStep === 3 &&
+
+                    <Box sx={{width:'800px', alignContent:"space-arround"}}>
+                        <FormControl sx={{ m: 1, width: '30ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Идентификатор документа</InputLabel>
+                            <Select
+                                onChange={handleDocChange}
+                                defaultValue=""
+                                labelId="select-small"
+                                id="select-small"
+                                label="Идентификатор Документа"
+                                value={doc}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {/*{*/}
+                                {/*    testDocs .map(doc =>*/}
+                                {/*    {*/}
+
+                                {/*        return  <MenuItem value={doc}>{doc}</MenuItem>*/}
+                                {/*    }*/}
+
+                                {/*)}*/}
+
+                                {docs.map((doc, index) => (
+                                    <MenuItem key={index} value={doc._id}>
+                                       {doc._id}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{m: 1, width: '55ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование документа</InputLabel>
+                            <Select
+                                onChange={handleDocChange}
+                                labelId="select-small"
+
+                                id="select-small"
+                                label="Наименование документа"
+                                value={doc}
+
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {docs.map((doc, index) => (
+                                    <MenuItem key={index} value={doc._id}>
+                                        {doc.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+
+                    </Box>
+
+
+                }
+                {activeStep === 4 &&
+                    <h1>step5</h1>
+                }
+                {activeStep === 5 && <h1>step6</h1>}
+            </TaskStageStepWrapper>
             <Grid container justifyContent={"space-between"}>
                 <Button size="small" variant="contained" disabled={activeStep === 0} onClick={back}> назад </Button>
-                <Button size="small" variant="contained" disabled={activeStep === 3} onClick={next}> вперед </Button>
+                <Button size="small" variant="contained" disabled={activeStep === 6} onClick={next}> вперед </Button>
             </Grid>
             <div>
                 <Snackbar
@@ -319,4 +398,16 @@ const CreateSatgeRevision = ({taskId, stageId}) => {
     );
 };
 
-export default CreateSatgeRevision;
+export default CreateStageRevision;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response =  await  axios.get('http://localhost:5000/document/')
+
+    return {
+        props: {
+            docs: response.data,
+            // stageId: params.stage,
+            // taskId: params.task
+        }
+    }
+}

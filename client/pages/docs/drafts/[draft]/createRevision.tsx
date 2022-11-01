@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import MainLayout from "../../../../layouts/MainLayout";
-import StepWrapper from "../../../../components/Tasks/StepWrapper";
+import TaskStageStepWrapper from "../../../../components/Tasks/TaskStageStepWrapper";
 import TaskDescription from "../../../../components/Tasks/TaskDescription";
 import Credentials from "../../../../components/Tasks/Credentials";
 import FileUpload from "../../../../components/FileUpload";
@@ -84,7 +84,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
 
     return (
         <MainLayout>
-            <StepWrapper activeStep={activeStep}>
+            <TaskStageStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
                     <Box>
@@ -150,7 +150,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
                 {activeStep === 3 && <h1>step3</h1>}
                 {activeStep === 4 && <h1>step4</h1>}
 
-            </StepWrapper>
+            </TaskStageStepWrapper>
             <Grid container justifyContent={"space-between"}>
                 <Button size="small" variant="contained" disabled={activeStep === 0} onClick={back}> назад </Button>
                 <Button size="small" variant="contained" disabled={activeStep === 5} onClick={next}> вперед </Button>

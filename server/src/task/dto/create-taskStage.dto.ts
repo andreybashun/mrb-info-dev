@@ -14,5 +14,5 @@ export class CreateTaskStageDto {
     readonly aircraftType: string;
     readonly engineType: string;
     readonly creationDate: string;
-    readonly taskId: ObjectId;
+    readonly taskId;
 }

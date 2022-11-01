@@ -14,9 +14,9 @@ interface StepWrapperProps{
 
 
 const steps= [
-    'Учетные данные', 'Описание задачи','Документы для согласования','Маршрут', 'Выпуск УЛ'];
+    'Учетные данные документа', 'Персональные данные автора', 'Применяемость документа','Документы для согласования','Маршрут', 'Выпуск УЛ'];
 
-const StepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
+const TaskStageStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     return (
         <ThemeProvider theme={StepperThem}>
         <Container sx={{p:5}}>
@@ -42,4 +42,4 @@ const StepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     );
 };
 
-export default StepWrapper;
+export default TaskStageStepWrapper;

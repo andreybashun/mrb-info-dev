@@ -70,11 +70,12 @@ export class TaskService {
     // создание ревизии
     async createRevision (dto: CreateTaskStageRevisionDto): Promise<TaskStageRevision>{
         const  taskStage = await  this.taskStageModel.findById(dto.taskStageId);
-        // const taskId = taskStage.taskId;
+        //const taskId = taskStage.taskId;
         const  docRevForSign = await  this.docModel.findById(dto.docRevForSignId);
         const  docRevForAttach = await  this.docModel.findById(dto.docRevForAttachId);
-        const taskStageRevision =  await this.taskStageRevisionModel.create({...dto, docRevForSign, docRevForAttach});
-        taskStage.taskStageRevisions.push(taskStageRevision._id);
+        const docForSign = await  this.docModel.findById(dto.docForSignId)
+        const taskStageRevision =  await this.taskStageRevisionModel.create({...dto, docRevForSign, docRevForAttach, docForSign});
+        taskStage.taskStageRevisions.push(taskStageRevision);
         await  taskStage.save();
         return taskStageRevision;
     }
@@ -92,7 +93,7 @@ export class TaskService {
         const taskStage = await this.taskStageModel.findById (revision.taskStageId)
         taskStage.taskStageRevisions.pop ();
         await taskStage.save ();
-        return revision._id
+        return
     }
 
 }

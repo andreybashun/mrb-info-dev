@@ -1,10 +1,11 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {Document} from 'mongoose';
+
 import * as mongoose from "mongoose";
 import {Task} from "./task.schema";
 import {DocRevision} from "../../document/schemas/docrevision.schema";
 import {TaskService} from "../task.service";
 import {TaskStage} from "./taskStage.schema";
+import {Doc} from "../../document/schemas/document.schema";
 
 
 export type TaskStageRevisionDocument = TaskStageRevision & Document;
@@ -56,6 +57,9 @@ export class TaskStageRevision {
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'})
     docRevisionInherit: DocRevision;
+
+    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Document'})
+    docForSignId: Doc;
 
     @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'}]})
     docRevForSignId: DocRevision[];

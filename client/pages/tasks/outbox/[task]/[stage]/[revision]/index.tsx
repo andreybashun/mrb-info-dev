@@ -27,14 +27,14 @@ const Index: React.FC = () => {
                 <Stack direction="row" spacing={2}>
                     <Button size="small" variant="contained"
                         // onClick={() => router.push ('/tasks/outbox/task/revisions/create')}
-                            startIcon={<CreateNewFolderOutlinedIcon/>}>
+                           >
                         Редактировать
                     </Button>
-                    <Button size="small" variant="contained" startIcon={<StopIcon/>}>
+                    <Button size="small" variant="contained" >
                         Отозвать
                     </Button>
-                    <Button size="small" variant="contained" startIcon={<PlayArrowIcon/>}>
-                        Запустить
+                    <Button size="small" variant="contained" >
+                        Направить
                     </Button>
                 </Stack>
                 <List sx={{padding: 1, border: '1px  solid grey', borderRadius: 2}}>
