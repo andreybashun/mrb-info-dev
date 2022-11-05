@@ -85,10 +85,45 @@ const CreateStageRevision = ({docs}) => {
     };
 
     const [doc, setDoc] = React.useState('');
+    const [docRevisions, setDocRevisions] = React.useState([]);
 
-    const handleDocChange = (event: SelectChangeEvent) => {
+
+    const handleDocChange = async  (event: SelectChangeEvent) => {
+
         setDoc(event.target.value.toString());
-        console.log('document value',typeof event.target.value);
+        // let res = docs.filter(obj => {
+        //     if (obj._id === event.target.value.toString()){
+        //         setDocRevisions(obj.docRevisions)
+        //     }
+        //     console.log('revisions ',docRevisions)
+        // })
+
+
+            const response =   await axios.get('http://localhost:5000/document/' + event.target.value.toString())
+
+            await console.log('документ',  doc)
+            await console.log('ревизии ',  response.data.docRevisions)
+        await console.log('ревизии ',  response.data.docRevisions)
+        if (event.target.value.toString() === ''){
+            await  setDocRevision('')
+        } else {
+            await setDocRevisions( response.data.docRevisions);
+        }
+
+
+
+
+
+    };
+
+
+
+
+    const [docRevision, setDocRevision] = React.useState('');
+
+    const handleDocRevisionChange = async (event: SelectChangeEvent) => {
+
+        setDocRevision( event.target.value.toString());
     };
 
     const action = (
@@ -110,7 +145,7 @@ const CreateStageRevision = ({docs}) => {
 
 
     const next = () => {
-        console.log('props', docs)
+
 
         if (activeStep !== 5) {
             setActiveStep (prev => prev + 1)
@@ -354,11 +389,9 @@ const CreateStageRevision = ({docs}) => {
                             <Select
                                 onChange={handleDocChange}
                                 labelId="select-small"
-
                                 id="select-small"
                                 label="Наименование документа"
                                 value={doc}
-
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -371,7 +404,52 @@ const CreateStageRevision = ({docs}) => {
                             </Select>
                         </FormControl>
 
+                        <FormControl sx={{ m: 1, width: '30ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Идентификатор ревизии документа</InputLabel>
+                            <Select
+                                onChange={handleDocRevisionChange}
+                                defaultValue=""
+                                labelId="select-small"
+                                id="select-small"
+                                label="Идентификатор ревизии документа"
+                                value={docRevision}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
 
+                                {
+
+                                    docRevisions.map((docRevision, index) => (
+                                    <MenuItem key={index} value={docRevision._id}>
+                                        {docRevision._id}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{m: 1, width: '55ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование ревизии документа</InputLabel>
+                            <Select
+                                onChange={handleDocRevisionChange}
+                                labelId="select-small"
+                                id="select-small"
+                                label="Наименование ревизии документа"
+                                value={docRevision}
+
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {
+
+                                    docRevisions.map((docRevision, index) => (
+                                        <MenuItem key={index} value={docRevision._id}>
+                                            {docRevision.name}
+                                        </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Box>
 
 
