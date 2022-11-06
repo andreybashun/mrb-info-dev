@@ -15,7 +15,7 @@ export  class CreateTaskStageRevisionDto{
     readonly engineType: string;
     readonly creationDate: string;
 
-
+    readonly signer: string;
 
     readonly taskStageId;
     readonly taskId;

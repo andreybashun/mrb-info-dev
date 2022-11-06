@@ -48,6 +48,9 @@ export class TaskStageRevision {
     @Prop ()
     readonly creationDate: string;
 
+    @Prop ()
+    readonly signer: string;
+
 
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Task'})
     taskId: Task;
@@ -61,8 +64,8 @@ export class TaskStageRevision {
     @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'Document'})
     docForSignId: Doc;
 
-    @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'}]})
-    docRevForSignId: DocRevision[];
+    @Prop ({type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'})
+    docRevForSignId: DocRevision;
 
     @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'DocRevision'}]})
     docRevForAttachId: DocRevision[];

@@ -34,11 +34,10 @@ const CreateStageRevision = ({docs}) => {
     const ata = useInput ('');
     const creationDate = useInput ('');
     const router = useRouter ();
-    const docForSignId = useInput ('');
-    const docRevisionForSignId = useInput ('');
     const {...id} = router.query;
     const stageId = id.stage;
     const taskId = id.task;
+
 
 
     const [open, setOpen] = useState (false);
@@ -78,6 +77,12 @@ const CreateStageRevision = ({docs}) => {
         setAircraftType(event.target.value);
     };
 
+    const [signer, setSigner] = React.useState ('');
+
+    const handleSignerChange = (event: SelectChangeEvent) => {
+        setSigner(event.target.value);
+    };
+
     const [engineType, setEngineType] = React.useState ('');
 
     const handleEngineChange = (event: SelectChangeEvent) => {
@@ -91,29 +96,17 @@ const CreateStageRevision = ({docs}) => {
     const handleDocChange = async  (event: SelectChangeEvent) => {
 
         setDoc(event.target.value.toString());
-        // let res = docs.filter(obj => {
-        //     if (obj._id === event.target.value.toString()){
-        //         setDocRevisions(obj.docRevisions)
-        //     }
-        //     console.log('revisions ',docRevisions)
-        // })
-
 
             const response =   await axios.get('http://localhost:5000/document/' + event.target.value.toString())
 
             await console.log('документ',  doc)
             await console.log('ревизии ',  response.data.docRevisions)
         await console.log('ревизии ',  response.data.docRevisions)
-        if (event.target.value.toString() === ''){
+        if (event.target.value.toString() === '' || doc !== ''){
             await  setDocRevision('')
         } else {
             await setDocRevisions( response.data.docRevisions);
         }
-
-
-
-
-
     };
 
 
@@ -165,7 +158,10 @@ const CreateStageRevision = ({docs}) => {
                 engineType: engineType,
                 creationDate:  date.toLocaleDateString (),
                 taskStageId:stageId,
-                taskId:taskId
+                taskId:taskId,
+                signer:signer,
+                docForSignId: doc,
+                docRevForSignId: docRevision
             })
                 .then (resp => {
                     setOpen (true)
@@ -196,7 +192,7 @@ const CreateStageRevision = ({docs}) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>\
+                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>
                                 <MenuItem value={"Tech-doc"}>Tech-doc</MenuItem>
                             </Select>
                         </FormControl>
@@ -367,15 +363,6 @@ const CreateStageRevision = ({docs}) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                {/*{*/}
-                                {/*    testDocs .map(doc =>*/}
-                                {/*    {*/}
-
-                                {/*        return  <MenuItem value={doc}>{doc}</MenuItem>*/}
-                                {/*    }*/}
-
-                                {/*)}*/}
-
                                 {docs.map((doc, index) => (
                                     <MenuItem key={index} value={doc._id}>
                                        {doc._id}
@@ -451,11 +438,31 @@ const CreateStageRevision = ({docs}) => {
                             </Select>
                         </FormControl>
                     </Box>
-
-
                 }
+
                 {activeStep === 4 &&
-                    <h1>step5</h1>
+
+
+
+                    <Box sx={{width:'800px', alignContent:"space-arround"}}>
+                        <FormControl fullWidth sx={{ m:1, paddingRight: 2}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Утверждающий</InputLabel>
+                            <Select
+                                onChange={handleSignerChange}
+                                defaultValue=""
+                                labelId="select-small"
+                                id="select-small"
+                                label="Утверждающий"
+                                value={signer}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={"A.Bashun"}>A.Bashun</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
                 }
                 {activeStep === 5 && <h1>step6</h1>}
             </TaskStageStepWrapper>
