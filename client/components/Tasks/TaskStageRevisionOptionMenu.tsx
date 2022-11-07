@@ -9,9 +9,8 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {IDoc} from "../../types/doc";
+import {ITaskStageRevision} from "../../types/task";
 import {useRouter} from "next/router";
-
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -19,8 +18,8 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 
-interface DocItemProps {
-    doc: IDoc;
+interface TaskStageRevisionItemProps {
+    taskStageRevision: ITaskStageRevision;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -77,7 +76,7 @@ const style = {
     borderRadius: 2
 };
 
-const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
+const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageRevision}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -89,9 +88,6 @@ const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
     };
     const router = useRouter ();
 
-    const [modalOpen, setModalOpen] = React.useState (false);
-    const handleModalOpen = () => setModalOpen (true);
-    const handleModalClose = () => setModalOpen (false);
 
     const [dialogOpen, setDialogOpen] = React.useState (false);
     const handleDialogOpen = () => setDialogOpen (true);
@@ -127,29 +123,6 @@ const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                 </MenuItem>
                 <MenuItem>
                     <Modal
-                        open={modalOpen}
-                        onClose={handleModalClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Внимание
-                            </Typography>
-                            <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
-                                все его ревизии и попробуйте снова.
-                            </Typography>
-                            <Button onClick={() => {
-                                handleModalClose ()
-                                handleClose ()
-                            }
-                            }
-                                    variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок
-                            </Button>
-                        </Box>
-                    </Modal>
-                    <Modal
                         open={dialogOpen}
                         onClose={handleDialogClose}
                         aria-labelledby="modal-modal-title"
@@ -157,10 +130,10 @@ const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Удаление документа
+                                Удалить документ
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить документ? Документ будет помещен в архив. Восстановление документа будет возможно из архивной версии в течении 120 дней
+                                Вы действительно хотите удалить документ?
                             </Typography>
                             <Grid
                                 container
@@ -176,34 +149,28 @@ const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                                     }
                                     }
                                             variant="outlined" color={"info"}
-                                            sx={{mt: 2, marginTop: 2}}>Отменить
+                                            sx={{mt: 2, marginTop: 2}}>Нет
                                     </Button>
                                 </Grid>
                                 <Grid >
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/document/' + doc._id)
-                                            .then(resp => router.push('/docs/drafts'))
+                                        axios.delete('http://localhost:5000/task/revision/'  + taskStageRevision._id)
+                                            .then(resp => router.push('/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
                                             .catch(e => console.log(e))
-                                        // router.push ('/docs/drafts/' + doc._id)
                                     }
                                     }
-                                            variant="contained" color={"info"}
+                                            variant="outlined" color={"info"}
                                             sx={{mt: 2, marginTop: 2}}
-                                    >Удалить
+                                    >Да
                                     </Button>
                                 </Grid>
                             </Grid>
                         </Box>
                     </Modal>
                     <DeleteIcon onClick={() => {
-
-                        if (doc.docRevisions.length === 0) {
-                            handleDialogOpen ()
-                        } else {
-                            handleModalOpen ()
-                        }
+                        handleDialogOpen ()
                     }
                     }/>
                 </MenuItem>
@@ -219,4 +186,5 @@ const TaskStageRevisionOptionMenu: React.FC<DocItemProps> = ({doc}) => {
     );
 }
 
-export default TaskStageRevisionOptionMenu
+export default DocRevisionOptionMenu
+

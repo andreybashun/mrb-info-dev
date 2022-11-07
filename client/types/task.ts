@@ -32,6 +32,8 @@ export interface ITaskStageRevision{
     signer:string;
     task:string;
     duedate:string;
+    taskId:string;
+    taskStageId:string;
 
     // task: Task;
     // docRevisionInherit: DocRevision;

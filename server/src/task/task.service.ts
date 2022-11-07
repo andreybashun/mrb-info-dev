@@ -22,7 +22,7 @@ export class TaskService {
                  private s3Servise: S3Service
     ) {
     }
-
+    // создание заадчи
     async create (dto: CreateTaskDto): Promise<Task> {
         return await this.taskModel.create ({...dto});
     }

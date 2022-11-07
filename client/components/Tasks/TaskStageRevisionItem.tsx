@@ -9,6 +9,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Divider from "@mui/material/Divider";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import DocRevisionOptionMenu from "./TaskStageRevisionOptionMenu";
+import TaskStageRevisionOptionMenu from "./TaskStageRevisionOptionMenu";
+
 
 const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
     const router = useRouter();
@@ -46,9 +49,10 @@ const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <IconButton>
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <TaskStageRevisionOptionMenu taskStageRevision={taskStageRevision}/>
+                    {/*<IconButton>*/}
+                    {/*    <MoreVertIcon/>*/}
+                    {/*</IconButton>*/}
                 </Grid>
                 <Divider/>
             </ListItemButton>
