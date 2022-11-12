@@ -5,7 +5,7 @@ import {GetServerSideProps} from "next";
 import axios from "axios";
 import Breadcrumbs from "nextjs-breadcrumbs";
 
-const Index = ({taskStage, taskId}) => {
+const Index = ({taskStage, taskId, task}) => {
     return (
         <MainLayout>
             <div>
@@ -14,7 +14,7 @@ const Index = ({taskStage, taskId}) => {
                     replaceCharacterList={[
                         {from: 'tasks', to: 'мои задачи'},
                         {from: 'outbox', to: 'исходящие задачи'},
-                        {from: taskId, to: 'этапы задачи'},
+                        {from: task._id, to: 'задача: ' + task.name}
                     ]
                     }
                 />
@@ -30,10 +30,10 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
 
     const response = await axios.get ('http://localhost:5000/task/' + params.task);
-    console.log('данные таски',response.data.taskStages)
     return {
         props: {
             taskStage: response.data.taskStages,
+            task:response.data,
             taskId: params.task
         }
     }

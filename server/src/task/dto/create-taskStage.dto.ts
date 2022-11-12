@@ -1,18 +1,17 @@
 import {ObjectId} from "mongoose";
 
 export class CreateTaskStageDto {
-    readonly name: string;
-    readonly type: string;
-    readonly author: string;
-    readonly status: string;
+    readonly name;
+    readonly type;
+    readonly author;
+    readonly status;
 
-    readonly discription: string;
-    readonly decId:string;
-    readonly lastChangeDate:string;
-    readonly organization:string;
-    readonly ata:string;
-    readonly aircraftType: string;
-    readonly engineType: string;
-    readonly creationDate: string;
+    readonly discription;
+    readonly lastChangeDate;
+    readonly organization;
+    readonly ata;
+    readonly aircraftType;
+    readonly engineType;
+    readonly creationDate;
     readonly taskId;
 }

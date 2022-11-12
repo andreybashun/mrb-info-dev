@@ -133,8 +133,8 @@ const TaskOptionMenu= ({task}) => {
                                 Внимание
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
-                                все его ревизии и попробуйте снова.
+                                Вы хотите удалить задчау. Задача содержит этапы. Для удаления задачи удалите
+                                все ее этапы и попробуйте снова.
                             </Typography>
                             <Button onClick={() => {
                                 handleModalClose ()
@@ -156,7 +156,7 @@ const TaskOptionMenu= ({task}) => {
                                 Удаление документа
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить документ? Документ будет помещен в архив. Восстановление документа будет возможно из архивной версии в течении 120 дней
+                                Вы действительно хотите удалить задачу? Задача будет помещена в архив. Восстановление задачи будет возможно из архивной версии в течении 120 дней
                             </Typography>
                             <Grid
                                 container
@@ -180,9 +180,8 @@ const TaskOptionMenu= ({task}) => {
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/task/' + task._id)
-                                            .then(resp => router.push('/task/'))
+                                            .then(resp => router.push('/tasks/outbox'))
                                             .catch(e => console.log(e))
-                                        // router.push ('/docs/drafts/' + doc._id)
                                     }
                                     }
                                             variant="contained" color={"info"}
@@ -194,12 +193,13 @@ const TaskOptionMenu= ({task}) => {
                         </Box>
                     </Modal>
                     <DeleteIcon onClick={() => {
-
-                        if (task.taskStages.length === 0) {
-                            handleDialogOpen ()
-                        } else {
-                            handleModalOpen ()
-                        }
+                        handleDialogOpen ()
+                        // if (task.taskStages.length === 0) {
+                        //     handleDialogOpen ()
+                        // }
+                        // else {
+                        //     handleModalOpen ()
+                        // }
                     }
                     }/>
                 </MenuItem>

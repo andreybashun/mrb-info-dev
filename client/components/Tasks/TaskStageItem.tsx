@@ -9,6 +9,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import {useRouter} from "next/router";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import TaskStageOptionMenu from "./TaskStageOptionMenu";
 
 
 
@@ -46,9 +47,7 @@ const TaskStageItem = ({taskStage, taskId}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <IconButton>
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <TaskStageOptionMenu taskStage={taskStage}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

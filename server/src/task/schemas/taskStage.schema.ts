@@ -21,8 +21,6 @@ export class TaskStage {
     @Prop ()
     status: string;   // статус документа
 
-    // @Prop ()
-    // key: string;      // ключ хранения в s3
 
     @Prop()
     decId: string;     // децимальный ID (партийный номер)

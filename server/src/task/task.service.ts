@@ -49,7 +49,7 @@ export class TaskService {
     async createTaskStage(dto:CreateTaskStageDto):Promise<TaskStage>{
         const task = await  this.taskModel.findById(dto.taskId);
         const taskStage = await  this.taskStageModel.create({...dto});
-        task.taskStages.push(taskStage);
+        task.taskStages.push(taskStage._id);
         await  task.save();
         return taskStage;
     }
@@ -62,7 +62,12 @@ export class TaskService {
     //удаление этапа
 
     async deleteTaskStage(id: ObjectId):Promise<ObjectId>{
-        return this.taskStageModel.findByIdAndDelete(id)
+        const taskStage = await this.taskStageModel.findByIdAndDelete(id)
+        const task = await this.taskModel.findById(taskStage.taskId)
+        const taskStageIndex = task.taskStages.indexOf(taskStage._id)
+        task.taskStages.splice(taskStageIndex,1)
+        await task.save ();
+        return taskStage._id
     }
 
 
@@ -70,13 +75,12 @@ export class TaskService {
     // создание ревизии
     async createRevision (dto: CreateTaskStageRevisionDto): Promise<TaskStageRevision>{
         const  taskStage = await  this.taskStageModel.findById(dto.taskStageId);
-        //const taskId = taskStage.taskId;
         const  docRevForSign = await  this.docModel.findById(dto.docRevForSignId);
         const  docRevForAttach = await  this.docModel.findById(dto.docRevForAttachId);
         const docForSign = await  this.docModel.findById(dto.docForSignId)
         const taskStageRevision =  await this.taskStageRevisionModel.create({...dto, docRevForSign, docRevForAttach, docForSign});
-        taskStage.taskStageRevisions.push(taskStageRevision);
-        await  taskStage.save();
+        taskStage.taskStageRevisions.push(taskStageRevision)
+        await taskStage.save();
         return taskStageRevision;
     }
 
@@ -91,9 +95,10 @@ export class TaskService {
 
         const revision = await this.taskStageRevisionModel.findByIdAndDelete (id)
         const taskStage = await this.taskStageModel.findById (revision.taskStageId)
-        taskStage.taskStageRevisions.pop ();
+        const taskStageRevisionIndex = taskStage.taskStageRevisions.indexOf(revision)
+        taskStage.taskStageRevisions.splice(taskStageRevisionIndex,1)
         await taskStage.save ();
-        return
+        return taskStage._id
     }
 
 }

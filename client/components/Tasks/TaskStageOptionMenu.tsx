@@ -18,9 +18,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import {ITaskStage, ITaskStageRevision} from "../../types/task";
 
-interface DocItemProps {
-    doc: IDoc;
+interface TaskStageItemProps {
+    taskStage: ITaskStage;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -77,7 +78,7 @@ const style = {
     borderRadius: 2
 };
 
-const TaskStageOptionMenu: React.FC<DocItemProps> = ({doc}) => {
+const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -137,7 +138,7 @@ const TaskStageOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                                 Внимание
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите
+                                Вы хотите удалить этап. Этап содержит ревизии. Для удаления этапа удалите
                                 все его ревизии и попробуйте снова.
                             </Typography>
                             <Button onClick={() => {
@@ -157,10 +158,10 @@ const TaskStageOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Удаление документа
+                                Удаление этапа
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить документ? Документ будет помещен в архив. Восстановление документа будет возможно из архивной версии в течении 120 дней
+                                Вы действительно хотите удалить  этап? Этап будет помещен в архив. Восстановление этапа будет возможно из архивной версии в течении 120 дней
                             </Typography>
                             <Grid
                                 container
@@ -183,8 +184,8 @@ const TaskStageOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/document/' + doc._id)
-                                            .then(resp => router.push('/docs/drafts'))
+                                        axios.delete('http://localhost:5000/task/stage/' + taskStage._id)
+                                            .then(resp => router.push('/tasks/outbox/' + taskStage.taskId))
                                             .catch(e => console.log(e))
                                         // router.push ('/docs/drafts/' + doc._id)
                                     }
@@ -199,7 +200,7 @@ const TaskStageOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                     </Modal>
                     <DeleteIcon onClick={() => {
 
-                        if (doc.docRevisions.length === 0) {
+                        if (taskStage.taskStageRevisions.length === 0) {
                             handleDialogOpen ()
                         } else {
                             handleModalOpen ()

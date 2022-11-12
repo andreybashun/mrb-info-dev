@@ -16,6 +16,7 @@ export interface ITaskStage{
     author: string;
     status: string;
     key: string;
+    taskId:string;
     taskStageRevisions: ITaskStageRevision[];
     lastchangedate:string;
 }

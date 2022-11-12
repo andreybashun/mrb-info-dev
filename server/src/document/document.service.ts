@@ -52,9 +52,12 @@ export class DocumentService {
         const revision = await this.docRevisionModel.findByIdAndDelete (id)
         const doc = await this.docModel.findById (revision.docId)
         await this.s3Servise.deleteFile (revision.key)
-        doc.docRevisions.pop ();
+        const docRevisionIndex = doc.docRevisions.indexOf(revision)
+        doc.docRevisions.splice(docRevisionIndex,1)
         await doc.save ();
         return revision._id
+
+
     }
 
     // async createRevision(dto: CreateDocRevisionDto): Promise<DocRevision>{
