@@ -22,7 +22,7 @@ const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-                        <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + taskId + '/'+ taskStageRevision.taskStageId)}>
+                        <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + taskId + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
                             <AssignmentIcon/>
                         </IconButton>
                     {taskStageRevision.name}

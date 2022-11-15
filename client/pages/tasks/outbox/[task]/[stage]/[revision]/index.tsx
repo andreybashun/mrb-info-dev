@@ -13,20 +13,35 @@ import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {router} from "next/client";
 import {Folder} from "@mui/icons-material";
 import GradingIcon from "@mui/icons-material/Grading";
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import Breadcrumbs from "nextjs-breadcrumbs";
+import {useRouter} from "next/router";
 
-const Index: React.FC = () => {
+
+const Index = ({task, stage, revision}) => {
+    const router = useRouter()
     return (
         <MainLayout>
+            <Breadcrumbs
+                useDefaultStyle
+                replaceCharacterList={[
+                    {from: 'tasks', to: 'мои задачи'},
+                    {from: 'outbox', to: 'исходящие задачи'},
+                    {from: task._id, to: 'задача: ' + task.name},
+                    {from: stage._id, to: 'этап: ' + stage.name},
+                    {from: revision._id, to: 'ревизия: ' + revision.name}
+                ]
+                }
+            />
             <Stack direction={"column"} spacing={2} sx={{
                 padding: 5,
 
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" variant="contained"
-                        // onClick={() => router.push ('/tasks/outbox/task/revisions/create')}
                            >
                         Редактировать
                     </Button>
@@ -197,3 +212,18 @@ const Index: React.FC = () => {
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+
+    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
+    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
+    const resRevision = await  axios.get('http://localhost:5000/task/revision/' + params.revision)
+    return {
+        props: {
+            task: resTask.data,
+            stage: resStage.data,
+            revision: resRevision.data
+
+        }
+    }
+}

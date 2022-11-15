@@ -187,7 +187,6 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
                                         axios.delete('http://localhost:5000/task/stage/' + taskStage._id)
                                             .then(resp => router.push('/tasks/outbox/' + taskStage.taskId))
                                             .catch(e => console.log(e))
-                                        // router.push ('/docs/drafts/' + doc._id)
                                     }
                                     }
                                             variant="contained" color={"info"}

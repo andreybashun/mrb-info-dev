@@ -17,9 +17,11 @@ import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import DocDescription from "../../../../components/Docs/docDescription";
+import Breadcrumbs from "nextjs-breadcrumbs";
+import {GetServerSideProps} from "next";
 
 
-const CreateSatge = () => {
+const CreateSatge = ({propsTask}) => {
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
     const name = useInput ('');
@@ -129,6 +131,16 @@ const CreateSatge = () => {
 
     return (
         <MainLayout>
+            <Breadcrumbs
+                useDefaultStyle
+                replaceCharacterList={[
+                    {from: 'tasks', to: 'мои задачи'},
+                    {from: 'outbox', to: 'исходящие задачи'},
+                    {from: taskId, to: 'задача: ' + propsTask.name},
+                    {from: 'createStage', to: 'создание этапа'}
+                ]
+                }
+            />
             <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
@@ -319,3 +331,12 @@ const CreateSatge = () => {
 };
 
 export default CreateSatge;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
+    return {
+        props: {
+            propsTask: resTask.data
+        }
+    }
+}

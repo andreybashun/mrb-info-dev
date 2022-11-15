@@ -130,10 +130,10 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Удалить документ
+                                Удалить ревизию этапа
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить документ?
+                                Вы действительно хотите удалить  ревизию этапа? Ревизия этапа будет помещена в архив. Восстановление будет возможно из архивной версии в течении 120 дней
                             </Typography>
                             <Grid
                                 container

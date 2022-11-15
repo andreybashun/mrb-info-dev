@@ -153,7 +153,7 @@ const TaskOptionMenu= ({task}) => {
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>
-                                Удаление документа
+                                Удаление задачи
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
                                 Вы действительно хотите удалить задачу? Задача будет помещена в архив. Восстановление задачи будет возможно из архивной версии в течении 120 дней

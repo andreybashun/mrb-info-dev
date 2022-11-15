@@ -19,9 +19,10 @@ import MenuItem from "@mui/material/MenuItem";
 import DocDescription from "../../../../../components/Docs/docDescription";
 import {GetServerSideProps} from "next";
 import TaskStageStepWrapper from "../../../../../components/Tasks/TaskStageStepWrapper";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
-const CreateStageRevision = ({docs}) => {
+const CreateStageRevision = ({docs, task, stage}) => {
 
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
@@ -35,8 +36,8 @@ const CreateStageRevision = ({docs}) => {
     const creationDate = useInput ('');
     const router = useRouter ();
     const {...id} = router.query;
-    const stageId = id.stage;
-    const taskId = id.task;
+    const stageId = id.stage + '';
+    const taskId = id.task + '';
 
 
 
@@ -165,6 +166,7 @@ const CreateStageRevision = ({docs}) => {
             })
                 .then (resp => {
                     setOpen (true)
+                    console.log()
                     router.push ({pathname: '/tasks/outbox/' + resp.data.taskId + '/' + resp.data.taskStageId + '/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
@@ -176,6 +178,17 @@ const CreateStageRevision = ({docs}) => {
 
     return (
         <MainLayout>
+            <Breadcrumbs
+                useDefaultStyle
+                replaceCharacterList={[
+                    {from: 'tasks', to: 'мои задачи'},
+                    {from: 'outbox', to: 'исходящие задачи'},
+                    {from: taskId, to: 'задача: ' + task.name},
+                    {from: stageId, to: 'этап: ' + stage.name},
+                    {from: 'createStageRevision', to: 'создание ревизии'}
+                ]
+                }
+            />
             <TaskStageStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
@@ -487,12 +500,14 @@ export default CreateStageRevision;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     const response =  await  axios.get('http://localhost:5000/document/')
-
+    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
+    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
     return {
         props: {
             docs: response.data,
-            // stageId: params.stage,
-            // taskId: params.task
+            task: resTask.data,
+            stage: resStage.data
+
         }
     }
 }

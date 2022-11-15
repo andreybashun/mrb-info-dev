@@ -17,6 +17,7 @@ import DocStepWrapper from "../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import DocDescription from "../../../components/Docs/docDescription";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 const CreateTask = () => {
@@ -127,6 +128,15 @@ const CreateTask = () => {
 
     return (
         <MainLayout>
+            <Breadcrumbs
+                useDefaultStyle
+                replaceCharacterList={[
+                    {from: 'tasks', to: 'мои задачи'},
+                    {from: 'outbox', to: 'исходящие задачи'},
+                    {from: 'createTask', to: 'создание задачи'}
+                ]
+                }
+            />
             <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
