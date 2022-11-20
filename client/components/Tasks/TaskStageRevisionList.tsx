@@ -23,7 +23,7 @@ const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/tasks/outbox/' + taskId + '/taskCard')}>
+                        onClick={()=> router.push('/tasks/outbox/' + taskId + '/' + stageId +  '/taskStageCard')}>
                     Карточка этапа
                 </Button>
             </Stack>

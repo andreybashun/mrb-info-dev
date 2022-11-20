@@ -2,9 +2,6 @@ import React from 'react';
 import MainLayout from "../../../../../../layouts/MainLayout";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
-import StopIcon from "@mui/icons-material/Stop";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -93,10 +90,11 @@ const Index = ({task, stage, revision}) => {
                                       justifyContent="flex-start"
                                       alignItems="center"
                                 >
-                                    <IconButton color="info">
+                                    <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' +
+                                        task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
                                         <SummarizeIcon/>
                                     </IconButton>
-                                    Карточка задачи
+                                    Карточка ревизии
                                 </Grid>
                                 <Grid xs={2} container
                                       direction="row"
@@ -123,7 +121,8 @@ const Index = ({task, stage, revision}) => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                    <IconButton color="info" onClick={() => router.push ('/tasks/outbox')}>
+                                    <IconButton color="info" onClick={() => router.push ('/tasks/outbox/' +
+                                        task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
                                         <Folder/>
                                     </IconButton>
                                     Документы на подпись

@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
 import MainLayout from "../../../../layouts/MainLayout";
 import Breadcrumbs from "nextjs-breadcrumbs";
-import DocRevisionList from "../../../../components/Docs/DocRevisionList";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useRouter} from "next/router";
-import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 
