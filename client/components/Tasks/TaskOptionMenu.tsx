@@ -116,7 +116,7 @@ const TaskOptionMenu= ({task}) => {
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/docs/drafts/createDraft')
+                    router.push ('/tasks/outbox/' + task._id +  '/editTask')
                 }
                 } disableRipple>
                     <EditIcon />

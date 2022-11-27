@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
 import {CreateDocRevisionDto} from "../document/dto/create-docRevision.dto";
 import {CreateTaskDto} from "./dto/create-task.dto";
@@ -6,6 +6,7 @@ import {TaskService} from "./task.service";
 import {CreateTaskStageRevisionDto} from "./dto/create-taskStageRevision.dto";
 import {CreateTaskStageDto} from "./dto/create-taskStage.dto";
 import {ObjectId} from "mongoose";
+import {CreateDocDto} from "../document/dto/create-doc.dto";
 
 @Controller('task')
 export class TaskController {
@@ -38,6 +39,12 @@ export class TaskController {
         return this.taskService.delete(id);
     }
 
+    @Put(':id')
+    editTask(@Param('id') id:ObjectId, @Body () dto: CreateTaskDto){
+        return this.taskService.editTask(id, dto);
+    }
+
+
 
     // создание этапа
     @Post('/stage')
@@ -54,7 +61,10 @@ export class TaskController {
 
 
     // изменение этапа
-
+    @Put('/stage/:id')
+    editTaskStage(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageDto){
+        return this.taskService.editTaskStage(id, dto);
+    }
 
     // удаление этапа
 
@@ -83,5 +93,11 @@ export class TaskController {
     @Delete('/revision/:id')
     deleteRevision (@Param('id') id:ObjectId) {
         return this.taskService.deleteRevision(id);
+    }
+
+    // изменение ревизии
+    @Put('/revision/:id')
+    editRevision(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageRevisionDto){
+        return this.taskService.editRevision(id, dto);
     }
 }

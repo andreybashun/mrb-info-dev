@@ -110,6 +110,8 @@ export class DocumentService {
         return this.docRevisionModel.findById (id);
     }
 
+    //редактирвоание ревизии
+
     async editRevision (id: ObjectId, dto: CreateDocDto){
         const doc = await this.docModel.findOneAndUpdate(id, {...dto})
         return doc

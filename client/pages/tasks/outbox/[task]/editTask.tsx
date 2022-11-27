@@ -14,21 +14,22 @@ import Snackbar from "@mui/material/Snackbar";
 import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
+import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 
 
-
-const EditDraft = (props) => {
+const EditTask = (props) => {
     const [activeStep, setActiveStep] = useState (0);
-    const name = useInput (props.doc.name);
-    const author = useInput ('A.Bashun');
-    const discription = useInput (props.doc.discription);
-    const decId = useInput (props.doc.decId);
-    const lastChangeDate = useInput (props.doc.lastChangeDate);
-    const organization = useInput ('ФРС');
-    const ata = useInput (props.doc.ata);
-    const creationDate = props.doc.creationDate;
+    const name = useInput (props.task.name);
+    const author = useInput (props.task.author);
+    const discription = useInput (props.task.discription);
+    const decId = useInput (props.task.decId);
+    const lastChangeDate = useInput (props.task.lastChangeDate);
+    const organization = useInput (props.task.organization);
+    const ata = useInput (props.task.ata);
+    const creationDate = useInput (props.task.creationDate);
     const router = useRouter ();
+
 
 
     const [open, setOpen] = useState (false);
@@ -46,25 +47,29 @@ const EditDraft = (props) => {
         setName (event.target.value);
     };
 
-    const [type, setType] = React.useState (props.doc.type);
+    const [type, setType] = React.useState (props.task.type);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
         setType (event.target.value);
     };
 
-    const [status, setStatus] = React.useState (props.doc.status);
+    const [status, setStatus] = React.useState (props.task.status);
 
     const handleStatusChange = (event: SelectChangeEvent) => {
+        console.log('document status',event.target.value);
+
         setStatus (event.target.value);
+
+        console.log('document status',event.target.value);
     };
 
-    const [aircraftType, setAircraftType] = React.useState (props.doc.aircraftType);
+    const [aircraftType, setAircraftType] = React.useState (props.task.aircraftType);
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
         setAircraftType(event.target.value);
     };
 
-    const [engineType, setEngineType] = React.useState (props.doc.engineType);
+    const [engineType, setEngineType] = React.useState (props.task.engineType);
 
     const handleEngineChange = (event: SelectChangeEvent) => {
         setEngineType(event.target.value);
@@ -94,7 +99,7 @@ const EditDraft = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put ('http://localhost:5000/document/' + props.document, {
+            axios.put ('http://localhost:5000/task/' + props.taskId, {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -106,11 +111,11 @@ const EditDraft = (props) => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  creationDate,
+                creationDate:  date.toLocaleDateString (),
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/docs/drafts/' + resp.data._id})
+                    router.push ({pathname: '/tasks/outbox/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -121,12 +126,21 @@ const EditDraft = (props) => {
 
     return (
         <MainLayout>
+            <Breadcrumbs
+                useDefaultStyle
+                replaceCharacterList={[
+                    {from: 'tasks', to: 'мои задачи'},
+                    {from: 'outbox', to: 'исходящие задачи'},
+                    {from: 'createTask', to: 'создание задачи'}
+                ]
+                }
+            />
             <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип задачи</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
@@ -137,7 +151,7 @@ const EditDraft = (props) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>
+                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>\
                                 <MenuItem value={"Tech-doc"}>Tech-doc</MenuItem>
                             </Select>
                         </FormControl>
@@ -310,14 +324,14 @@ const EditDraft = (props) => {
     );
 };
 
-export default EditDraft;
+export default EditTask;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/document/' + params.draft);
+    const response = await axios.get ('http://localhost:5000/task/' + params.task);
     return {
         props: {
-            doc: response.data,
-            document: params.draft
+            task: response.data,
+            taskId: params.task
         }
     }
 }

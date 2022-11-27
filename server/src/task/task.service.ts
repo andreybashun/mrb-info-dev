@@ -10,6 +10,7 @@ import {CreateTaskDto} from "./dto/create-task.dto";
 import {CreateTaskStageRevisionDto} from "./dto/create-taskStageRevision.dto";
 import {TaskStage, TaskStageDocument} from "./schemas/taskStage.schema";
 import {CreateTaskStageDto} from "./dto/create-taskStage.dto";
+import {CreateDocDto} from "../document/dto/create-doc.dto";
 
 @Injectable()
 export class TaskService {
@@ -44,6 +45,13 @@ export class TaskService {
         return task._id
     }
 
+    //редактирвоание задачи
+
+    async editTask (id: ObjectId, dto: CreateTaskDto){
+        const task = await this.taskModel.findOneAndUpdate(id, {...dto})
+        return task
+    }
+
 
     //создание этапа
     async createTaskStage(dto:CreateTaskStageDto):Promise<TaskStage>{
@@ -70,7 +78,12 @@ export class TaskService {
         return taskStage._id
     }
 
+    //редактирвоание этапа
 
+    async editTaskStage (id: ObjectId, dto: CreateTaskStageDto){
+        const taskStage = await this.taskStageModel.findOneAndUpdate(id, {...dto})
+        return taskStage
+    }
 
     // создание ревизии
     async createRevision (dto: CreateTaskStageRevisionDto): Promise<TaskStageRevision>{
@@ -99,6 +112,13 @@ export class TaskService {
         taskStage.taskStageRevisions.splice(taskStageRevisionIndex,1)
         await taskStage.save ();
         return taskStage._id
+    }
+
+    //редактирвоание ревизии
+
+    async editRevision (id: ObjectId, dto: CreateTaskStageRevisionDto){
+        const taskStageRevision = await this.taskStageRevisionModel.findOneAndUpdate(id, {...dto})
+        return taskStageRevision
     }
 
 }

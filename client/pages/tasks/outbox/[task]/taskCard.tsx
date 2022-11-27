@@ -10,6 +10,7 @@ import {useRouter} from "next/router";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import Link from "next/link";
 
 const taskCard = (props) => {
     const router = useRouter ()
@@ -32,7 +33,7 @@ const taskCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/' + draft + '/editDraft/')}
+                        router.push ('/tasks/outbox/' + props.taskId + '/editTask/')}
                     >
                         Редактировать
                     </Button>
@@ -50,7 +51,7 @@ const taskCard = (props) => {
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
-                        Децимальный номер документа
+                        Децимальный номер задачи
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
                         {props.task.decId}
@@ -58,21 +59,21 @@ const taskCard = (props) => {
 
 
                     <Grid item xs={4} fontSize={12} >
-                        Наименование документа
+                        Наименование задачи
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
                         {props.task.name}
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
-                        Тип документа
+                        Тип задачи
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
                         {props.task.type}
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
-                        Описнаие документа
+                        Описнаие задачи
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
                         {props.task.discription}
@@ -101,9 +102,8 @@ const taskCard = (props) => {
                         Автор
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.task.author}
+                        <Link href="/repository/Cards/persons/a_bashun">{props.task.author}</Link>
                     </Grid>
-
                     <Grid item xs={4} fontSize={12}>
                         Организация
                     </Grid>
@@ -125,7 +125,7 @@ const taskCard = (props) => {
                         Тип воздушного судна
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        {props.task.aircraftType}
+                        <Link href="/repository/Cards/AircraftType/rrj-95new">{props.task.aircraftType}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -133,6 +133,21 @@ const taskCard = (props) => {
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
                         {props.task.engineType}
+                    </Grid>
+                </Grid>
+                Содержит
+                <Divider/>
+
+                <Grid container spacing={1}  sx={{padding: 1, marginTop:0.5}}>
+
+                    <Grid item xs={4} fontSize={12}>
+                    Этапы
+                </Grid>
+                    <Grid item xs={8}  fontSize={12}>
+                        {props.task.taskStages.map(taskStage =>
+                            taskStage.name
+                        )
+                        }
                     </Grid>
                 </Grid>
 
