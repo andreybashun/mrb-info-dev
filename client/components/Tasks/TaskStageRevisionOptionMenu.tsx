@@ -17,6 +17,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import editStageRevision from "../../pages/tasks/outbox/[task]/[stage]/[revision]/editStageRevision";
 
 interface TaskStageRevisionItemProps {
     taskStageRevision: ITaskStageRevision;
@@ -116,7 +117,7 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/docs/drafts/createDraft')
+                    router.push ('/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId + '/' + taskStageRevision._id + '/editStageRevision')
                 }
                 } disableRipple>
                     <EditIcon />

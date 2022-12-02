@@ -81,7 +81,9 @@ export class TaskService {
     //редактирвоание этапа
 
     async editTaskStage (id: ObjectId, dto: CreateTaskStageDto){
+
         const taskStage = await this.taskStageModel.findOneAndUpdate(id, {...dto})
+        console.log('печать id ',id)
         return taskStage
     }
 

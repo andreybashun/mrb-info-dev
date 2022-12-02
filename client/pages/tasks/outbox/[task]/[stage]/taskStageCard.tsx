@@ -33,7 +33,7 @@ const TaskStageCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/' + draft + '/editDraft/')}
+                        router.push ('/tasks/outbox/' + props.stage.taskId + '/' + props.stage._id + '/editStage/')}
                     >
                         Редактировать
                     </Button>
