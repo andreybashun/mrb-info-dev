@@ -80,11 +80,17 @@ export class TaskService {
 
     //редактирвоание этапа
 
-    async editTaskStage (id: ObjectId, dto: CreateTaskStageDto){
-
-        const taskStage = await this.taskStageModel.findOneAndUpdate(id, {...dto})
-        console.log('печать id ',id)
+    async editTaskStage (id: ObjectId, dto: CreateTaskStageDto): Promise<TaskStage>{
+        const task = await  this.taskModel.findById(dto.taskId);
+        const taskStage = await this.taskStageModel.findByIdAndUpdate(id, {...dto}, {new:true});
+        task.taskStages.push(taskStage._id);
         return taskStage
+    }
+
+    // получение всех этапов
+
+    async getAllStages (): Promise<TaskStage[]> {
+        return this.taskStageModel.find ();
     }
 
     // создание ревизии
@@ -94,7 +100,7 @@ export class TaskService {
         const  docRevForAttach = await  this.docModel.findById(dto.docRevForAttachId);
         const docForSign = await  this.docModel.findById(dto.docForSignId)
         const taskStageRevision =  await this.taskStageRevisionModel.create({...dto, docRevForSign, docRevForAttach, docForSign});
-        taskStage.taskStageRevisions.push(taskStageRevision)
+        taskStage.taskStageRevisions.push(taskStageRevision);
         await taskStage.save();
         return taskStageRevision;
     }
@@ -108,10 +114,10 @@ export class TaskService {
     // удаление ревизии
     async deleteRevision (id: ObjectId): Promise<ObjectId> {
 
-        const revision = await this.taskStageRevisionModel.findByIdAndDelete (id)
-        const taskStage = await this.taskStageModel.findById (revision.taskStageId)
-        const taskStageRevisionIndex = taskStage.taskStageRevisions.indexOf(revision)
-        taskStage.taskStageRevisions.splice(taskStageRevisionIndex,1)
+        const revision = await this.taskStageRevisionModel.findByIdAndDelete (id);
+        const taskStage = await this.taskStageModel.findById (revision.taskStageId);
+        const taskStageRevisionIndex = taskStage.taskStageRevisions.indexOf(revision);
+        taskStage.taskStageRevisions.splice(taskStageRevisionIndex,1);
         await taskStage.save ();
         return taskStage._id
     }
@@ -119,8 +125,16 @@ export class TaskService {
     //редактирвоание ревизии
 
     async editRevision (id: ObjectId, dto: CreateTaskStageRevisionDto){
-        const taskStageRevision = await this.taskStageRevisionModel.findOneAndUpdate(id, {...dto})
+        const task = await  this.taskModel.findById(dto.taskId);
+        const  taskStage = await  this.taskStageModel.findById(dto.taskStageId);
+        const  docRevForSign = await  this.docModel.findById(dto.docRevForSignId);
+        const  docRevForAttach = await  this.docModel.findById(dto.docRevForAttachId);
+        const docForSign = await  this.docModel.findById(dto.docForSignId)
+        const taskStageRevision = await this.taskStageRevisionModel.findByIdAndUpdate(id, {...dto, docRevForSign, docRevForAttach, docForSign}, {new:true});
+        await taskStage.taskStageRevisions.push(taskStageRevision);
+        await task.taskStages.push(taskStage._id);
         return taskStageRevision
     }
+
 
 }

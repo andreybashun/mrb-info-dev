@@ -18,8 +18,9 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 
 
-const EditStage = (props) => {
+const EditSatge = (props) => {
     const [activeStep, setActiveStep] = useState (0);
+    const [file, setFile] = useState (null);
     const name = useInput (props.stage.name);
     const author = useInput (props.stage.author);
     const discription = useInput (props.stage.discription);
@@ -29,8 +30,8 @@ const EditStage = (props) => {
     const ata = useInput (props.stage.ata);
     const creationDate = useInput (props.stage.creationDate);
     const router = useRouter ();
-
-
+    const {task} = router.query;
+    const taskId = task + '';
 
     const [open, setOpen] = useState (false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -41,7 +42,7 @@ const EditStage = (props) => {
     };
 
 
-    const [documentName, setName] = React.useState ('');
+    const [documentName, setName] = React.useState (props.stage.name);
 
     const handleNameChange = (event: SelectChangeEvent) => {
         setName (event.target.value);
@@ -56,11 +57,7 @@ const EditStage = (props) => {
     const [status, setStatus] = React.useState (props.stage.status);
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log('document status',event.target.value);
-
         setStatus (event.target.value);
-
-        console.log('document status',event.target.value);
     };
 
     const [aircraftType, setAircraftType] = React.useState (props.stage.aircraftType);
@@ -99,7 +96,7 @@ const EditStage = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put('http://localhost:5000/task/stage/' + props.stageId, {
+            axios.put('http://localhost:5000/task/stage/' + props.stageId.toString(), {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -112,10 +109,11 @@ const EditStage = (props) => {
                 aircraftType: aircraftType,
                 engineType: engineType,
                 creationDate:  date.toLocaleDateString (),
+                taskId:taskId
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push({pathname: '/tasks/outbox/'})
+                    router.push ({pathname: '/tasks/outbox/' + resp.data.taskId})
                 })
                 .catch (e => console.log (e))
         }
@@ -131,7 +129,8 @@ const EditStage = (props) => {
                 replaceCharacterList={[
                     {from: 'tasks', to: 'мои задачи'},
                     {from: 'outbox', to: 'исходящие задачи'},
-                    {from: 'createTask', to: 'создание задачи'}
+                    {from: taskId, to: 'задача: ' + props.task.name},
+                    {from: 'createStage', to: 'создание этапа'}
                 ]
                 }
             />
@@ -140,7 +139,7 @@ const EditStage = (props) => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип задачи</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
@@ -170,18 +169,19 @@ const EditStage = (props) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование этапа"}
+                                label={"Наименование документа"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
                         </FormControl>
 
+                        {/*<DocDescription/>*/}
 
                         <Box  sx={{p:1, width:'95ch'}}>
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
-                                label="описание этапа"
+                                label="описание документа"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -323,13 +323,15 @@ const EditStage = (props) => {
     );
 };
 
-export default EditStage;
+export default EditSatge;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
+    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
+    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
     return {
         props: {
-            stage: response.data,
+            task: resTask.data,
+            stage: resStage.data,
             stageId: params.stage
         }
     }

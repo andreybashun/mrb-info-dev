@@ -21,7 +21,7 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 
 
-const CreateSatge = ({propsTask}) => {
+const CreateSatge = (props) => {
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
     const name = useInput ('');
@@ -136,7 +136,7 @@ const CreateSatge = ({propsTask}) => {
                 replaceCharacterList={[
                     {from: 'tasks', to: 'мои задачи'},
                     {from: 'outbox', to: 'исходящие задачи'},
-                    {from: taskId, to: 'задача: ' + propsTask.name},
+                    {from: taskId, to: 'задача: ' + props.task.name},
                     {from: 'createStage', to: 'создание этапа'}
                 ]
                 }
@@ -336,7 +336,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
     return {
         props: {
-            propsTask: resTask.data
+            task: resTask.data
         }
     }
 }

@@ -73,6 +73,13 @@ export class TaskController {
         return this.taskService.deleteTaskStage(id);
     }
 
+    // получение всех этапов
+
+    @Get ('/stage')
+    getAllStages () {
+        return this.taskService.getAllStages();
+    }
+
 
     // создание ревизии
 

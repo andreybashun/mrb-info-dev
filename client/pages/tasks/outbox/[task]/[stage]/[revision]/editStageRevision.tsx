@@ -19,7 +19,7 @@ import TaskStageStepWrapper from "../../../../../../components/Tasks/TaskStageSt
 import Breadcrumbs from "nextjs-breadcrumbs";
 
 
-const CreateStageRevision = ({docs, task, stage, revision, revisionId}) => {
+const CreateStageRevision = ({docs, task, stage, revision, revisionId, documentForEditId}) => {
 
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
@@ -90,20 +90,21 @@ const CreateStageRevision = ({docs, task, stage, revision, revisionId}) => {
     };
 
     const [doc, setDoc] = React.useState(revision.docForSignId);
-    const [docRevisions, setDocRevisions] = React.useState([revision.docRevForSignId]);
+    const [docRevisions, setDocRevisions] = React.useState([]);
 
 
     const handleDocChange = async  (event: SelectChangeEvent) => {
 
         setDoc(event.target.value.toString());
-
         const response =   await axios.get('http://localhost:5000/document/' + event.target.value.toString())
-        await setDocRevisions( response.data.docRevisions);
-        // if (event.target.value.toString() === '' || doc !== ''){
-        //     await  setDocRevision('')
-        // } else {
-        //     await setDocRevisions( response.data.docRevisions);
-        // }
+        // await setDocRevisions( response.data.docRevisions);
+
+        if ((event.target.value.toString() === '' || doc!=='')){
+            await  setDocRevision('')
+            await setDocRevisions( response.data.docRevisions);
+        } else {
+            await setDocRevisions( response.data.docRevisions);
+        }
     };
 
 
@@ -112,7 +113,6 @@ const CreateStageRevision = ({docs, task, stage, revision, revisionId}) => {
     const [docRevision, setDocRevision] = React.useState(revision.docRevForSignId);
 
     const handleDocRevisionChange = async (event: SelectChangeEvent) => {
-
         setDocRevision( event.target.value.toString());
     };
 
@@ -404,7 +404,6 @@ const CreateStageRevision = ({docs, task, stage, revision, revisionId}) => {
                             <InputLabel id="select-small" sx={{paddingRight: 1}} >Идентификатор ревизии документа</InputLabel>
                             <Select
                                 onChange={handleDocRevisionChange}
-                                defaultValue=""
                                 labelId="select-small"
                                 id="select-small"
                                 label="Идентификатор ревизии документа"
@@ -505,6 +504,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
             task: resTask.data,
             stage: resStage.data,
             revision: resRevision.data,
+            documentForEditId: resRevision.data.docRevForSignId,
             revisionId:params.revision
         }
     }
