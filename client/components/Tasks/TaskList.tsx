@@ -1,5 +1,4 @@
 import React from 'react';
-import {ITasks} from "../../types/task";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TaskItem from "./TaskItem";
@@ -7,7 +6,6 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import {useRouter} from "next/router";
 
 
@@ -19,7 +17,7 @@ const TaskList= ({tasks}) => {
         }}>
             <Stack direction="row" spacing={2}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/tasks/outbox/createTask')}>
+                    router.push ('/user/tasks/outbox/createTask')}>
                     Создать задачу
                 </Button>
             </Stack>

@@ -1,13 +1,11 @@
 import React from 'react';
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import AddTaskIcon from "@mui/icons-material/AddTask";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TaskStageItem from "./TaskStageItem";
-import AddCardIcon from '@mui/icons-material/AddCard';
 import ArticleIcon from "@mui/icons-material/Article";
 import {useRouter} from "next/router";
 
@@ -21,10 +19,10 @@ const TaskStageList = ({taskStage, taskId}) => {
         }}>
             <Stack direction="row"  justifyContent={"space-between"}>
                 <Button size="small" variant="contained"onClick={() =>
-                    router.push ('/tasks/outbox/' + taskId + '/createStage')}>
+                    router.push ('/user/tasks/outbox/' + taskId + '/createStage')}>
                     Создать этап
                 </Button>
-                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/tasks/outbox/' + taskId + '/taskCard')}>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/user/tasks/outbox/' + taskId + '/taskCard')}>
                     Карточка задачи
                 </Button>
             </Stack>

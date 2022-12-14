@@ -13,10 +13,8 @@ import {useRouter} from "next/router";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
-
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
-import DocDescription from "../../../../../components/Docs/docDescription";
 import {GetServerSideProps} from "next";
 import TaskStageStepWrapper from "../../../../../components/Tasks/TaskStageStepWrapper";
 import Breadcrumbs from "nextjs-breadcrumbs";
@@ -194,13 +192,13 @@ const CreateStageRevision = ({docs, task, stage}) => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип ревизии</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип ревизии"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -224,7 +222,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование ревизии"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -236,7 +234,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
-                                label="описание документа"
+                                label="описание ревизии"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -267,13 +265,13 @@ const CreateStageRevision = ({docs, task, stage}) => {
                         </FormControl>
 
                         <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус ревизии</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={status}
-                                label="Статус документа"
+                                label="Статус ревизии"
                             >
                                 <MenuItem value="">
                                     <em>None</em>

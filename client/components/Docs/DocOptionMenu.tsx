@@ -11,7 +11,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
-
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -120,7 +119,7 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/docs/drafts/createDraft')
+                    router.push ('/user/docs/drafts/createDraft')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -184,7 +183,7 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/document/' + doc._id)
-                                            .then(resp => router.push('/docs/drafts'))
+                                            .then(resp => router.push('/user/docs/drafts'))
                                             .catch(e => console.log(e))
                                         // router.push ('/docs/drafts/' + doc._id)
                                     }

@@ -146,13 +146,13 @@ const CreateSatge = (props) => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип этапа</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип этапа"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -176,7 +176,7 @@ const CreateSatge = (props) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование этапа"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -219,13 +219,13 @@ const CreateSatge = (props) => {
                         </FormControl>
 
                         <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус этапа</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={status}
-                                label="Статус документа"
+                                label="Статус этапа"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -249,7 +249,6 @@ const CreateSatge = (props) => {
                                 variant={"outlined"}
                                 size={"small"}
                                 value={"Bashun"}
-                                //disabled={true}
                             />
                         </FormControl>
                         <FormControl fullWidth sx={{p: 1}} size="small">
@@ -260,7 +259,6 @@ const CreateSatge = (props) => {
                                 variant={"outlined"}
                                 size={"small"}
                                 value={"FRS"}
-                                // disabled={true}
                             />
                         </FormControl>
                     </Box>

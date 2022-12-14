@@ -1,8 +1,6 @@
 import React, {ReactElement} from 'react';
 import {Card, Container, Step, StepLabel, Stepper, ThemeProvider} from "@mui/material";
 import Grid from "@mui/material/Grid";
-import {blue, red} from "@mui/material/colors";
-import {myTheme} from "../../MyTheme";
 import {StepperThem} from "../../StepperThem";
 import {auto} from "@popperjs/core";
 

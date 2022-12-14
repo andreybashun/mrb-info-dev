@@ -21,7 +21,7 @@ const DocList: React.FC<DocListProps> = ({docs}) => {
         }}>
             <Stack direction="row" spacing={2}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/docs/drafts/createDraft')}
+                    router.push ('/user/docs/drafts/createDraft')}
                 >
                     Создать документ
                 </Button>

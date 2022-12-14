@@ -1,15 +1,12 @@
 import React from 'react';
-import {ITasks} from "../../types/task";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemButton from "@mui/material/ListItemButton";
 import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
 import DocOptionMenu from "./DocOptionMenu";
-import docs from "../../pages/docs";
 
 
 interface DocItemProps {
@@ -26,7 +23,7 @@ const DocItem: React.FC<DocItemProps> = ({doc}) => {
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-                    <IconButton color="info"  onClick={() => router.push ('/docs/drafts/' + doc._id)}>
+                    <IconButton color="info"  onClick={() => router.push ('/user/docs/drafts/' + doc._id)}>
                         <AssignmentIcon/>
                     </IconButton>
                     {doc.name}

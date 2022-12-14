@@ -1,7 +1,4 @@
 import React from 'react';
-import Navbar from "../components/Navbar";
-import {ThemeProvider} from "@mui/material";
-import {myTheme} from "../MyTheme";
 import MainLayout from "../layouts/MainLayout";
 import Breadcrumbs from 'nextjs-breadcrumbs';
 

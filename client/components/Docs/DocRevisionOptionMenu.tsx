@@ -87,11 +87,6 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
         setAnchorEl (null);
     };
     const router = useRouter ();
-
-    // const [modalOpen, setModalOpen] = React.useState (false);
-    // const handleModalOpen = () => setModalOpen (true);
-    // const handleModalClose = () => setModalOpen (false);
-
     const [dialogOpen, setDialogOpen] = React.useState (false);
     const handleDialogOpen = () => setDialogOpen (true);
     const handleDialogClose = () => setDialogOpen (false);
@@ -119,35 +114,12 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/docs/drafts/createDraft')
+                    router.push ('/user/docs/drafts/createDraft')
                 }
                 } disableRipple>
                     <EditIcon />
                 </MenuItem>
                 <MenuItem>
-                    {/*<Modal*/}
-                    {/*    open={modalOpen}*/}
-                    {/*    onClose={handleModalClose}*/}
-                    {/*    aria-labelledby="modal-modal-title"*/}
-                    {/*    aria-describedby="modal-modal-description"*/}
-                    {/*>*/}
-                    {/*    <Box sx={styles}>*/}
-                    {/*        <Typography id="modal-modal-title" variant="h6" component="h2" align={"center"}>*/}
-                    {/*            Внимание*/}
-                    {/*        </Typography>*/}
-                    {/*        <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>*/}
-                    {/*            Вы хотите удалить документ. Документ содержит ревизии. Для удаления документа удалите*/}
-                    {/*            все его ревизии и попробуйте снова.*/}
-                    {/*        </Typography>*/}
-                    {/*        <Button onClick={() => {*/}
-                    {/*            handleModalClose ()*/}
-                    {/*            handleClose ()*/}
-                    {/*        }*/}
-                    {/*        }*/}
-                    {/*                variant="outlined" color={"info"} sx={{mt: 2, marginTop: 2, marginLeft: 22,}}>Ок*/}
-                    {/*        </Button>*/}
-                    {/*    </Box>*/}
-                    {/*</Modal>*/}
                     <Modal
                         open={dialogOpen}
                         onClose={handleDialogClose}
@@ -183,9 +155,8 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/document/' + docRevision.docId + '/' + docRevision._id)
-                                            .then(resp => router.push('/docs/drafts/' + docRevision.docId))
+                                            .then(resp => router.push('/user/docs/drafts/' + docRevision.docId))
                                             .catch(e => console.log(e))
-                                        // router.push ('/docs/drafts/' + doc._id)
                                     }
                                     }
                                             variant="outlined" color={"info"}

@@ -9,16 +9,14 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
-
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import {ITaskStage, ITaskStageRevision} from "../../types/task";
+import {ITaskStage} from "../../types/task";
 
 interface TaskStageItemProps {
     taskStage: ITaskStage;
@@ -121,7 +119,7 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/tasks/outbox/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
+                    router.push ('/user/tasks/outbox/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -185,7 +183,7 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/task/stage/' + taskStage._id)
-                                            .then(resp => router.push('/tasks/outbox/' + taskStage.taskId))
+                                            .then(resp => router.push('/user/tasks/outbox/' + taskStage.taskId))
                                             .catch(e => console.log(e))
                                     }
                                     }

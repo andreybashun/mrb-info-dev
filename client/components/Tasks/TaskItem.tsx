@@ -1,10 +1,8 @@
 import React from 'react';
-import {ITasks} from "../../types/task";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemButton from "@mui/material/ListItemButton";
 import {useRouter} from "next/router";
 import TaskOptionMenu from "./TaskOptionMenu";
@@ -13,8 +11,6 @@ import TaskOptionMenu from "./TaskOptionMenu";
 
 const TaskItem= ({task}) => {
     const router = useRouter();
-    console.log('/tasks/outbox/' + task._id)
-
     return (
         <Grid container spacing={2}>
             <ListItemButton>
@@ -22,7 +18,7 @@ const TaskItem= ({task}) => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="center">
-                <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + task._id)}>
+                <IconButton color="info"  onClick={() => router.push ('/user/tasks/outbox/' + task._id)}>
                     <AssignmentIcon/>
                 </IconButton>
                 {task.name}

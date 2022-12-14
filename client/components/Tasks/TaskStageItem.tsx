@@ -2,11 +2,7 @@ import React from 'react';
 import Grid from "@mui/material/Grid";
 import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
-import {router} from "next/client";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Divider from "@mui/material/Divider";
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import {useRouter} from "next/router";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskStageOptionMenu from "./TaskStageOptionMenu";
@@ -24,7 +20,7 @@ const TaskStageItem = ({taskStage, taskId}) => {
                       justifyContent="flex-start"
                       alignItems="center">
 
-                        <IconButton color="info"  onClick={() => router.push ('/tasks/outbox/' + taskId + '/' + taskStage._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/user/tasks/outbox/' + taskId + '/' + taskStage._id)}>
                             <AssignmentIcon/>
                         </IconButton>
 

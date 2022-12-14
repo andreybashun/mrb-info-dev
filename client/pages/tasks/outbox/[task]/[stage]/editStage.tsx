@@ -139,13 +139,13 @@ const EditSatge = (props) => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип этапа</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип этапа"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -169,7 +169,7 @@ const EditSatge = (props) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование этапа"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -181,7 +181,7 @@ const EditSatge = (props) => {
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
-                                label="описание документа"
+                                label="описание этапа"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -218,7 +218,7 @@ const EditSatge = (props) => {
                                 labelId="select-small"
                                 id="select-small"
                                 value={status}
-                                label="Статус документа"
+                                label="Статус этапа"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -253,7 +253,6 @@ const EditSatge = (props) => {
                                 variant={"outlined"}
                                 size={"small"}
                                 value={"FRS"}
-                                // disabled={true}
                             />
                         </FormControl>
                     </Box>

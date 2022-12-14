@@ -1,7 +1,6 @@
 import React from 'react';
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import AddCardIcon from "@mui/icons-material/AddCard";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -19,11 +18,11 @@ const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
         }}>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision')}>
+                    router.push ('/user/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision')}>
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/tasks/outbox/' + taskId + '/' + stageId +  '/taskStageCard')}>
+                        onClick={()=> router.push('/user/tasks/outbox/' + taskId + '/' + stageId +  '/taskStageCard')}>
                     Карточка этапа
                 </Button>
             </Stack>

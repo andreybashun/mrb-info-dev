@@ -116,7 +116,7 @@ const TaskOptionMenu= ({task}) => {
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/tasks/outbox/' + task._id +  '/editTask')
+                    router.push ('/user/tasks/outbox/' + task._id +  '/editTask')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -180,7 +180,7 @@ const TaskOptionMenu= ({task}) => {
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/task/' + task._id)
-                                            .then(resp => router.push('/tasks/outbox'))
+                                            .then(resp => router.push('/user/tasks/outbox'))
                                             .catch(e => console.log(e))
                                     }
                                     }
@@ -194,12 +194,6 @@ const TaskOptionMenu= ({task}) => {
                     </Modal>
                     <DeleteIcon onClick={() => {
                         handleDialogOpen ()
-                        // if (task.taskStages.length === 0) {
-                        //     handleDialogOpen ()
-                        // }
-                        // else {
-                        //     handleModalOpen ()
-                        // }
                     }
                     }/>
                 </MenuItem>

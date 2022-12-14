@@ -6,7 +6,6 @@ import {CreateDocDto} from "./dto/create-doc.dto";
 import {S3Service} from "../s3/s3.service";
 import {DocRevision, DocRevisionDocument} from "./schemas/docrevision.schema";
 import {CreateDocRevisionDto} from "./dto/create-docRevision.dto";
-import * as crypto from "crypto";
 import * as fs from "fs";
 import { jsPDF } from "jspdf";
 import {CryptoService} from "../crypto/crypto.service";

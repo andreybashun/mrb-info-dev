@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import MainLayout from "../../../layouts/MainLayout";
-import Credentials from "../../../components/Tasks/Credentials";
-import FileUpload from "../../../components/FileUpload";
 import {useInput} from "../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -16,7 +14,6 @@ import Snackbar from "@mui/material/Snackbar";
 import DocStepWrapper from "../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
-import DocDescription from "../../../components/Docs/docDescription";
 import Breadcrumbs from "nextjs-breadcrumbs";
 
 
@@ -142,13 +139,13 @@ const CreateTask = () => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип задачи</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип задачи"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -172,7 +169,7 @@ const CreateTask = () => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование задачи"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -184,7 +181,7 @@ const CreateTask = () => {
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
-                                label="описание документа"
+                                label="описание задачи"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -215,13 +212,13 @@ const CreateTask = () => {
                         </FormControl>
 
                         <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус задачи</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={status}
-                                label="Статус документа"
+                                label="Статус задачи"
                             >
                                 <MenuItem value="">
                                     <em>None</em>

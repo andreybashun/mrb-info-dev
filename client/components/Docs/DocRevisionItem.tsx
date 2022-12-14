@@ -9,7 +9,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
-import DocOptionMenu from "./DocOptionMenu";
 import DocRevisionOptionMenu from "./DocRevisionOptionMenu";
 
 
@@ -31,17 +30,17 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-start"
                       alignItems="center">
                     { docRevision.status === 'canceled' &&
-                        <IconButton color="warning"  onClick ={() => router.push (`/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="warning"  onClick ={() => router.push (`/user/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
                             <CancelIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'approved' &&
-                        <IconButton color="success"  onClick={() => router.push ('/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="success"  onClick={() => router.push ('/user/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
                             <CheckCircleOutlineIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'open' &&
-                        <IconButton color="info"  onClick={() => router.push ('/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/user/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
                             <DraftsIcon/>
                         </IconButton>
                     }

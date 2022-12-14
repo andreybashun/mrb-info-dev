@@ -5,8 +5,6 @@ import { Paper, ThemeProvider} from "@mui/material";
 import Appbar from "../components/Appbar";
 import Grid from '@mui/material/Grid';
 import List from "@mui/material/List";
-import Box from "@mui/material/Box";
-import StyledBreadcrumb from "../components/Tasks/StyledBreadcrumb";
 import Calendar from "../components/Calendar";
 
 
@@ -27,11 +25,6 @@ const MainLayout: React.FC<Props> = ({children}) => {
                     </Grid>
                     <Grid item xs={20} sm={12} md={12.5}>
                         <List>
-                            {/*<Box sx={{*/}
-                            {/*    height: 30*/}
-                            {/*}}>*/}
-                            {/*    <StyledBreadcrumb/>*/}
-                            {/*</Box>*/}
                             <div>
                                 {children}
                             </div>

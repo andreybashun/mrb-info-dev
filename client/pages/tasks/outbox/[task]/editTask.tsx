@@ -146,7 +146,7 @@ const EditTask = (props) => {
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип задачи"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -170,7 +170,7 @@ const EditTask = (props) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование задачи"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -182,7 +182,7 @@ const EditTask = (props) => {
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
-                                label="описание документа"
+                                label="описание задачи"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -213,13 +213,13 @@ const EditTask = (props) => {
                         </FormControl>
 
                         <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус задачи</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={status}
-                                label="Статус документа"
+                                label="Статус задачи"
                             >
                                 <MenuItem value="">
                                     <em>None</em>

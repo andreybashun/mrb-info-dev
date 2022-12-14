@@ -5,6 +5,7 @@ import {S3Module} from './s3/s3.module';
 import { ConfigModule } from '@nestjs/config';
 import { TaskModule } from './task/task.module';
 import { CryptoModule } from './crypto/crypto.module';
+import { UserModule } from './user/user.module';
 import * as path from "path";
 
 const MONGODB_SSLCA = path.join (__dirname, '..', 'CA.pem');
@@ -33,7 +34,8 @@ const {
         DocumentModule,
         S3Module,
         TaskModule,
-        CryptoModule]
+        CryptoModule,
+        UserModule]
 
 })
 export class AppModule {

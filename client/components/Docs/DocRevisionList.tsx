@@ -8,11 +8,6 @@ import Divider from "@mui/material/Divider";
 import DocRevisionItem from "./DocRevisionItem";
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
-import ListItemButton from "@mui/material/ListItemButton";
-import CancelIcon from "@mui/icons-material/Cancel";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArticleIcon from "@mui/icons-material/Article";
 
 
@@ -34,23 +29,14 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
             <Stack direction="row"  justifyContent={"space-between"}>
 
                     <Button size="small" variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/' + draft + '/createRevision/')}
+                        router.push ('/user/docs/drafts/' + draft + '/createRevision/')}
                     >
                         Создать ревизию
                     </Button>
 
-                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/user/docs/drafts/' + draft + '/draftCard')}>
                     Карточка документа
                 </Button>
-
-
-
-                    {/*<ListItemButton onClick={()=> router.push('/docs/drafts/' + draft + '/draftCard')}>*/}
-                    {/*    <ArticleIcon color="info"/>*/}
-                    {/*    Карточка документа*/}
-                    {/*    <Divider/>*/}
-                    {/*</ListItemButton>*/}
-
 
 
             </Stack>
@@ -100,15 +86,10 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-
-
-
                         {docRevisions.map(docRevisions =>
                             <DocRevisionItem key={docRevisions._id} docRevision={docRevisions}/>
                         )}
-
-
-                </Box>
+               </Box>
             </List>
         </Stack>
     );

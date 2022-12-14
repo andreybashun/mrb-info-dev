@@ -3,14 +3,13 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Doc, DocDocument} from "../document/schemas/document.schema";
 import {Model, ObjectId} from "mongoose";
 import {DocRevision, DocRevisionDocument} from "../document/schemas/docrevision.schema";
-import {S3Service} from "../s3/s3.service";
 import {Task, TaskDocument} from "./schemas/task.schema";
 import {TaskStageRevision, TaskStageRevisionDocument} from "./schemas/taskStageRevision.schema";
 import {CreateTaskDto} from "./dto/create-task.dto";
 import {CreateTaskStageRevisionDto} from "./dto/create-taskStageRevision.dto";
 import {TaskStage, TaskStageDocument} from "./schemas/taskStage.schema";
 import {CreateTaskStageDto} from "./dto/create-taskStage.dto";
-import {CreateDocDto} from "../document/dto/create-doc.dto";
+
 
 @Injectable()
 export class TaskService {
@@ -20,7 +19,6 @@ export class TaskService {
                  @InjectModel (Task.name) private taskModel: Model<TaskDocument>,
                  @InjectModel (TaskStage.name) private taskStageModel: Model<TaskStageDocument>,
                  @InjectModel (TaskStageRevision.name) private taskStageRevisionModel: Model<TaskStageRevisionDocument>,
-                 private s3Servise: S3Service
     ) {
     }
     // создание заадчи
