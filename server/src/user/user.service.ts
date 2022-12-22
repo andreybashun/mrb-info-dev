@@ -6,7 +6,6 @@ import {CreateUserDto} from "./dto/create-user.dto";
 
 
 
-
 @Injectable()
 export class UserService {
     constructor (@InjectModel (User.name) private userModel: Model<UserDocument>
@@ -30,7 +29,7 @@ export class UserService {
 
   //  удаление пользователя
 
-    async delete (id: ObjectId){
+    async delete (id: ObjectId): Promise<ObjectId>{
         return this.userModel.findByIdAndDelete (id);
 
     }

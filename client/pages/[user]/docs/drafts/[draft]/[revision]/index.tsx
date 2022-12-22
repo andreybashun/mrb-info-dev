@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import MainLayout from "../../../../../layouts/MainLayout";
+import MainLayout from "../../../../../../layouts/MainLayout";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -20,7 +20,7 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 
-const Index = ({docRevision}) => {
+const Index = ({docRevision, user}) => {
     const router = useRouter ()
     const path = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.key
     const certificatePath = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.certificateFile
@@ -45,7 +45,7 @@ const Index = ({docRevision}) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/draft/revision/create')}
+                        router.push ('/' + user._id + '/docs/drafts/draft/revision/create')}
                     >
                         Редактировать
                     </Button>
@@ -53,7 +53,7 @@ const Index = ({docRevision}) => {
                         Создать УЛ
                     </Button>
                     <Button size="small" variant="contained" onClick={() =>
-                        router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/create')}
+                        router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/create')}
                     >
                         Согласовать
                     </Button>
@@ -151,7 +151,7 @@ const Index = ({docRevision}) => {
                                       justifyContent="flex-start"
                                       alignItems="center">
                                     <IconButton color="info" onClick={() => axios.get (path)
-                                        .then (resp => router.push ('/docs/drafts'))
+                                        .then (resp => router.push ('/' + user._id + '/docs/drafts'))
                                         .catch (e => console.log (e))
                                     }>
 
@@ -173,7 +173,7 @@ const Index = ({docRevision}) => {
                                       alignItems="center"
                                 >
                                     <IconButton color="warning" onClick={() => axios.get (path)
-                                        .then (resp => router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
+                                        .then (resp => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
                                         .catch (e => console.log (e))
                                     }>
                                         <PictureAsPdfIcon/>
@@ -215,7 +215,7 @@ const Index = ({docRevision}) => {
                                       alignItems="center"
                                 >
                                     <IconButton color="warning" onClick={() => axios.get (certificatePath)
-                                        .then (resp => router.push ('/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/certificateView'))
+                                        .then (resp => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/certificateView'))
                                         .catch (e => console.log (e))
                                     }>
                                         <PictureAsPdfIcon/>
@@ -243,9 +243,12 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
     const response = await axios.get ('http://localhost:5000/document/revision/' + params.revision)
+    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
     return {
         props: {
-            docRevision: response.data
+            docRevision: response.data,
+            user: resUser.data
         }
     }
 }
+

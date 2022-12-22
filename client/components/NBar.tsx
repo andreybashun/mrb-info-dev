@@ -2,34 +2,39 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import {useRouter} from "next/router";
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import GroupsIcon from '@mui/icons-material/Groups';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PolicyIcon from '@mui/icons-material/Policy';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import HomeIcon from '@mui/icons-material/Home';
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import {IUser} from "../types/user";
+import DocList from "./Docs/DocList";
 
 
-const menuItems = [
-    {text: 'Инфопанель', href: '/[user]', icon: <HomeIcon />},
-    {text: 'Задачи', href: '/[user]/tasks', icon: <WorkHistoryIcon />},
-    {text: 'Документы', href: '/[user]/docs', icon: <LibraryBooksIcon />},
-    {text: 'Совещания', href: '/[user]/meetings', icon: <HandshakeIcon/>},
-    {text: 'Группы', href: '/[user]/groups', icon: <GroupsIcon/>},
-    {text: 'Удостоверяющий центр', href: '/[user]/certificationCenter', icon: <PolicyIcon/>},
-    {text: 'Репозиторий', href: '/[user]/repository', icon:  <InventoryIcon/>},
-]
 
-export default function NBar () {
+interface NBarProps {
+    user: IUser;
+}
+
+const NBar: React.FC<NBarProps> = ({user}) => {
+    const menuItems = [
+        {text: 'Инфопанель', href: '/' + user._id, icon: <HomeIcon />},
+        {text: 'Задачи', href: '/'+ user._id +'/tasks', icon: <WorkHistoryIcon />},
+        {text: 'Документы', href: '/'+ user._id +'/docs', icon: <LibraryBooksIcon />},
+        {text: 'Совещания', href:'/'+ user._id + '/meetings', icon: <HandshakeIcon/>},
+        {text: 'Группы', href: '/'+ user._id +'/groups', icon: <GroupsIcon/>},
+        {text: 'Удостоверяющий центр', href: '/' + user._id +'/certificationCenter', icon: <PolicyIcon/>},
+        {text: 'Репозиторий', href: '/' + user._id +'/repository', icon:  <InventoryIcon/>},
+    ]
     const router = useRouter ()
     return (
 
@@ -51,4 +56,15 @@ export default function NBar () {
             </Box>
         </Box>
     );
+}
+export default NBar;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    console.log (response.data)
+    return {
+        props: {
+            user: params.user,
+        }
+    }
 }

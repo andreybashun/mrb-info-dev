@@ -17,6 +17,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import {GetServerSideProps} from "next";
 
 interface DocRevisionItemProps {
     docRevision: IDocRevision;
@@ -76,7 +77,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) => {
+const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, user) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -114,7 +115,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/user/docs/drafts/createDraft')
+                    router.push ('/' + user._id + '/docs/drafts/createDraft')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -155,7 +156,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/document/' + docRevision.docId + '/' + docRevision._id)
-                                            .then(resp => router.push('/user/docs/drafts/' + docRevision.docId))
+                                            .then(resp => router.push('/' + user._id + '/docs/drafts/' + docRevision.docId))
                                             .catch(e => console.log(e))
                                     }
                                     }
@@ -185,3 +186,12 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}) =>
 }
 
 export default DocRevisionOptionMenu
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    return {
+        props: {
+            user: response.data,
+        }
+    }
+}

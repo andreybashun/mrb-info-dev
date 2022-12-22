@@ -8,12 +8,16 @@ import Button from "@mui/material/Button";
 import {IDoc} from "../../types/doc";
 import DocItem from "./DocItem";
 import {useRouter} from "next/router";
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import {IUser} from "../../types/user";
 
 interface DocListProps {
-    docs: IDoc[]
+    docs: IDoc[],
+    user:IUser
 }
 
-const DocList: React.FC<DocListProps> = ({docs}) => {
+const DocList: React.FC<DocListProps> = ({docs, user}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -21,7 +25,7 @@ const DocList: React.FC<DocListProps> = ({docs}) => {
         }}>
             <Stack direction="row" spacing={2}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/user/docs/drafts/createDraft')}
+                    router.push ('/' + user._id + '/docs/drafts/createDraft')}
                 >
                     Создать документ
                 </Button>
@@ -69,7 +73,7 @@ const DocList: React.FC<DocListProps> = ({docs}) => {
                             // {
                             //     return (<DocItem key={docs._id} doc={docs}/>)
                             // }
-                                return (<DocItem key={docs._id} doc={docs}/>)
+                                return (<DocItem key={docs._id} doc={docs} user={user}/>)
                         }
                     )}
                 </Box>

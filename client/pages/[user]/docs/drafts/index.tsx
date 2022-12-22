@@ -5,10 +5,11 @@ import {useTypedSelector} from "../../../../hooks/useTypedSelector";
 import {NextThunkDispatch, wrapper} from "../../../../store";
 import {fetchDocs} from "../../../../store/actions-creators/doc";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import axios from "axios";
 
 
 
-const Index = () => {
+const Index = (props) => {
 
     const {docs, error} = useTypedSelector(state => state.doc)
 
@@ -30,14 +31,20 @@ const Index = () => {
                     }
                 />
             </div>
-            <DocList docs={docs}/>
+            <DocList docs={docs} user={props.user}/>
         </MainLayout>
     );
 };
 
 export default Index;
 
-export const getServerSideProps = wrapper.getServerSideProps(async ({store}) => {
+export const getServerSideProps = wrapper.getServerSideProps(async ({store, params}) => {
     const  dispatch = store.dispatch as NextThunkDispatch
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
     await dispatch(await fetchDocs())
+    return {
+        props: {
+            user: response.data,
+        }
+    }
 })

@@ -6,13 +6,15 @@ import Appbar from "../components/Appbar";
 import Grid from '@mui/material/Grid';
 import List from "@mui/material/List";
 import Calendar from "../components/Calendar";
+import {IUser} from "../types/user";
 
 
 type Props = {
-    children?: React.ReactNode
+    children?: React.ReactNode;
+    user: IUser
 };
 
-const MLayout: React.FC<Props> = ({children}) => {
+const MLayout: React.FC<Props> = ({user, children}) => {
     return (
         <>
             <ThemeProvider theme={myTheme}>
@@ -21,7 +23,7 @@ const MLayout: React.FC<Props> = ({children}) => {
                         <Appbar/>
                     </Grid>
                     <Grid item xs={3} md={3.7} sx={{display: {xs: 'none', sm: 'block'}}}>
-                        <Nbar/>
+                        <Nbar user = {user}/>
                     </Grid>
                     <Grid item xs={20} sm={12} md={12.5}>
                         <List>

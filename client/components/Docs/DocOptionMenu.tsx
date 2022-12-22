@@ -17,9 +17,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import {GetServerSideProps} from "next";
+import {IUser} from "../../types/user";
 
 interface DocItemProps {
     doc: IDoc;
+    user:IUser;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -76,7 +79,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
+const DocOptionMenu: React.FC<DocItemProps> = ({doc, user}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -119,7 +122,7 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/user/docs/drafts/createDraft')
+                    router.push ('/' + user._id + '/docs/drafts/createDraft')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -183,7 +186,7 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc}) => {
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete('http://localhost:5000/document/' + doc._id)
-                                            .then(resp => router.push('/user/docs/drafts'))
+                                            .then(resp => router.push('/' + user._id + '/docs/drafts'))
                                             .catch(e => console.log(e))
                                         // router.push ('/docs/drafts/' + doc._id)
                                     }

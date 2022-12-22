@@ -13,6 +13,7 @@ import {FormControl} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import {IDoc, IDocRevision} from "../../../../../types/doc";
 import {jsPDF} from "jspdf";
+import {GetServerSideProps} from "next";
 
 
 
@@ -20,7 +21,7 @@ interface DocItemProps {
     doc: IDoc;
 }
 
-const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
+const CreateRevision: React.FC<DocItemProps> = ({doc}, user) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState(null)
     const  type = useInput('')
@@ -73,7 +74,7 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
             //     docId: draft,
             //     file: file
             // })
-                .then(resp => router.push('/user/docs/drafts/' + draft))
+                .then(resp => router.push('/' + user._id + '/user/docs/drafts/' + draft))
                 .catch(e => console.log(e))
         }
     }
@@ -159,3 +160,12 @@ const CreateRevision: React.FC<DocItemProps> = ({doc}) => {
 };
 
 export default CreateRevision;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    return {
+        props: {
+            user: response.data,
+        }
+    }
+}

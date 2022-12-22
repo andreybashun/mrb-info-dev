@@ -10,17 +10,18 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
 import DocRevisionOptionMenu from "./DocRevisionOptionMenu";
+import {IUser} from "../../types/user";
 
 
 
 
 interface DocRevisionItemProps{
     docRevision: IDocRevision;
-
+    user:IUser
 }
 
 
-const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
+const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision, user}) => {
     const  router = useRouter()
     return (
         <Grid container spacing={2}>
@@ -30,17 +31,17 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-start"
                       alignItems="center">
                     { docRevision.status === 'canceled' &&
-                        <IconButton color="warning"  onClick ={() => router.push (`/user/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="warning"  onClick ={() => router.push ('/' + user._id + `/docs/drafts/`+ docRevision.docId + '/' + docRevision._id)}>
                             <CancelIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'approved' &&
-                        <IconButton color="success"  onClick={() => router.push ('/user/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="success"  onClick={() => router.push ('/' + user._id + '/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
                             <CheckCircleOutlineIcon/>
                         </IconButton>
                     }
                     { docRevision.status === 'open' &&
-                        <IconButton color="info"  onClick={() => router.push ('/user/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/docs/drafts/'+ docRevision.docId + '/' + docRevision._id)}>
                             <DraftsIcon/>
                         </IconButton>
                     }
@@ -69,9 +70,6 @@ const DocRevisionItem:React.FC<DocRevisionItemProps> = ({docRevision}) => {
                       justifyContent="flex-end"
                       alignItems="center">
                     <DocRevisionOptionMenu docRevision={docRevision}/>
-                    {/*<IconButton>*/}
-                    {/*    <MoreVertIcon/>*/}
-                    {/*</IconButton>*/}
                 </Grid>
                 <Divider/>
             </ListItemButton>

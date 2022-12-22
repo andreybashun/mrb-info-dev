@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
-import MainLayout from "../../../../../layouts/MainLayout";
-import TaskStageStepWrapper from "../../../../../components/Tasks/TaskStageStepWrapper";
-import Credentials from "../../../../../components/Tasks/Credentials";
+import MainLayout from "../../../../../../layouts/MainLayout";
+import TaskStageStepWrapper from "../../../../../../components/Tasks/TaskStageStepWrapper";
+import Credentials from "../../../../../../components/Tasks/Credentials";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import FileUpload from "../../../../../components/FileUpload";
-import TaskDescription from "../../../../../components/Tasks/TaskDescription";
-import {GetServerSideProps} from "next";
-import axios from "axios";
-
-
-
+import FileUpload from "../../../../../../components/FileUpload";
+import TaskDescription from "../../../../../../components/Tasks/TaskDescription";
 
 
 const Create = () => {

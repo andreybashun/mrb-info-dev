@@ -7,7 +7,6 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 const Index =  ({tasks}) => {
-   console.log(tasks)
     return (
 
         <MainLayout>

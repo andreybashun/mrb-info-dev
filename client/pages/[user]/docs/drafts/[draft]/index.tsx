@@ -10,7 +10,7 @@ interface DocItemProps {
     doc: IDoc;
 }
 
-const Index = ({docRevisions, document}) => {
+const Index = ({docRevisions, document, user}) => {
 
     return (
         <MainLayout>
@@ -23,7 +23,7 @@ const Index = ({docRevisions, document}) => {
                 ]
                 }
             />
-            <DocRevisionList docRevisions={docRevisions} />
+            <DocRevisionList docRevisions={docRevisions} user={user}/>
         </MainLayout>
     );
 
@@ -33,10 +33,12 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     const response = await axios.get ('http://localhost:5000/document/' + params.draft);
+    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
     return {
         props: {
             docRevisions: response.data.docRevisions,
-            document: params.draft
+            document: params.draft,
+            user:resUser.data
         }
     }
 }

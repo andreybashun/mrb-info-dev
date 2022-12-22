@@ -12,8 +12,10 @@ import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
 import OptionMenu from "../../../components/OptionMenu";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import {GetServerSideProps} from "next";
+import axios from "axios";
 
-const Index: React.FC = () => {
+const Index =  (props) => {
     const router = useRouter ()
     return (
         <MainLayout>
@@ -77,7 +79,7 @@ const Index: React.FC = () => {
                                       justifyContent="flex-start"
                                       alignItems="center"
                                 >
-                                    <IconButton color="info" onClick={() => router.push ('user/docs/drafts')}>
+                                    <IconButton color="info" onClick={() => router.push ('/' + props.user._id + '/docs/drafts')}>
                                         <Folder/>
                                     </IconButton>
                                     Документы на согласовани
@@ -105,7 +107,7 @@ const Index: React.FC = () => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                    <IconButton color="info" onClick={() => router.push ('user/docs/drafts')}>
+                                    <IconButton color="info" onClick={() => router.push ('/' + props.user._id + '/docs/drafts')}>
                                         <Folder/>
                                     </IconButton>
                                     Рабочие документы
@@ -161,3 +163,12 @@ const Index: React.FC = () => {
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    return {
+        props: {
+            user: response.data,
+        }
+    }
+}

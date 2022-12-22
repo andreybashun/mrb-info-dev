@@ -30,7 +30,7 @@ const DraftCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/user/docs/drafts/' + draft + '/editDraft/')}
+                        router.push ('/' + props.user._id + '/user/docs/drafts/' + draft + '/editDraft/')}
                     >
                         Редактировать
                     </Button>
@@ -145,10 +145,12 @@ export default DraftCard;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     const response = await axios.get ('http://localhost:5000/document/' + params.draft);
+    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
     return {
         props: {
             doc: response.data,
-            document: params.draft
+            document: params.draft,
+            user: resUser.data
         }
     }
 }

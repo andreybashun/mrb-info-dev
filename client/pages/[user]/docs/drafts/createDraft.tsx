@@ -14,10 +14,11 @@ import Snackbar from "@mui/material/Snackbar";
 import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
+import {GetServerSideProps} from "next";
 
 
 
-const CreateDraft = () => {
+const CreateDraft = (user) => {
     const [activeStep, setActiveStep] = useState (0);
     const [file, setFile] = useState (null);
     const name = useInput ('');
@@ -114,7 +115,7 @@ const CreateDraft = () => {
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: 'user/docs/drafts/' + resp.data._id})
+                    router.push ({pathname: '/' + user._id  + '/docs/drafts/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -315,3 +316,12 @@ const CreateDraft = () => {
 };
 
 export default CreateDraft;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    return {
+        props: {
+            user: response.data,
+        }
+    }
+}

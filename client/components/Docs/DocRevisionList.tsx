@@ -9,16 +9,18 @@ import DocRevisionItem from "./DocRevisionItem";
 import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
 import ArticleIcon from "@mui/icons-material/Article";
+import {IUser} from "../../types/user";
 
 
 interface DocRevisionListProps{
     docRevisions:IDocRevision[]
+    user:IUser
 }
 
 
 
 
-const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
+const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) => {
     const router = useRouter();
     const {draft} = router.query;
     console.log(draft);
@@ -29,12 +31,12 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
             <Stack direction="row"  justifyContent={"space-between"}>
 
                     <Button size="small" variant="contained" onClick={() =>
-                        router.push ('/user/docs/drafts/' + draft + '/createRevision/')}
+                        router.push ('/' + user._id + '/docs/drafts/' + draft + '/createRevision/')}
                     >
                         Создать ревизию
                     </Button>
 
-                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/user/docs/drafts/' + draft + '/draftCard')}>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/' + user._id + '/docs/drafts/' + draft + '/draftCard')}>
                     Карточка документа
                 </Button>
 
@@ -87,7 +89,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
                 <Divider/>
                 <Box p={2}>
                         {docRevisions.map(docRevisions =>
-                            <DocRevisionItem key={docRevisions._id} docRevision={docRevisions}/>
+                            <DocRevisionItem key={docRevisions._id} docRevision={docRevisions} user={user}/>
                         )}
                </Box>
             </List>
@@ -96,3 +98,4 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions}) => {
 };
 
 export default DocRevisionList;
+

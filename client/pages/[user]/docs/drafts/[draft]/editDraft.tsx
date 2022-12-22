@@ -110,7 +110,7 @@ const EditDraft = (props) => {
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/user/docs/drafts/' + resp.data._id})
+                    router.push ({pathname: '/' + props.user._id + '/user/docs/drafts/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -314,10 +314,13 @@ export default EditDraft;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
     const response = await axios.get ('http://localhost:5000/document/' + params.draft);
+    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
     return {
         props: {
             doc: response.data,
-            document: params.draft
+            document: params.draft,
+            user: resUser.data
         }
     }
 }
+

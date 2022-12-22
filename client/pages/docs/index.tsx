@@ -8,8 +8,6 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import {Folder} from "@mui/icons-material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import {useRouter} from "next/router";
 import ListItemButton from "@mui/material/ListItemButton";
 import OptionMenu from "../../components/OptionMenu";
