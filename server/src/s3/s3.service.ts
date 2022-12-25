@@ -11,6 +11,12 @@ export class S3Service {
         await this.uploadS3 (file, bucketS3, fileName);
        return fileName
     }
+    async uploadPng (file): Promise<string> {
+        const fileName = uuid.v4 ();
+        const bucketS3 = 'mrb-doc';
+        await this.uploadPngS3 (file, bucketS3, fileName);
+        return fileName
+    }
 
     async uploadS3 (file, bucket, name) {
         const s3 = this.getS3 ();
@@ -38,6 +44,28 @@ export class S3Service {
             });
         });
     }
+
+    async uploadPngS3 (file, bucket, name) {
+        const s3 = this.getS3 ();
+        const params = {
+            Bucket: bucket,
+            Key: String (name),
+            Body: file,
+            ContentType: 'image/jpeg',
+        };
+
+        return new Promise ((resolve, reject) => {
+            s3.upload (params, (err, data) => {
+                if (err) {
+                    console.log (err);
+                    reject (err.message);
+                }
+                resolve (data);
+
+            });
+        });
+    }
+
 
     async getFile (key): Promise<any>{
         const path = 'C:\\Users\\root\\Downloads\\' + key

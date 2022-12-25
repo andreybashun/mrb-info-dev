@@ -9,7 +9,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {IDoc, IDocRevision} from "../../types/doc";
+import {IDocRevision} from "../../types/doc";
 import {useRouter} from "next/router";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -155,7 +155,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, us
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/document/' + docRevision.docId + '/' + docRevision._id)
+                                        axios.delete(process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision._id)
                                             .then(resp => router.push('/' + user._id + '/docs/drafts/' + docRevision.docId))
                                             .catch(e => console.log(e))
                                     }
@@ -188,7 +188,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, us
 export default DocRevisionOptionMenu
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             user: response.data,

@@ -14,7 +14,7 @@ export default DocViewer
 
 export const getServerSideProps: GetServerSideProps = async ({params}) =>{
 
-    const response = await  axios.get('http://localhost:5000/document/revision/' + params.revision)
+    const response = await  axios.get(process.env.SERVER_HOST + 'document/revision/' + params.revision)
     return {
         props:{
             docRevision: response.data

@@ -16,7 +16,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-
+import {IUser} from "../../types/user";
+import {ITasks} from "../../types/task";
 
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -73,7 +74,12 @@ const style = {
     borderRadius: 2
 };
 
-const TaskOptionMenu= ({task}) => {
+interface TaskOptionMenuProps {
+    user: IUser;
+    task: ITasks;
+}
+
+const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -115,11 +121,11 @@ const TaskOptionMenu= ({task}) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => {
-                    handleClose()
-                    router.push ('/user/tasks/outbox/' + task._id +  '/editTask')
+                    handleClose ()
+                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/editTask')
                 }
                 } disableRipple>
-                    <EditIcon />
+                    <EditIcon/>
                 </MenuItem>
                 <MenuItem>
                     <Modal
@@ -156,7 +162,8 @@ const TaskOptionMenu= ({task}) => {
                                 Удаление задачи
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить задачу? Задача будет помещена в архив. Восстановление задачи будет возможно из архивной версии в течении 120 дней
+                                Вы действительно хотите удалить задачу? Задача будет помещена в архив. Восстановление
+                                задачи будет возможно из архивной версии в течении 120 дней
                             </Typography>
                             <Grid
                                 container
@@ -175,13 +182,13 @@ const TaskOptionMenu= ({task}) => {
                                             sx={{mt: 2, marginTop: 2}}>Отменить
                                     </Button>
                                 </Grid>
-                                <Grid >
+                                <Grid>
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/task/' + task._id)
-                                            .then(resp => router.push('/user/tasks/outbox'))
-                                            .catch(e => console.log(e))
+                                        axios.delete (process.env.SERVER_HOST + 'task/' + task._id)
+                                            .then (resp => router.push ('/' + user._id + '/user/tasks/outbox'))
+                                            .catch (e => console.log (e))
                                     }
                                     }
                                             variant="contained" color={"info"}

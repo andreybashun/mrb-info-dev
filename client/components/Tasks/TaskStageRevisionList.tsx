@@ -8,9 +8,18 @@ import Divider from "@mui/material/Divider";
 import TaskStageRevisionItem from "./TaskStageRevisionItem";
 import ArticleIcon from "@mui/icons-material/Article";
 import {useRouter} from "next/router";
+import {IUser} from "../../types/user";
+import {ITasks, ITaskStage, ITaskStageRevision} from "../../types/task";
 
-const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
-    console.log('task',taskId, stageId)
+interface TaskStageRevisionListProps {
+    user: IUser;
+    task: ITasks;
+    taskStage: ITaskStage;
+    taskStageRevisions:ITaskStageRevision[];
+}
+
+const TaskStageRevisionList:React.FC<TaskStageRevisionListProps> =
+    ({taskStageRevisions, task, taskStage, user}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -18,11 +27,11 @@ const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
         }}>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/user/tasks/outbox/' + taskId + '/' + stageId + '/createStageRevision')}>
+                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id + '/createStageRevision')}>
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/user/tasks/outbox/' + taskId + '/' + stageId +  '/taskStageCard')}>
+                        onClick={()=> router.push('/user/tasks/outbox/' + task._id + '/' + taskStage._id +  '/taskStageCard')}>
                     Карточка этапа
                 </Button>
             </Stack>
@@ -72,8 +81,8 @@ const TaskStageRevisionList = ({taskStageRevision, taskId, stageId}) => {
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-                    {taskStageRevision.map(taskStageRevision =>
-                        <TaskStageRevisionItem key={taskStageRevision._id} taskStageRevision={taskStageRevision} taskId={taskId}/>
+                    {taskStageRevisions.map(taskStageRevision =>
+                        <TaskStageRevisionItem key={taskStageRevision._id} taskStageRevision={taskStageRevision} task={task} user={user} taskStage={taskStage}/>
                     )}
                 </Box>
             </List>

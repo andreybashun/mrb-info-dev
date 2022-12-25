@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import MainLayout from "../../../../../../layouts/MainLayout";
+import React, {} from 'react';
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 import axios from "axios";
@@ -9,13 +8,13 @@ import {useRouter} from "next/router";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
+import MLayout from "../../../../../../layouts/MLayout";
 
 
 const TaskStageCard = (props) => {
     const router = useRouter ()
-    const {draft} = router.query;
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
@@ -23,7 +22,8 @@ const TaskStageCard = (props) => {
                     {from: 'outbox', to: 'исходящие задачи'},
                     {from: props.task._id, to: props.task.name},
                     {from: props.stage._id, to: props.stage.name},
-                    {from: 'taskStageCard', to: 'карточка этапа'}
+                    {from: 'taskStageCard', to: 'карточка этапа'},
+                    {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                 ]
                 }
 
@@ -168,19 +168,21 @@ const TaskStageCard = (props) => {
                     </Grid>
                 </Grid>
             </Stack>
-        </MainLayout>
+        </MLayout>
     )
 };
 
 export default TaskStageCard;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const resTask = await axios.get ('http://localhost:5000/task/' + params.task);
-    const resStage = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
+    const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
+    const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: resTask.data,
             stage: resStage.data,
+            user:resUser.data,
         }
     }
 }

@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../../../../layouts/MainLayout";
 import {useInput} from "../../../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -16,12 +15,12 @@ import MenuItem from "@mui/material/MenuItem";
 import {GetServerSideProps} from "next";
 import TaskStageStepWrapper from "../../../../../../components/Tasks/TaskStageStepWrapper";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import MLayout from "../../../../../../layouts/MLayout";
 
 
-const CreateStageRevision = ({docs, task, stage}) => {
+const CreateStageRevision = ({docs, task, stage, user}) => {
 
     const [activeStep, setActiveStep] = useState (0);
-    const [file, setFile] = useState (null);
     const name = useInput ('');
     const author = useInput ('A.Bashun');
     const discription = useInput ('');
@@ -36,7 +35,6 @@ const CreateStageRevision = ({docs, task, stage}) => {
     const taskId = id.task + '';
 
 
-
     const [open, setOpen] = useState (false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -45,12 +43,6 @@ const CreateStageRevision = ({docs, task, stage}) => {
         setOpen (false);
     };
 
-
-    const [documentName, setName] = React.useState ('');
-
-    const handleNameChange = (event: SelectChangeEvent) => {
-        setName (event.target.value);
-    };
 
     const [type, setType] = React.useState ('');
 
@@ -61,59 +53,57 @@ const CreateStageRevision = ({docs, task, stage}) => {
     const [status, setStatus] = React.useState ('');
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log('document status',event.target.value);
+        console.log ('document status', event.target.value);
 
         setStatus (event.target.value);
 
-        console.log('document status',event.target.value);
+        console.log ('document status', event.target.value);
     };
 
     const [aircraftType, setAircraftType] = React.useState ('');
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
-        setAircraftType(event.target.value);
+        setAircraftType (event.target.value);
     };
 
     const [signer, setSigner] = React.useState ('');
 
     const handleSignerChange = (event: SelectChangeEvent) => {
-        setSigner(event.target.value);
+        setSigner (event.target.value);
     };
 
     const [engineType, setEngineType] = React.useState ('');
 
     const handleEngineChange = (event: SelectChangeEvent) => {
-        setEngineType(event.target.value);
+        setEngineType (event.target.value);
     };
 
-    const [doc, setDoc] = React.useState('');
-    const [docRevisions, setDocRevisions] = React.useState([]);
+    const [doc, setDoc] = React.useState ('');
+    const [docRevisions, setDocRevisions] = React.useState ([]);
 
 
-    const handleDocChange = async  (event: SelectChangeEvent) => {
+    const handleDocChange = async (event: SelectChangeEvent) => {
 
-        setDoc(event.target.value.toString());
+        setDoc (event.target.value.toString ());
 
-            const response =   await axios.get('http://localhost:5000/document/' + event.target.value.toString())
+        const response = await axios.get (process.env.SERVER_HOST + 'document/' + event.target.value.toString ())
 
-            await console.log('документ',  doc)
-            await console.log('ревизии ',  response.data.docRevisions)
-        await console.log('ревизии ',  response.data.docRevisions)
-        if (event.target.value.toString() === '' || doc !== ''){
-            await  setDocRevision('')
+        await console.log ('документ', doc)
+        await console.log ('ревизии ', response.data.docRevisions)
+        await console.log ('ревизии ', response.data.docRevisions)
+        if (event.target.value.toString () === '' || doc !== '') {
+            await setDocRevision ('')
         } else {
-            await setDocRevisions( response.data.docRevisions);
+            await setDocRevisions (response.data.docRevisions);
         }
     };
 
 
-
-
-    const [docRevision, setDocRevision] = React.useState('');
+    const [docRevision, setDocRevision] = React.useState ('');
 
     const handleDocRevisionChange = async (event: SelectChangeEvent) => {
 
-        setDocRevision( event.target.value.toString());
+        setDocRevision (event.target.value.toString ());
     };
 
     const action = (
@@ -141,7 +131,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post ('http://localhost:5000/task/revision', {
+            axios.post (process.env.SERVER_HOST + 'task/revision', {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -153,17 +143,17 @@ const CreateStageRevision = ({docs, task, stage}) => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  date.toLocaleDateString (),
-                taskStageId:stageId,
-                taskId:taskId,
-                signer:signer,
+                creationDate: date.toLocaleDateString (),
+                taskStageId: stageId,
+                taskId: taskId,
+                signer: signer,
                 docForSignId: doc,
                 docRevForSignId: docRevision
             })
                 .then (resp => {
                     setOpen (true)
-                    console.log()
-                    router.push ({pathname: '/user/tasks/outbox/' + resp.data.taskId + '/' + resp.data.taskStageId + '/' + resp.data._id})
+                    console.log ()
+                    router.push ({pathname: '/' + user._id + '/tasks/outbox/' + resp.data.taskId + '/' + resp.data.taskStageId + '/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -173,7 +163,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
@@ -181,7 +171,8 @@ const CreateStageRevision = ({docs, task, stage}) => {
                     {from: 'outbox', to: 'исходящие задачи'},
                     {from: taskId, to: 'задача: ' + task.name},
                     {from: stageId, to: 'этап: ' + stage.name},
-                    {from: 'createStageRevision', to: 'создание ревизии'}
+                    {from: 'createStageRevision', to: 'создание ревизии'},
+                    {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                 ]
                 }
             />
@@ -228,7 +219,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
 
                         {/*<DocDescription/>*/}
 
-                        <Box  sx={{p:1, width:'95ch'}}>
+                        <Box sx={{p: 1, width: '95ch'}}>
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
@@ -236,11 +227,11 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                 multiline
                                 fullWidth
                                 rows={3}
-                                sx={{marginRight:1, display:'flex'}}
+                                sx={{marginRight: 1, display: 'flex'}}
                             />
                         </Box>
 
-                        <FormControl sx={{paddingBottom: 2, paddingTop: 2,width: '25ch'}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, width: '25ch'}}>
                             <TextField
                                 {...creationDate}
                                 id={"creationDate"}
@@ -251,7 +242,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{paddingBottom: 2,  paddingTop: 2, marginLeft: 10, width: '25ch',}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, marginLeft: 10, width: '25ch',}}>
                             <TextField
                                 {...lastChangeDate}
                                 id={"creationDate"}
@@ -262,7 +253,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                             />
                         </FormControl>
 
-                        <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус ревизии</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
@@ -275,7 +266,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                     <em>None</em>
                                 </MenuItem>
                                 <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem  value={"Active"}>Active</MenuItem>
+                                <MenuItem value={"Active"}>Active</MenuItem>
 
                             </Select>
 
@@ -284,8 +275,8 @@ const CreateStageRevision = ({docs, task, stage}) => {
                     </Box>
                 }
                 {activeStep === 1 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{p:1}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{p: 1}} size="small">
                             <TextField
                                 {...author}
                                 id={"author"}
@@ -310,8 +301,8 @@ const CreateStageRevision = ({docs, task, stage}) => {
                     </Box>
                 }
                 {activeStep === 2 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип самолета</InputLabel>
                             <Select
                                 labelId="select-small"
@@ -327,7 +318,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                 <MenuItem value={"RRJ-NEW"}>RRJ-NEW</MenuItem>
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип двигателя</InputLabel>
                             <Select
                                 onChange={handleEngineChange}
@@ -358,9 +349,9 @@ const CreateStageRevision = ({docs, task, stage}) => {
                 }
                 {activeStep === 3 &&
 
-                    <Box sx={{width:'800px', alignContent:"space-arround"}}>
-                        <FormControl sx={{ m: 1, width: '30ch'}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Идентификатор документа</InputLabel>
+                    <Box sx={{width: '800px', alignContent: "space-arround"}}>
+                        <FormControl sx={{m: 1, width: '30ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Идентификатор документа</InputLabel>
                             <Select
                                 onChange={handleDocChange}
                                 defaultValue=""
@@ -372,9 +363,9 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                {docs.map((doc, index) => (
+                                {docs.map ((doc, index) => (
                                     <MenuItem key={index} value={doc._id}>
-                                       {doc._id}
+                                        {doc._id}
                                     </MenuItem>
                                 ))}
 
@@ -392,7 +383,7 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                {docs.map((doc, index) => (
+                                {docs.map ((doc, index) => (
                                     <MenuItem key={index} value={doc._id}>
                                         {doc.name}
                                     </MenuItem>
@@ -400,8 +391,9 @@ const CreateStageRevision = ({docs, task, stage}) => {
                             </Select>
                         </FormControl>
 
-                        <FormControl sx={{ m: 1, width: '30ch'}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Идентификатор ревизии документа</InputLabel>
+                        <FormControl sx={{m: 1, width: '30ch'}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Идентификатор ревизии
+                                документа</InputLabel>
                             <Select
                                 onChange={handleDocRevisionChange}
                                 defaultValue=""
@@ -416,16 +408,17 @@ const CreateStageRevision = ({docs, task, stage}) => {
 
                                 {
 
-                                    docRevisions.map((docRevision, index) => (
-                                    <MenuItem key={index} value={docRevision._id}>
-                                        {docRevision._id}
-                                    </MenuItem>
-                                ))}
+                                    docRevisions.map ((docRevision, index) => (
+                                        <MenuItem key={index} value={docRevision._id}>
+                                            {docRevision._id}
+                                        </MenuItem>
+                                    ))}
 
                             </Select>
                         </FormControl>
                         <FormControl sx={{m: 1, width: '55ch'}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование ревизии документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование ревизии
+                                документа</InputLabel>
                             <Select
                                 onChange={handleDocRevisionChange}
                                 labelId="select-small"
@@ -439,11 +432,11 @@ const CreateStageRevision = ({docs, task, stage}) => {
                                 </MenuItem>
                                 {
 
-                                    docRevisions.map((docRevision, index) => (
+                                    docRevisions.map ((docRevision, index) => (
                                         <MenuItem key={index} value={docRevision._id}>
                                             {docRevision.name}
                                         </MenuItem>
-                                ))}
+                                    ))}
                             </Select>
                         </FormControl>
                     </Box>
@@ -452,10 +445,9 @@ const CreateStageRevision = ({docs, task, stage}) => {
                 {activeStep === 4 &&
 
 
-
-                    <Box sx={{width:'800px', alignContent:"space-arround"}}>
-                        <FormControl fullWidth sx={{ m:1, paddingRight: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}} >Утверждающий</InputLabel>
+                    <Box sx={{width: '800px', alignContent: "space-arround"}}>
+                        <FormControl fullWidth sx={{m: 1, paddingRight: 2}} size="small">
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Утверждающий</InputLabel>
                             <Select
                                 onChange={handleSignerChange}
                                 defaultValue=""
@@ -488,21 +480,23 @@ const CreateStageRevision = ({docs, task, stage}) => {
                     action={action}
                 />
             </div>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default CreateStageRevision;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response =  await  axios.get('http://localhost:5000/document/')
-    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
-    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
+    const response = await axios.get (process.env.SERVER_HOST + 'document/')
+    const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
+    const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage)
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             docs: response.data,
             task: resTask.data,
-            stage: resStage.data
+            stage: resStage.data,
+            user: resUser.data
 
         }
     }

@@ -6,9 +6,17 @@ import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskStageRevisionOptionMenu from "./TaskStageRevisionOptionMenu";
+import {IUser} from "../../types/user";
+import {ITasks, ITaskStage, ITaskStageRevision} from "../../types/task";
 
+interface TaskStageRevisionItemProps {
+    user: IUser;
+    task: ITasks;
+    taskStage: ITaskStage;
+    taskStageRevision:ITaskStageRevision;
+}
 
-const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
+const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, task, user}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -17,7 +25,7 @@ const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-                        <IconButton color="info"  onClick={() => router.push ('/user/tasks/outbox/' + taskId + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
                             <AssignmentIcon/>
                         </IconButton>
                     {taskStageRevision.name}
@@ -44,7 +52,7 @@ const TaskStageRevisionItem = ({taskStageRevision, taskId}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <TaskStageRevisionOptionMenu taskStageRevision={taskStageRevision}/>
+                    <TaskStageRevisionOptionMenu taskStageRevision={taskStageRevision} user={user}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

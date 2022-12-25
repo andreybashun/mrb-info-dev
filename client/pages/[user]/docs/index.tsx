@@ -1,5 +1,4 @@
 import React from 'react';
-import MainLayout from "../../../layouts/MainLayout";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
@@ -14,17 +13,21 @@ import OptionMenu from "../../../components/OptionMenu";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 import axios from "axios";
+import MLayout from "../../../layouts/MLayout";
+
+
 
 const Index =  (props) => {
     const router = useRouter ()
     return (
-        <MainLayout>
+        <MLayout user = {props.user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
                     replaceCharacterList={[
                         {from: 'docs', to: 'мои документы'},
                         {from: 'drafts', to: 'проекты'},
+                        {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                     ]
                     }
                 />
@@ -158,14 +161,14 @@ const Index =  (props) => {
                     </Box>
                 </List>
             </Stack>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             user: response.data,

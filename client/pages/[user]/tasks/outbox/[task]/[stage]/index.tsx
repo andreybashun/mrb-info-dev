@@ -1,13 +1,13 @@
 import React from 'react';
-import MainLayout from "../../../../../../layouts/MainLayout";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import TaskStageRevisionList from "../../../../../../components/Tasks/TaskStageRevisionList";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import MLayout from "../../../../../../layouts/MLayout";
 
-const Index = ({taskStageRevision, taskId, stageId, stage, task}) => {
+const Index = ({taskStageRevision, taskId, stageId, stage, task, user}) => {
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
@@ -16,12 +16,13 @@ const Index = ({taskStageRevision, taskId, stageId, stage, task}) => {
                         {from: 'outbox', to: 'исходящие задачи'},
                         {from: taskId, to: 'задача: ' + task.name},
                         {from: stageId, to: 'этап:' + stage.name},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                     ]
                     }
                 />
             </div>
-            <TaskStageRevisionList taskStageRevision={taskStageRevision} taskId={taskId} stageId={stageId}/>
-        </MainLayout>
+            <TaskStageRevisionList taskStageRevisions={taskStageRevision} task={task} taskStage={stage} user={user}/>
+        </MLayout>
     );
 };
 
@@ -29,16 +30,18 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
 
-    const response = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
-    const res = await  axios.get('http://localhost:5000/task/' + response.data.taskId)
+    const response = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage);
+    const res = await axios.get (process.env.SERVER_HOST + 'task/' + response.data.taskId)
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
 
     return {
         props: {
             taskStageRevision: response.data.taskStageRevisions,
             taskId: params.task,
             stageId: params.stage,
-            stage:response.data,
-            task: res.data
+            stage: response.data,
+            task: res.data,
+            user: resUser.data,
 
         }
     }

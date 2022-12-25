@@ -17,7 +17,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import {IUser} from "../types/user";
-import DocList from "./Docs/DocList";
+
 
 
 
@@ -60,7 +60,7 @@ const NBar: React.FC<NBarProps> = ({user}) => {
 export default NBar;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     console.log (response.data)
     return {
         props: {

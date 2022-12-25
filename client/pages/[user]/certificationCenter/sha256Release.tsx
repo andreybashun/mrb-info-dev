@@ -3,8 +3,6 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import {useRouter} from "next/router";
 import axios from "axios";
-import {IDoc} from "../../../types/doc";
-import MainLayout from "../../../layouts/MainLayout";
 import FileUpload from "../../../components/FileUpload";
 import ShaReleaseStepWraper from "../../../components/CertificationCenter/ShaReleaseStepWraper";
 import Box from "@mui/material/Box";
@@ -17,23 +15,22 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {Stack} from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import PolicyIcon from '@mui/icons-material/Policy';
+
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {jsPDF} from "jspdf";
+import {GetServerSideProps} from "next";
+import MLayout from "../../../layouts/MLayout";
 
 
-interface DocItemProps {
-    doc: IDoc;
-}
 
-const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
+const Sha256Release = ({user}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState (null)
     const [certificate, setCertificate] = useState (null)
     const router = useRouter ()
 
     const [SuccessModalOpen, setSuccessModalOpen] = React.useState (false);
-    const [modalText, setModalText] = React.useState(null)
+    const [modalText, setModalText] = React.useState (null)
     const handleSuccessModalOpen = () => setSuccessModalOpen (true);
     const handleSuccessModalClose = () => setSuccessModalOpen (false);
 
@@ -41,9 +38,9 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
     const handleFailModalOpen = () => setFailModalOpen (true);
     const handleFailModalClose = () => setFailModalOpen (false);
 
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = React.useState (false);
 
-    const [pdf, setpdf] = React.useState(null)
+    const [pdf, setpdf] = React.useState (null)
 
     const buttonStyle = {
         marginTop: 4,
@@ -75,13 +72,13 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
         } else {
             const SHA256Data = new FormData ()
             SHA256Data.append ('file', file)
-            axios.post ('http://localhost:5000/crypto/sha256', SHA256Data)
+            axios.post (process.env.SERVER_HOST + 'crypto/sha256', SHA256Data)
                 .then (resp => {
                     const calculatedHash = resp.data
                     if (calculatedHash) {
-                        setModalText(calculatedHash)
+                        setModalText (calculatedHash)
                         setSuccessModalOpen (true)
-                        setpdf(calculatedHash)
+                        setpdf (calculatedHash)
                     } else {
                         setFailModalOpen (true)
                     }
@@ -93,22 +90,19 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
     }
 
 
-
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
                     replaceCharacterList={[
                         {from: 'certificationCenter', to: 'Удостоверяющий центр'},
                         {from: 'sha256Release', to: 'SHA256. Выпуск сертификата'},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                     ]
                     }
                 />
             </div>
-            {/*<Typography variant="h5" sx={{mt: 0, marginTop: 2, color: ' #757575', paddingLeft:2}}>*/}
-            {/*    <PolicyIcon sx={{fontSize: 30}}/> Удостоверяющий центр. Выпуск сертификата. Агоритм SHA256*/}
-            {/*</Typography>*/}
             <Box sx={{border: '1px solid #757575', margin: 2, padding: 4, borderRadius: 3}}>
 
                 <ShaReleaseStepWraper activeStep={activeStep}>
@@ -145,10 +139,11 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                         <Typography id="modal-modal-description" sx={{mt: 2, marginBottom: 2}} align={"center"}>
                             Выпущенный SHA256 сертификат
                         </Typography>
-                        <Typography id="modal-modal-description" variant="caption" sx={{mt: 2, marginBottom: 2}} align={"center"}>
-                        {modalText}
+                        <Typography id="modal-modal-description" variant="caption" sx={{mt: 2, marginBottom: 2}}
+                                    align={"center"}>
+                            {modalText}
                         </Typography>
-                        <FormGroup  sx={{paddingTop:4}}  onChange={() => setChecked(!checked)}>
+                        <FormGroup sx={{paddingTop: 4}} onChange={() => setChecked (!checked)}>
                             <FormControlLabel control={<Checkbox color="info"/>} label=
                                 {
                                     <Typography id="modal-modal-description" variant="caption" sx={{mt: 0}}
@@ -168,17 +163,17 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                         </FormGroup>
                         <Button onClick={() => {
 
-                            setChecked(false)
-                            if (checked === true){
-                                const doc = new jsPDF();
-                                const date = new Date();
-                                doc.text(pdf, 10, 10);
-                                doc.text("Certificate released:" , 10, 20 )
-                                doc.text("id: " + Date.now() , 10, 30 )
-                                doc.text("date: " + date.toLocaleDateString() +" "+ date.toLocaleTimeString(),10, 40);
-                                doc.text("file: " + file.name, 10, 50);
-                                doc.cell(10,280,190,10,"Creation Request                    MRB Platform                https://mrb-info.ru",1,"")
-                                doc.save();
+                            setChecked (false)
+                            if (checked === true) {
+                                const doc = new jsPDF ();
+                                const date = new Date ();
+                                doc.text (pdf, 10, 10);
+                                doc.text ("Certificate released:", 10, 20)
+                                doc.text ("id: " + Date.now (), 10, 30)
+                                doc.text ("date: " + date.toLocaleDateString () + " " + date.toLocaleTimeString (), 10, 40);
+                                doc.text ("file: " + file.name, 10, 50);
+                                doc.cell (10, 280, 190, 10, "Creation Request                    MRB Platform                https://mrb-info.ru", 1, "")
+                                doc.save ();
                             }
                             handleSuccessModalClose ()
                         }
@@ -188,8 +183,17 @@ const Sha256Release: React.FC<DocItemProps> = ({doc}) => {
                     </Box>
                 </Modal>
             </Box>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default Sha256Release;
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    return {
+        props: {
+            user: resUser.data
+        }
+    }
+}

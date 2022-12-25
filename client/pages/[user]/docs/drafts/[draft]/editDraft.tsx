@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../../../layouts/MainLayout";
 import {useInput} from "../../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -15,7 +14,8 @@ import DocStepWrapper from "../../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import {GetServerSideProps} from "next";
-
+import MLayout from "../../../../../layouts/MLayout";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 const EditDraft = (props) => {
@@ -40,12 +40,6 @@ const EditDraft = (props) => {
     };
 
 
-    const [documentName, setName] = React.useState ('');
-
-    const handleNameChange = (event: SelectChangeEvent) => {
-        setName (event.target.value);
-    };
-
     const [type, setType] = React.useState (props.doc.type);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
@@ -61,13 +55,13 @@ const EditDraft = (props) => {
     const [aircraftType, setAircraftType] = React.useState (props.doc.aircraftType);
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
-        setAircraftType(event.target.value);
+        setAircraftType (event.target.value);
     };
 
     const [engineType, setEngineType] = React.useState (props.doc.engineType);
 
     const handleEngineChange = (event: SelectChangeEvent) => {
-        setEngineType(event.target.value);
+        setEngineType (event.target.value);
     };
 
     const action = (
@@ -94,7 +88,7 @@ const EditDraft = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put ('http://localhost:5000/document/' + props.document, {
+            axios.put (process.env.SERVER_HOST + 'document/' + props.document, {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -106,7 +100,7 @@ const EditDraft = (props) => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  creationDate,
+                creationDate: creationDate,
             })
                 .then (resp => {
                     setOpen (true)
@@ -120,7 +114,19 @@ const EditDraft = (props) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'docs', to: 'мои документы'},
+                        {from: 'drafts', to: 'проекты'},
+                        {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
+                        {from: 'createDraft', to: 'редактирование драфта'},
+                    ]
+                    }
+                />
+            </div>
             <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
@@ -164,7 +170,7 @@ const EditDraft = (props) => {
 
                         {/*<DocDescription/>*/}
 
-                        <Box  sx={{p:1, width:'95ch'}}>
+                        <Box sx={{p: 1, width: '95ch'}}>
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
@@ -172,11 +178,11 @@ const EditDraft = (props) => {
                                 multiline
                                 fullWidth
                                 rows={3}
-                                sx={{marginRight:1, display:'flex'}}
+                                sx={{marginRight: 1, display: 'flex'}}
                             />
                         </Box>
 
-                        <FormControl sx={{paddingBottom: 2, paddingTop: 2,width: '25ch'}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, width: '25ch'}}>
                             <TextField
                                 {...creationDate}
                                 id={"creationDate"}
@@ -187,7 +193,7 @@ const EditDraft = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{paddingBottom: 2,  paddingTop: 2, marginLeft: 10, width: '25ch',}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, marginLeft: 10, width: '25ch',}}>
                             <TextField
                                 {...lastChangeDate}
                                 id={"creationDate"}
@@ -198,7 +204,7 @@ const EditDraft = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
@@ -211,7 +217,7 @@ const EditDraft = (props) => {
                                     <em>None</em>
                                 </MenuItem>
                                 <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem  value={"Active"}>Active</MenuItem>
+                                <MenuItem value={"Active"}>Active</MenuItem>
 
                             </Select>
 
@@ -220,8 +226,8 @@ const EditDraft = (props) => {
                     </Box>
                 }
                 {activeStep === 1 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{p:1}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{p: 1}} size="small">
                             <TextField
                                 {...author}
                                 id={"author"}
@@ -246,8 +252,8 @@ const EditDraft = (props) => {
                     </Box>
                 }
                 {activeStep === 2 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип самолета</InputLabel>
                             <Select
                                 labelId="select-small"
@@ -263,7 +269,7 @@ const EditDraft = (props) => {
                                 <MenuItem value={"RRJ-NEW"}>RRJ-NEW</MenuItem>
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип двигателя</InputLabel>
                             <Select
                                 onChange={handleEngineChange}
@@ -306,15 +312,15 @@ const EditDraft = (props) => {
                     action={action}
                 />
             </div>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default EditDraft;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/document/' + params.draft);
-    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'document/' + params.draft);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             doc: response.data,

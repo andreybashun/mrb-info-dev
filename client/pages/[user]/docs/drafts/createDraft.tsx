@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../../layouts/MainLayout";
 import {useInput} from "../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -15,12 +14,13 @@ import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import {GetServerSideProps} from "next";
+import MLayout from "../../../../layouts/MLayout";
+import Breadcrumbs from "nextjs-breadcrumbs";
 
 
 
 const CreateDraft = (user) => {
     const [activeStep, setActiveStep] = useState (0);
-    const [file, setFile] = useState (null);
     const name = useInput ('');
     const author = useInput ('A.Bashun');
     const discription = useInput ('');
@@ -38,13 +38,6 @@ const CreateDraft = (user) => {
             return;
         }
         setOpen (false);
-    };
-
-
-    const [documentName, setName] = React.useState ('');
-
-    const handleNameChange = (event: SelectChangeEvent) => {
-        setName (event.target.value);
     };
 
     const [type, setType] = React.useState ('');
@@ -99,7 +92,7 @@ const CreateDraft = (user) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post ('http://localhost:5000/document/', {
+            axios.post (process.env.SERVER_HOST + 'document/', {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -125,7 +118,19 @@ const CreateDraft = (user) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={user}>
+            <div>
+                <Breadcrumbs
+                    useDefaultStyle
+                    replaceCharacterList={[
+                        {from: 'docs', to: 'мои документы'},
+                        {from: 'drafts', to: 'проекты'},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
+                        {from: 'createDraft', to: 'создание драфта'},
+                    ]
+                    }
+                />
+            </div>
             <DocStepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
 
@@ -311,14 +316,14 @@ const CreateDraft = (user) => {
                     action={action}
                 />
             </div>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default CreateDraft;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             user: response.data,

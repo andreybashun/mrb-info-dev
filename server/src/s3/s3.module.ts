@@ -5,6 +5,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {ConfigModule} from "@nestjs/config";
 import {DocRevision, DocRevisionSchema} from "../document/schemas/docrevision.schema";
 import {Doc, DocSchema} from "../document/schemas/document.schema";
+import {User, UserSchema} from "../user/schemas/user.schema";
 
 @Module ({
     imports: [
@@ -12,7 +13,8 @@ import {Doc, DocSchema} from "../document/schemas/document.schema";
             envFilePath: '.env'
         }),
         MongooseModule.forFeature ([{name: DocRevision.name, schema: DocRevisionSchema}],),
-        MongooseModule.forFeature ([{name: Doc.name, schema: DocSchema}],)
+        MongooseModule.forFeature ([{name: Doc.name, schema: DocSchema}],),
+        MongooseModule.forFeature([{name:User.name, schema: UserSchema}])
     ],
 
     controllers: [S3Controller],

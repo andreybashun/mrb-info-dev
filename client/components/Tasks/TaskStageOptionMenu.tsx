@@ -16,9 +16,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import {ITaskStage} from "../../types/task";
+import {ITasks, ITaskStage} from "../../types/task";
+import {IUser} from "../../types/user";
+
 
 interface TaskStageItemProps {
+    user: IUser;
+    task: ITasks;
     taskStage: ITaskStage;
 }
 
@@ -76,7 +80,7 @@ const style = {
     borderRadius: 2
 };
 
-const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
+const TaskStageOptionMenu: React.FC<TaskStageItemProps> = ({taskStage, task, user}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -118,11 +122,11 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => {
-                    handleClose()
-                    router.push ('/user/tasks/outbox/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
+                    handleClose ()
+                    router.push ('/' + user._id + '/tasks/outbox/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
                 }
                 } disableRipple>
-                    <EditIcon />
+                    <EditIcon/>
                 </MenuItem>
                 <MenuItem>
                     <Modal
@@ -159,7 +163,8 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
                                 Удаление этапа
                             </Typography>
                             <Typography id="modal-modal-description" sx={{mt: 2}} align={"center"}>
-                                Вы действительно хотите удалить  этап? Этап будет помещен в архив. Восстановление этапа будет возможно из архивной версии в течении 120 дней
+                                Вы действительно хотите удалить этап? Этап будет помещен в архив. Восстановление этапа
+                                будет возможно из архивной версии в течении 120 дней
                             </Typography>
                             <Grid
                                 container
@@ -178,13 +183,13 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps > = ({taskStage}) => {
                                             sx={{mt: 2, marginTop: 2}}>Отменить
                                     </Button>
                                 </Grid>
-                                <Grid >
+                                <Grid>
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/task/stage/' + taskStage._id)
-                                            .then(resp => router.push('/user/tasks/outbox/' + taskStage.taskId))
-                                            .catch(e => console.log(e))
+                                        axios.delete (process.env.SERVER_HOST + 'task/stage/' + taskStage._id)
+                                            .then (resp => router.push ('/' + user._id + '/tasks/outbox/' + taskStage.taskId))
+                                            .catch (e => console.log (e))
                                     }
                                     }
                                             variant="contained" color={"info"}

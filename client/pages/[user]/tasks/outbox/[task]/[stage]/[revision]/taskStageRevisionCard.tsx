@@ -1,5 +1,4 @@
 import React from 'react';
-import MainLayout from "../../../../../../../layouts/MainLayout";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 import axios from "axios";
@@ -9,12 +8,13 @@ import {useRouter} from "next/router";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
+import MLayout from "../../../../../../../layouts/MLayout";
 
 const TaskStageRevisionCard = (props) => {
     const router = useRouter ()
     const {draft} = router.query;
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
@@ -23,7 +23,8 @@ const TaskStageRevisionCard = (props) => {
                     {from: props.task._id, to: props.task.name},
                     {from: props.stage._id, to: props.stage.name},
                     {from: props.revision._id, to: props.revision.name},
-                    {from: 'taskStageRevisionCard', to: 'карточка ревизии'}
+                    {from: 'taskStageRevisionCard', to: 'карточка ревизии'},
+                    {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                 ]
                 }
 
@@ -33,7 +34,7 @@ const TaskStageRevisionCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/user/docs/drafts/' + draft + '/editDraft/')}
+                        router.push ('/' + props.user._id + '/docs/drafts/' + draft + '/editDraft/')}
                     >
                         Редактировать
                     </Button>
@@ -158,21 +159,23 @@ const TaskStageRevisionCard = (props) => {
                     </Grid>
                 </Grid>
             </Stack>
-        </MainLayout>
+        </MLayout>
     )
 };
 
 export default TaskStageRevisionCard;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const resTask = await axios.get ('http://localhost:5000/task/' + params.task);
-    const resStage = await axios.get ('http://localhost:5000/task/stage/' + params.stage);
-    const resRevision = await axios.get ('http://localhost:5000/task/revision/' + params.revision);
+    const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
+    const resStage = await axios.get (process.env.SERVER_HOST+ 'task/stage/' + params.stage);
+    const resRevision = await axios.get (process.env.SERVER_HOST+ 'task/revision/' + params.revision);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: resTask.data,
             stage: resStage.data,
-            revision: resRevision.data
+            revision: resRevision.data,
+            user: resUser.data
         }
     }
 }

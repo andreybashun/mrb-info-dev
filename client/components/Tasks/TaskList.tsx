@@ -7,9 +7,16 @@ import Divider from "@mui/material/Divider";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useRouter} from "next/router";
+import {IUser} from "../../types/user";
+import {ITasks} from "../../types/task";
 
 
-const TaskList= ({tasks}) => {
+interface TaskListProps {
+    user:IUser;
+    tasks:ITasks[];
+}
+
+const TaskList: React.FC<TaskListProps>= ({tasks, user}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -17,7 +24,7 @@ const TaskList= ({tasks}) => {
         }}>
             <Stack direction="row" spacing={2}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/user/tasks/outbox/createTask')}>
+                    router.push ('/' + user._id + '/tasks/outbox/createTask')}>
                     Создать задачу
                 </Button>
             </Stack>
@@ -59,8 +66,8 @@ const TaskList= ({tasks}) => {
                 <Divider/>
 
                 <Box p={2}>
-                    {tasks.map (tasks => {
-                                return(<TaskItem key={tasks._id} task={tasks}/>)
+                    {tasks.map (task => {
+                                return(<TaskItem key={task._id} task={task} user={user}/>)
                         }
                     )}
                 </Box>

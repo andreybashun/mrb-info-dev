@@ -17,9 +17,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import {IUser} from "../../types/user";
 
 interface TaskStageRevisionItemProps {
     taskStageRevision: ITaskStageRevision;
+    user:IUser;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -76,7 +78,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageRevision}) => {
+const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, user}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -116,7 +118,7 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/user/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId + '/' + taskStageRevision._id + '/editStageRevision')
+                    router.push ('/' + user._id + '/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId + '/' + taskStageRevision._id + '/editStageRevision')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -156,8 +158,8 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/task/revision/'  + taskStageRevision._id)
-                                            .then(resp => router.push('/user/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
+                                        axios.delete(process.env.SERVER_HOST + 'task/revision/'  + taskStageRevision._id)
+                                            .then(resp => router.push('/' + user._id +'/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
                                             .catch(e => console.log(e))
                                     }
                                     }

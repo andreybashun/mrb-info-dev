@@ -6,7 +6,9 @@ export  interface ITasks{
     status: string;
     key: string;
     taskStages: ITaskStage[];
-    lastchangedate:string;
+    lastChangeDate:string;
+    creationDate:string;
+
 }
 
 export interface ITaskStage{
@@ -18,7 +20,8 @@ export interface ITaskStage{
     key: string;
     taskId:string;
     taskStageRevisions: ITaskStageRevision[];
-    lastchangedate:string;
+    lastChangeDate:string;
+    creationDate:string;
 }
 
 
@@ -35,6 +38,8 @@ export interface ITaskStageRevision{
     duedate:string;
     taskId:string;
     taskStageId:string;
+    creationDate:string;
+    lastChangeDate:string;
 
     // task: Task;
     // docRevisionInherit: DocRevision;

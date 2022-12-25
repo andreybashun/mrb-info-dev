@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
-import MainLayout from "../../../../../../layouts/MainLayout";
 import TaskStageStepWrapper from "../../../../../../components/Tasks/TaskStageStepWrapper";
 import Credentials from "../../../../../../components/Tasks/Credentials";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import FileUpload from "../../../../../../components/FileUpload";
 import TaskDescription from "../../../../../../components/Tasks/TaskDescription";
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import MLayout from "../../../../../../layouts/MLayout";
 
 
-const Create = () => {
+const Create = ({user}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [setFile] = useState(null)
     const next = () => {
@@ -19,7 +21,7 @@ const Create = () => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <TaskStageStepWrapper activeStep={activeStep}>
                 {activeStep === 0 && <Credentials/>}
                 {activeStep === 1 && <TaskDescription/>}
@@ -36,9 +38,18 @@ const Create = () => {
                 <Button size="small" variant="contained" disabled={activeStep === 0} onClick={back}> назад </Button>
                 <Button size="small" variant="contained" disabled={activeStep === 5} onClick={next}> вперед </Button>
             </Grid>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default Create;
 
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    return {
+        props: {
+            user: resUser.data
+        }
+    }
+}

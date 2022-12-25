@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../../../layouts/MainLayout";
 import {useInput} from "../../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -16,6 +15,7 @@ import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
+import MLayout from "../../../../../layouts/MLayout";
 
 
 const EditTask = (props) => {
@@ -31,20 +31,12 @@ const EditTask = (props) => {
     const router = useRouter ();
 
 
-
     const [open, setOpen] = useState (false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpen (false);
-    };
-
-
-    const [documentName, setName] = React.useState ('');
-
-    const handleNameChange = (event: SelectChangeEvent) => {
-        setName (event.target.value);
     };
 
     const [type, setType] = React.useState (props.task.type);
@@ -56,23 +48,23 @@ const EditTask = (props) => {
     const [status, setStatus] = React.useState (props.task.status);
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log('document status',event.target.value);
+        console.log ('document status', event.target.value);
 
         setStatus (event.target.value);
 
-        console.log('document status',event.target.value);
+        console.log ('document status', event.target.value);
     };
 
     const [aircraftType, setAircraftType] = React.useState (props.task.aircraftType);
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
-        setAircraftType(event.target.value);
+        setAircraftType (event.target.value);
     };
 
     const [engineType, setEngineType] = React.useState (props.task.engineType);
 
     const handleEngineChange = (event: SelectChangeEvent) => {
-        setEngineType(event.target.value);
+        setEngineType (event.target.value);
     };
 
     const action = (
@@ -99,7 +91,7 @@ const EditTask = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put ('http://localhost:5000/task/' + props.taskId, {
+            axios.put (process.env.SERVER_HOST + 'task/' + props.taskId, {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -111,7 +103,7 @@ const EditTask = (props) => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  date.toLocaleDateString (),
+                creationDate: date.toLocaleDateString (),
             })
                 .then (resp => {
                     setOpen (true)
@@ -125,13 +117,14 @@ const EditTask = (props) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
                     {from: 'tasks', to: 'мои задачи'},
                     {from: 'outbox', to: 'исходящие задачи'},
-                    {from: 'createTask', to: 'создание задачи'}
+                    {from: 'createTask', to: 'создание задачи'},
+                    {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                 ]
                 }
             />
@@ -178,7 +171,7 @@ const EditTask = (props) => {
 
                         {/*<DocDescription/>*/}
 
-                        <Box  sx={{p:1, width:'95ch'}}>
+                        <Box sx={{p: 1, width: '95ch'}}>
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
@@ -186,11 +179,11 @@ const EditTask = (props) => {
                                 multiline
                                 fullWidth
                                 rows={3}
-                                sx={{marginRight:1, display:'flex'}}
+                                sx={{marginRight: 1, display: 'flex'}}
                             />
                         </Box>
 
-                        <FormControl sx={{paddingBottom: 2, paddingTop: 2,width: '25ch'}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, width: '25ch'}}>
                             <TextField
                                 {...creationDate}
                                 id={"creationDate"}
@@ -201,7 +194,7 @@ const EditTask = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{paddingBottom: 2,  paddingTop: 2, marginLeft: 10, width: '25ch',}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, marginLeft: 10, width: '25ch',}}>
                             <TextField
                                 {...lastChangeDate}
                                 id={"creationDate"}
@@ -212,7 +205,7 @@ const EditTask = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус задачи</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
@@ -225,7 +218,7 @@ const EditTask = (props) => {
                                     <em>None</em>
                                 </MenuItem>
                                 <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem  value={"Active"}>Active</MenuItem>
+                                <MenuItem value={"Active"}>Active</MenuItem>
 
                             </Select>
 
@@ -234,8 +227,8 @@ const EditTask = (props) => {
                     </Box>
                 }
                 {activeStep === 1 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{p:1}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{p: 1}} size="small">
                             <TextField
                                 {...author}
                                 id={"author"}
@@ -260,8 +253,8 @@ const EditTask = (props) => {
                     </Box>
                 }
                 {activeStep === 2 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип самолета</InputLabel>
                             <Select
                                 labelId="select-small"
@@ -277,7 +270,7 @@ const EditTask = (props) => {
                                 <MenuItem value={"RRJ-NEW"}>RRJ-NEW</MenuItem>
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип двигателя</InputLabel>
                             <Select
                                 onChange={handleEngineChange}
@@ -320,18 +313,20 @@ const EditTask = (props) => {
                     action={action}
                 />
             </div>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default EditTask;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/task/' + params.task);
+    const response = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: response.data,
-            taskId: params.task
+            taskId: params.task,
+            user: resUser.data,
         }
     }
 }

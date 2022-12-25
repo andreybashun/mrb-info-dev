@@ -1,5 +1,4 @@
 import React from 'react';
-import MainLayout from "../../../../../../../layouts/MainLayout";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -16,12 +15,13 @@ import {GetServerSideProps} from "next";
 import axios from "axios";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {useRouter} from "next/router";
+import MLayout from "../../../../../../../layouts/MLayout";
 
 
-const Index = ({task, stage, revision}) => {
-    const router = useRouter()
+const Index = ({task, stage, revision, user}) => {
+    const router = useRouter ()
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
@@ -29,7 +29,8 @@ const Index = ({task, stage, revision}) => {
                     {from: 'outbox', to: 'исходящие задачи'},
                     {from: task._id, to: 'задача: ' + task.name},
                     {from: stage._id, to: 'этап: ' + stage.name},
-                    {from: revision._id, to: 'ревизия: ' + revision.name}
+                    {from: revision._id, to: 'ревизия: ' + revision.name},
+                    {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                 ]
                 }
             />
@@ -39,13 +40,13 @@ const Index = ({task, stage, revision}) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" variant="contained"
-                           >
+                    >
                         Редактировать
                     </Button>
-                    <Button size="small" variant="contained" >
+                    <Button size="small" variant="contained">
                         Отозвать
                     </Button>
-                    <Button size="small" variant="contained" >
+                    <Button size="small" variant="contained">
                         Направить
                     </Button>
                 </Stack>
@@ -90,8 +91,9 @@ const Index = ({task, stage, revision}) => {
                                       justifyContent="flex-start"
                                       alignItems="center"
                                 >
-                                    <IconButton color="info"  onClick={() => router.push ('/user/tasks/outbox/' +
-                                        task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
+                                    <IconButton color="info"
+                                                onClick={() => router.push ('/' + user._id + '/tasks/outbox/' +
+                                                    task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
                                         <SummarizeIcon/>
                                     </IconButton>
                                     Карточка ревизии
@@ -121,8 +123,9 @@ const Index = ({task, stage, revision}) => {
                                       direction="row"
                                       justifyContent="flex-start"
                                       alignItems="center">
-                                    <IconButton color="info" onClick={() => router.push ('/user/tasks/outbox/' +
-                                        task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
+                                    <IconButton color="info"
+                                                onClick={() => router.push ('/' + user._id + '/tasks/outbox/' +
+                                                    task._id + '/' + stage._id + '/' + revision._id + '/taskStageRevisionCard')}>
                                         <Folder/>
                                     </IconButton>
                                     Документы на подпись
@@ -206,7 +209,7 @@ const Index = ({task, stage, revision}) => {
                     </Box>
                 </List>
             </Stack>
-        </MainLayout>
+        </MLayout>
     );
 };
 
@@ -214,14 +217,16 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
 
-    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
-    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
-    const resRevision = await  axios.get('http://localhost:5000/task/revision/' + params.revision)
+    const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
+    const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage)
+    const resRevision = await axios.get (process.env.SERVER_HOST + 'task/revision/' + params.revision)
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: resTask.data,
             stage: resStage.data,
-            revision: resRevision.data
+            revision: resRevision.data,
+            user: resUser.data,
 
         }
     }

@@ -11,11 +11,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import StyledBreadcrumb from './Tasks/StyledBreadcrumb';
+import {Avatar} from "@mui/material";
+import {IUser} from "../types/user";
+
 
 
 const Search = styled ('div') (({theme}) => ({
@@ -58,7 +59,12 @@ const StyledInputBase = styled (InputBase) (({theme}) => ({
     },
 }));
 
-export default function Appbar () {
+interface AppbarProps {
+    user:IUser;
+}
+
+const Appbar: React.FC<AppbarProps> = ({user}) => {
+    const avatarSrc = 'https://storage.yandexcloud.net/mrb-doc/' + user.avatar
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement> (null);
@@ -150,7 +156,7 @@ export default function Appbar () {
                     aria-haspopup="true"
                     color="inherit"
                 >
-                    <AccountCircle/>
+                    <Avatar alt="Remy Sharp" src={avatarSrc} />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
@@ -227,7 +233,7 @@ export default function Appbar () {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle/>
+                            <Avatar alt="Remy Sharp" src={avatarSrc}/>
                         </IconButton>
                     </Box>
                     <Box sx={{display: {xs: 'flex', md: 'none'}}}>
@@ -249,3 +255,4 @@ export default function Appbar () {
         </Box>
     );
 }
+export default Appbar;

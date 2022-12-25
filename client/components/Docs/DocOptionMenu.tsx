@@ -17,7 +17,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import {GetServerSideProps} from "next";
 import {IUser} from "../../types/user";
 
 interface DocItemProps {
@@ -185,7 +184,7 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc, user}) => {
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete('http://localhost:5000/document/' + doc._id)
+                                        axios.delete(process.env.SERVER_HOST + 'document/' + doc._id)
                                             .then(resp => router.push('/' + user._id + '/docs/drafts'))
                                             .catch(e => console.log(e))
                                         // router.push ('/docs/drafts/' + doc._id)

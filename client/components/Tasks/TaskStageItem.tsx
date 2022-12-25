@@ -6,11 +6,17 @@ import Divider from "@mui/material/Divider";
 import {useRouter} from "next/router";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskStageOptionMenu from "./TaskStageOptionMenu";
+import {IUser} from "../../types/user";
+import {ITasks, ITaskStage} from "../../types/task";
+
+interface TaskStageItemProps {
+    user:IUser;
+    task:ITasks;
+    taskStage:ITaskStage;
+}
 
 
-
-
-const TaskStageItem = ({taskStage, taskId}) => {
+const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -20,7 +26,7 @@ const TaskStageItem = ({taskStage, taskId}) => {
                       justifyContent="flex-start"
                       alignItems="center">
 
-                        <IconButton color="info"  onClick={() => router.push ('/user/tasks/outbox/' + taskId + '/' + taskStage._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id)}>
                             <AssignmentIcon/>
                         </IconButton>
 
@@ -43,7 +49,7 @@ const TaskStageItem = ({taskStage, taskId}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <TaskStageOptionMenu taskStage={taskStage}/>
+                    <TaskStageOptionMenu taskStage={taskStage} task={task} user={user}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

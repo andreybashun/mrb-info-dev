@@ -1,11 +1,9 @@
 import React from 'react';
-import MainLayout from "../../layouts/MainLayout";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import {Popover, Stack} from "@mui/material";
@@ -13,8 +11,10 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import InfoIcon from '@mui/icons-material/Info';
 import {useRouter} from "next/router";
-import PolicyIcon from "@mui/icons-material/Policy";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import MLayout from "../../layouts/MLayout";
 
 type IconType = (props: IconType) => JSX.Element;
 
@@ -69,11 +69,11 @@ function MouseOverPopover (props) {
 }
 
 
-const Index = () => {
+const Index = ({user}) => {
     const router = useRouter();
 
     return (
-        <MainLayout>
+        <MLayout user = {user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
@@ -290,8 +290,17 @@ const Index = () => {
 
                 </Grid>
             </Box>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    return {
+        props: {
+            user:resUser.data
+        }
+    }
+}

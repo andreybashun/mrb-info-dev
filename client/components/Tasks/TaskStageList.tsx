@@ -8,21 +8,28 @@ import Divider from "@mui/material/Divider";
 import TaskStageItem from "./TaskStageItem";
 import ArticleIcon from "@mui/icons-material/Article";
 import {useRouter} from "next/router";
+import {IUser} from "../../types/user";
+import {ITasks, ITaskStage} from "../../types/task";
 
+interface TaskStageListProps {
+    user:IUser;
+    task:ITasks;
+    taskStages:ITaskStage[];
+}
 
-
-const TaskStageList = ({taskStage, taskId}) => {
+const TaskStageList: React.FC <TaskStageListProps> = ({taskStages, task, user}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
         }}>
             <Stack direction="row"  justifyContent={"space-between"}>
-                <Button size="small" variant="contained"onClick={() =>
-                    router.push ('/user/tasks/outbox/' + taskId + '/createStage')}>
+                <Button size="small" variant="contained" onClick={() =>
+                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/createStage')}>
                     Создать этап
                 </Button>
-                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"  onClick={()=> router.push('/user/tasks/outbox/' + taskId + '/taskCard')}>
+                <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
+                        onClick={()=> router.push('/' + user._id + '/tasks/outbox/' + task._id + '/taskCard')}>
                     Карточка задачи
                 </Button>
             </Stack>
@@ -64,8 +71,8 @@ const TaskStageList = ({taskStage, taskId}) => {
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-                    {taskStage.map(taskStage =>
-                        <TaskStageItem key={taskStage._id} taskStage={taskStage} taskId={taskId}/>
+                    {taskStages.map(taskStage =>
+                        <TaskStageItem key={taskStage._id} taskStage={taskStage} task={task} user = {user}/>
                     )}
                 </Box>
             </List>

@@ -1,7 +1,8 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {ObjectId} from "mongoose";
 import {UserService} from "./user.service";
 import {CreateUserDto} from "./dto/create-user.dto";
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @Controller('user')
 export class UserController {
@@ -9,8 +10,10 @@ export class UserController {
     }
 
     @Post()
-    create (@Body () dto: CreateUserDto) {
-        return this.userService.create (dto);
+    @UseInterceptors (
+        FileInterceptor ('file'))
+    create (@UploadedFile () file, @Body () dto: CreateUserDto) {
+        return this.userService.create (dto, file);
     }
 
     @Get(':id')

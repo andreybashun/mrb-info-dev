@@ -1,7 +1,7 @@
 import React from 'react';
 import Nbar from "../components/NBar";
 import {myTheme} from "../MyTheme";
-import { Paper, ThemeProvider} from "@mui/material";
+import {ThemeProvider} from "@mui/material";
 import Appbar from "../components/Appbar";
 import Grid from '@mui/material/Grid';
 import List from "@mui/material/List";
@@ -20,7 +20,7 @@ const MLayout: React.FC<Props> = ({user, children}) => {
             <ThemeProvider theme={myTheme}>
                 <Grid container spacing={2} columns={20}>
                     <Grid item xs={20}>
-                        <Appbar/>
+                        <Appbar user = {user}/>
                     </Grid>
                     <Grid item xs={3} md={3.7} sx={{display: {xs: 'none', sm: 'block'}}}>
                         <Nbar user = {user}/>

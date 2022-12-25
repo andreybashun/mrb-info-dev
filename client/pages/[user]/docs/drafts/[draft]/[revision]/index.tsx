@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import MainLayout from "../../../../../../layouts/MainLayout";
+import React, {} from 'react';
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -17,15 +16,15 @@ import {useRouter} from "next/router";
 import axios from "axios";
 import {GetServerSideProps} from "next";
 import Breadcrumbs from "nextjs-breadcrumbs";
-
+import MLayout from "../../../../../../layouts/MLayout";
 
 
 const Index = ({docRevision, user}) => {
     const router = useRouter ()
-    const path = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.key
-    const certificatePath = 'http://localhost:5000/document/' + docRevision.docId + '/' + docRevision.certificateFile
+    const path = process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision.key
+    const certificatePath = process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision.certificateFile
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
@@ -33,7 +32,8 @@ const Index = ({docRevision, user}) => {
                         {from: 'docs', to: 'мои документы'},
                         {from: 'drafts', to: 'проекты'},
                         {from: docRevision.docId, to: 'документ'},
-                        {from: docRevision._id, to: 'ревизия'}
+                        {from: docRevision._id, to: 'ревизия'},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
 
                     ]
                     }
@@ -234,7 +234,7 @@ const Index = ({docRevision, user}) => {
                     </Box>
                 </List>
             </Stack>
-        </MainLayout>
+        </MLayout>
     );
 };
 
@@ -242,8 +242,8 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
-    const response = await axios.get ('http://localhost:5000/document/revision/' + params.revision)
-    const resUser = await axios.get ('http://localhost:5000/user/' + params.user);
+    const response = await axios.get (process.env.SERVER_HOST + 'document/revision/' + params.revision)
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             docRevision: response.data,

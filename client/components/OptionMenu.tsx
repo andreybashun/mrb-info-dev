@@ -5,11 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {fontSize} from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledMenu = styled((props: MenuProps) => (

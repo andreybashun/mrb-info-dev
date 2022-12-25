@@ -7,8 +7,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import {IDoc} from "../../types/doc";
 import {useRouter} from "next/router";
 import DocOptionMenu from "./DocOptionMenu";
-import {GetServerSideProps} from "next";
-import axios from "axios";
 import {IUser} from "../../types/user";
 
 

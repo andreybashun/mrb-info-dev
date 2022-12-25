@@ -1,28 +1,27 @@
-import React, {useEffect} from 'react';
-import MainLayout from "../../../../../layouts/MainLayout";
+import React, {} from 'react';
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useRouter} from "next/router";
-import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
+import MLayout from "../../../../../layouts/MLayout";
 
 const taskCard = (props) => {
     const router = useRouter ()
-    const {draft} = router.query;
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
                     {from: 'tasks', to: 'мои задачи'},
                     {from: 'outbox', to: 'исходящие задачи'},
                     {from: props.taskId, to: 'задача'},
-                    {from: 'taskCard', to: 'карточка задачи'}
+                    {from: 'taskCard', to: 'карточка задачи'},
+                    {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                 ]
                 }
 
@@ -32,7 +31,7 @@ const taskCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/user/tasks/outbox/' + props.taskId + '/editTask/')}
+                        router.push ('/' + props.user._id + '/tasks/outbox/' + props.taskId + '/editTask/')}
                     >
                         Редактировать
                     </Button>
@@ -101,7 +100,7 @@ const taskCard = (props) => {
                         Автор
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/persons/a_bashun">{props.task.author}</Link>
+                        <Link href="/repository/Cards/persons/a_bashun">{props.task.author}</Link>
                     </Grid>
                     <Grid item xs={4} fontSize={12}>
                         Организация
@@ -151,14 +150,14 @@ const taskCard = (props) => {
                 </Grid>
 
             </Stack>
-        </MainLayout>
+        </MLayout>
     )
 };
 
 export default taskCard;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get ('http://localhost:5000/task/' + params.task);
+    const response = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
     return {
         props: {
             task: response.data,

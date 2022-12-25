@@ -15,10 +15,18 @@ export class S3Controller {
         return await this.s3service.upload (file);
     }
 
+    @Post ()
+    @UseInterceptors (FileInterceptor ('file'))
+    async uploadPng (@UploadedFile () file) {
+        return await this.s3service.uploadPng (file);
+    }
+
+
     @Get ()
     getFile (@Body ('key') key: string) {
         return this.s3service.getFile (key);
     }
+
 
     @Delete()
     deleteFile (@Body ('key') key: string) {

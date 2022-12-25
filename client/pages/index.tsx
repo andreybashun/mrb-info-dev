@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {FormControl, InputLabel, Stack} from "@mui/material";
+import React, {} from 'react';
+import {FormControl, Stack} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Link from "next/link";
@@ -7,8 +7,6 @@ import {useInput} from "../hooks/useInput";
 import axios from "axios";
 import {useRouter} from "next/router";
 import {GetServerSideProps} from "next";
-
-
 
 
 const Index = ({users}) => {
@@ -48,9 +46,16 @@ const Index = ({users}) => {
                         variant="outlined"
                     />
                 </FormControl>
-                <Button onClick={() =>
-                    router.push ('/' + users[0]._id)}
-
+                <Button onClick={() => {
+                    console.log('000000')
+                    for (let i = 0; i < users.length; i++){
+                        console.log(i, users[i].email , users[i].password, password.value )
+                        if (users[i].email === email.value && users[i].password === password.value){
+                            router.push ('/' + users[i]._id)
+                        }
+                    }
+                  }
+                }
                     sx={{
                     width:"20%",
                     left:"40%",
@@ -74,7 +79,7 @@ const Index = ({users}) => {
 export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const res = await  axios.get('http://localhost:5000/user')
+    const res = await  axios.get(process.env.SERVER_HOST + 'user')
     return {
         props: {
             users: res.data

@@ -8,17 +8,15 @@ import Button from "@mui/material/Button";
 import {IDoc} from "../../types/doc";
 import DocItem from "./DocItem";
 import {useRouter} from "next/router";
-import {GetServerSideProps} from "next";
-import axios from "axios";
 import {IUser} from "../../types/user";
 
 interface DocListProps {
     docs: IDoc[],
-    user:IUser
+    user: IUser
 }
 
 const DocList: React.FC<DocListProps> = ({docs, user}) => {
-    const router = useRouter();
+    const router = useRouter ();
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,
@@ -73,7 +71,7 @@ const DocList: React.FC<DocListProps> = ({docs, user}) => {
                             // {
                             //     return (<DocItem key={docs._id} doc={docs}/>)
                             // }
-                                return (<DocItem key={docs._id} doc={docs} user={user}/>)
+                            return (<DocItem key={docs._id} doc={docs} user={user}/>)
                         }
                     )}
                 </Box>

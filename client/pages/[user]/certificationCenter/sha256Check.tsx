@@ -3,8 +3,6 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import {useRouter} from "next/router";
 import axios from "axios";
-import {IDoc} from "../../../types/doc";
-import MainLayout from "../../../layouts/MainLayout";
 import FileUpload from "../../../components/FileUpload";
 import ShaCheckStepWraper from "../../../components/CertificationCenter/ShaCheckStepWraper";
 import Box from "@mui/material/Box";
@@ -18,32 +16,25 @@ import {Stack} from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import DangerousIcon from '@mui/icons-material/Dangerous';
-import PolicyIcon from '@mui/icons-material/Policy';
 import {auto} from "@popperjs/core";
 import { jsPDF } from "jspdf";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import {GetServerSideProps} from "next";
+import MLayout from "../../../layouts/MLayout";
 
 
-interface DocItemProps {
-    doc: IDoc;
-}
 
-const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
+const Sha256Check = ({user}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState (null)
     const [certificate, setCertificate] = useState (null)
-    const router = useRouter ()
-
     const [SuccessModalOpen, setSuccessModalOpen] = React.useState (false);
     const handleSuccessModalOpen = () => setSuccessModalOpen (true);
     const handleSuccessModalClose = () => setSuccessModalOpen (false);
-
     const [FailModalOpen, setFailModalOpen] = React.useState (false);
     const handleFailModalOpen = () => setFailModalOpen (true);
     const handleFailModalClose = () => setFailModalOpen (false);
-
     const [checked, setChecked] = React.useState(false);
-
     const [pdf, setpdf] = React.useState(null)
 
     const buttonStyle = {
@@ -77,12 +68,12 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
         } else {
             const HashData = new FormData ()
             HashData.append ('file', certificate)
-            axios.post ('http://localhost:5000/crypto/pdf', HashData)
+            axios.post (process.env.SERVER_HOST + 'crypto/pdf', HashData)
                 .then (resp => {
                     const uploadedHash = resp.data
                     const SHA256Data = new FormData ()
                     SHA256Data.append ('file', file)
-                    axios.post ('http://localhost:5000/crypto/sha256', SHA256Data)
+                    axios.post (process.env.SERVER_HOST + 'crypto/sha256', SHA256Data)
                         .then (resp => {
                             const calculatedHash = resp.data
                             setpdf(calculatedHash)
@@ -103,20 +94,18 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
                     replaceCharacterList={[
                         {from: 'certificationCenter', to: 'Удостоверяющий центр'},
                         {from: 'sha256Check', to: 'SHA256. Проверка сертификата'},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                     ]
                     }
                 />
             </div>
-            {/*<Typography  variant="h5" sx={{mt: 0, marginTop:2, color: ' #757575',  paddingLeft:2}} >*/}
-            {/*    <PolicyIcon sx={{ fontSize: 30 }}/> Удостоверяющий центр. Проверка сертифиата. Агоритм SHA256*/}
-            {/*</Typography>*/}
             <Box sx={{border: '1px solid #757575',  margin:2, padding:4, borderRadius:3}}>
 
                 <ShaCheckStepWraper activeStep={activeStep}>
@@ -261,8 +250,17 @@ const Sha256Check: React.FC<DocItemProps> = ({doc}) => {
                 </Modal>
             </Box>
 
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default Sha256Check;
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    return {
+        props: {
+            user: resUser.data
+        }
+    }
+}

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import MainLayout from "../../../../../../layouts/MainLayout";
 import {useInput} from "../../../../../../hooks/useInput";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
@@ -16,11 +15,11 @@ import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
+import MLayout from "../../../../../../layouts/MLayout";
 
 
 const EditSatge = (props) => {
     const [activeStep, setActiveStep] = useState (0);
-    const [file, setFile] = useState (null);
     const name = useInput (props.stage.name);
     const author = useInput (props.stage.author);
     const discription = useInput (props.stage.discription);
@@ -41,13 +40,6 @@ const EditSatge = (props) => {
         setOpen (false);
     };
 
-
-    const [documentName, setName] = React.useState (props.stage.name);
-
-    const handleNameChange = (event: SelectChangeEvent) => {
-        setName (event.target.value);
-    };
-
     const [type, setType] = React.useState (props.stage.type);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
@@ -63,13 +55,13 @@ const EditSatge = (props) => {
     const [aircraftType, setAircraftType] = React.useState (props.stage.aircraftType);
 
     const handleAircraftChange = (event: SelectChangeEvent) => {
-        setAircraftType(event.target.value);
+        setAircraftType (event.target.value);
     };
 
     const [engineType, setEngineType] = React.useState (props.stage.engineType);
 
     const handleEngineChange = (event: SelectChangeEvent) => {
-        setEngineType(event.target.value);
+        setEngineType (event.target.value);
     };
 
     const action = (
@@ -96,7 +88,7 @@ const EditSatge = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put('http://localhost:5000/task/stage/' + props.stageId.toString(), {
+            axios.put (process.env.SERVER_HOST + 'task/stage/' + props.stageId.toString (), {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -108,8 +100,8 @@ const EditSatge = (props) => {
                 ata: ata.value,
                 aircraftType: aircraftType,
                 engineType: engineType,
-                creationDate:  date.toLocaleDateString (),
-                taskId:taskId
+                creationDate: date.toLocaleDateString (),
+                taskId: taskId
             })
                 .then (resp => {
                     setOpen (true)
@@ -123,14 +115,15 @@ const EditSatge = (props) => {
     }
 
     return (
-        <MainLayout>
+        <MLayout user={props.user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
                     {from: 'tasks', to: 'мои задачи'},
                     {from: 'outbox', to: 'исходящие задачи'},
                     {from: taskId, to: 'задача: ' + props.task.name},
-                    {from: 'createStage', to: 'создание этапа'}
+                    {from: 'createStage', to: 'создание этапа'},
+                    {from: props.user._id, to: props.user.firstName[0] + '.' + props.user.secondName},
                 ]
                 }
             />
@@ -177,7 +170,7 @@ const EditSatge = (props) => {
 
                         {/*<DocDescription/>*/}
 
-                        <Box  sx={{p:1, width:'95ch'}}>
+                        <Box sx={{p: 1, width: '95ch'}}>
                             <TextField
                                 {...discription}
                                 id="task_revision_name"
@@ -185,11 +178,11 @@ const EditSatge = (props) => {
                                 multiline
                                 fullWidth
                                 rows={3}
-                                sx={{marginRight:1, display:'flex'}}
+                                sx={{marginRight: 1, display: 'flex'}}
                             />
                         </Box>
 
-                        <FormControl sx={{paddingBottom: 2, paddingTop: 2,width: '25ch'}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, width: '25ch'}}>
                             <TextField
                                 {...creationDate}
                                 id={"creationDate"}
@@ -200,7 +193,7 @@ const EditSatge = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{paddingBottom: 2,  paddingTop: 2, marginLeft: 10, width: '25ch',}}>
+                        <FormControl sx={{paddingBottom: 2, paddingTop: 2, marginLeft: 10, width: '25ch',}}>
                             <TextField
                                 {...lastChangeDate}
                                 id={"creationDate"}
@@ -211,7 +204,7 @@ const EditSatge = (props) => {
                             />
                         </FormControl>
 
-                        <FormControl  fullWidth sx={{paddingBottom: 2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
                             <Select
                                 onChange={handleStatusChange}
@@ -224,7 +217,7 @@ const EditSatge = (props) => {
                                     <em>None</em>
                                 </MenuItem>
                                 <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem  value={"Active"}>Active</MenuItem>
+                                <MenuItem value={"Active"}>Active</MenuItem>
 
                             </Select>
 
@@ -233,8 +226,8 @@ const EditSatge = (props) => {
                     </Box>
                 }
                 {activeStep === 1 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{p:1}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{p: 1}} size="small">
                             <TextField
                                 {...author}
                                 id={"author"}
@@ -258,8 +251,8 @@ const EditSatge = (props) => {
                     </Box>
                 }
                 {activeStep === 2 &&
-                    <Box sx={{p:1, width:'800px'}}>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                    <Box sx={{p: 1, width: '800px'}}>
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип самолета</InputLabel>
                             <Select
                                 labelId="select-small"
@@ -275,7 +268,7 @@ const EditSatge = (props) => {
                                 <MenuItem value={"RRJ-NEW"}>RRJ-NEW</MenuItem>
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth sx={{ paddingBottom:2}} size="small">
+                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип двигателя</InputLabel>
                             <Select
                                 onChange={handleEngineChange}
@@ -318,20 +311,22 @@ const EditSatge = (props) => {
                     action={action}
                 />
             </div>
-        </MainLayout>
+        </MLayout>
     );
 };
 
 export default EditSatge;
 
 export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const resTask = await  axios.get('http://localhost:5000/task/' + params.task)
-    const resStage = await  axios.get('http://localhost:5000/task/stage/' + params.stage)
+    const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
+    const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage)
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: resTask.data,
             stage: resStage.data,
-            stageId: params.stage
+            stageId: params.stage,
+            user: resUser.data,
         }
     }
 }

@@ -1,38 +1,40 @@
 import React from 'react';
-import MainLayout from "../../../../layouts/MainLayout";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 import TaskList from "../../../../components/Tasks/TaskList";
 import Breadcrumbs from "nextjs-breadcrumbs";
+import MLayout from "../../../../layouts/MLayout";
 
-
-const Index =  ({tasks}) => {
+const Index = ({tasks, user}) => {
     return (
 
-        <MainLayout>
+        <MLayout user={user}>
             <div>
                 <Breadcrumbs
                     useDefaultStyle
                     replaceCharacterList={[
                         {from: 'tasks', to: 'мои задачи'},
                         {from: 'outbox', to: 'исходящие задачи'},
+                        {from: user._id, to: user.firstName[0] + '.' + user.secondName},
                     ]
                     }
                 />
             </div>
-           <TaskList tasks={tasks}/>
-        </MainLayout>
+            <TaskList tasks={tasks} user={user}/>
+        </MLayout>
     );
 };
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async (req) => {
+export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
 
-    const response = await axios.get ('http://localhost:5000/task/');
+    const response = await axios.get (process.env.SERVER_HOST + 'task/');
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             tasks: response.data,
+            user: resUser.data
         }
     }
 }
