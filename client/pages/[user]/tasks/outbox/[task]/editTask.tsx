@@ -91,12 +91,12 @@ const EditTask = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put (process.env.SERVER_HOST + 'task/' + props.taskId, {
+            axios.put (props.path + props.taskId, {
                 type: type,
                 name: name.value,
                 author: author.value,
                 status: status,
-                discription: discription.value,
+                description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
                 organization: organization.value,
@@ -107,7 +107,7 @@ const EditTask = (props) => {
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/user/tasks/outbox/' + resp.data._id})
+                    router.push ({pathname: '/' + props.user._id + '/tasks/outbox/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -319,7 +319,7 @@ const EditTask = (props) => {
 
 export default EditTask;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
@@ -327,6 +327,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
             task: response.data,
             taskId: params.task,
             user: resUser.data,
+            path:process.env.SERVER_HOST + 'task/',
         }
     }
 }

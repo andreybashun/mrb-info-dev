@@ -32,7 +32,7 @@ const Index = (props) => {
                     }
                 />
             </div>
-            <DocList docs={docs} user={props.user}/>
+            <DocList docs={docs} user={props.user} path={props.serverHost}/>
         </MLayout>
     );
 };
@@ -46,6 +46,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async ({store, para
     return {
         props: {
             user: response.data,
+            serverHost: process.env.SERVER_HOST,
         }
     }
 })

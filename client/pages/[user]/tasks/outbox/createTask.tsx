@@ -91,12 +91,13 @@ const CreateTask = ({user}) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post (process.env.SERVER_HOST + 'task/', {
+
+            axios.post ('http://localhost:5000/task', {
                 type: type,
                 name: name.value,
                 author: author.value,
                 status: status,
-                discription: discription.value,
+                description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
                 organization: organization.value,
@@ -107,7 +108,7 @@ const CreateTask = ({user}) => {
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/user/tasks/outbox/' + resp.data._id})
+                    router.push ({pathname: '/' + user._id +  '/tasks/outbox/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -144,7 +145,7 @@ const CreateTask = ({user}) => {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>\
+                                <MenuItem value={"MSG-3"}>MSG-3</MenuItem>
                                 <MenuItem value={"Tech-doc"}>Tech-doc</MenuItem>
                             </Select>
                         </FormControl>

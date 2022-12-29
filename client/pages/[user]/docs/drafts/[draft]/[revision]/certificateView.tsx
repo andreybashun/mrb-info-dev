@@ -7,7 +7,7 @@ const CertificateViewer = ({docRevision}) => {
     const path = 'https://storage.yandexcloud.net/mrb-doc/' + docRevision.certificateFile
 
     return (
-        <iframe src={path} height="760px" width="100%"/>
+        <iframe src={path} height="880px" width="100%"/>
     )
 }
 export default CertificateViewer

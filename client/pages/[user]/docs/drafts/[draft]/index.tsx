@@ -6,7 +6,7 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../layouts/MLayout";
 
 
-const Index = ({docRevisions, document, user}) => {
+const Index = ({docRevisions, document, user, serverHost}) => {
 
     return (
         <MLayout user = {user}>
@@ -21,7 +21,7 @@ const Index = ({docRevisions, document, user}) => {
                 ]
                 }
             />
-            <DocRevisionList docRevisions={docRevisions} user={user}/>
+            <DocRevisionList docRevisions={docRevisions} user={user} serverHost={serverHost}/>
         </MLayout>
     );
 
@@ -29,14 +29,15 @@ const Index = ({docRevisions, document, user}) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'document/' + params.draft);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             docRevisions: response.data.docRevisions,
             document: params.draft,
-            user:resUser.data
+            user:resUser.data,
+            serverHost:process.env.SERVER_HOST,
         }
     }
 }

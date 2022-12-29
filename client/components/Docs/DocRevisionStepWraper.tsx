@@ -10,9 +10,9 @@ interface StepWrapperProps{
 }
 
 const steps= [
-    'Применяемость документа', 'Учетные данные документа', 'Персональные данные автора'];
+    'Применяемость ревизии документа',  'Учетные данные ревизии', 'Персональные данные', 'Загрузка файла', 'Создание удостоверяющего листа'];
 
-const DocStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
+const DocRevisionStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     return (
         <ThemeProvider theme={StepperThem}>
             <Container sx={{p:5}}>
@@ -38,4 +38,4 @@ const DocStepWrapper:React.FC<StepWrapperProps> = ({activeStep, children }) => {
     );
 };
 
-export default DocStepWrapper;
+export default DocRevisionStepWrapper;

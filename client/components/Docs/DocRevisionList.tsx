@@ -13,14 +13,15 @@ import {IUser} from "../../types/user";
 
 
 interface DocRevisionListProps{
-    docRevisions:IDocRevision[]
-    user:IUser
+    docRevisions:IDocRevision[],
+    user:IUser,
+    serverHost:string,
 }
 
 
 
 
-const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) => {
+const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user, serverHost}) => {
     const router = useRouter();
     const {draft} = router.query;
     console.log(draft);
@@ -49,8 +50,8 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) =
                           justifyContent="flex-start"
                           alignItems="center"
                           fontSize={'0.75rem'}>
-                        <Box sx={{marginTop:2, marginLeft:12}}>
-                            Имя ревизии
+                        <Box sx={{marginTop:2, marginLeft:6}}>
+                            Наименование ревизии
                         </Box>
                         <Divider/>
 
@@ -71,7 +72,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) =
                           justifyContent="center"
                           alignItems="center"
                           fontSize={'0.75rem'}>
-                        <Box sx={{marginTop:2}}>
+                        <Box sx={{marginTop:2, marginLeft:-3}}>
                             Статус
                         </Box>
                     </Grid>
@@ -80,7 +81,7 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) =
                           justifyContent="center"
                           alignItems="center"
                           fontSize={'0.75rem'}>
-                        <Box sx={{marginTop:2}}>
+                        <Box sx={{marginTop:2, marginLeft:-4}}>
                             Дата изменения
                         </Box>
                     </Grid>
@@ -88,8 +89,8 @@ const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user}) =
                 </Grid>
                 <Divider/>
                 <Box p={2}>
-                        {docRevisions.map(docRevisions =>
-                            <DocRevisionItem key={docRevisions._id} docRevision={docRevisions} user={user}/>
+                        {docRevisions.map(docRevision =>
+                            <DocRevisionItem key={docRevision._id} docRevision={docRevision} user={user} serverHost={serverHost}/>
                         )}
                </Box>
             </List>

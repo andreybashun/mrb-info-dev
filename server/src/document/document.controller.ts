@@ -3,7 +3,7 @@ import {DocumentService} from "./document.service";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {CreateDocDto} from "./dto/create-doc.dto";
 import {CreateDocRevisionDto} from "./dto/create-docRevision.dto";
-import {ObjectId, Schema} from "mongoose";
+import {ObjectId} from "mongoose";
 
 
 @Controller('document')
@@ -55,7 +55,7 @@ export class DocumentController {
         return this.documentService.deleteRevision(id);
     }
 
-    @Put(':id')
+    @Put('/revision/:id')
     editRevision(@Param('id') id:ObjectId, @Body () dto: CreateDocDto){
         return this.documentService.editRevision(id, dto);
     }

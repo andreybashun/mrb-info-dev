@@ -7,7 +7,7 @@ const DocViewer=({docRevision}) => {
     const  path = 'https://storage.yandexcloud.net/mrb-doc/' + docRevision.key
 
     return (
-            <iframe  src={path} height="760px" width="100%"/>
+            <iframe  src={path} height="880px" width="100%"/>
     )
 }
 export default DocViewer

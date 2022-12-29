@@ -13,10 +13,11 @@ import {IUser} from "../../types/user";
 interface DocItemProps {
     doc: IDoc;
     user:IUser;
+    path:string;
 }
 
 
-const DocItem: React.FC<DocItemProps> = ({doc, user}) => {
+ const DocItem: React.FC<DocItemProps> = ({doc, user, path}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -34,7 +35,7 @@ const DocItem: React.FC<DocItemProps> = ({doc, user}) => {
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {doc.author}
+                    {user.firstName[0] + '.' + user.secondName}
                 </Grid>
                 <Grid xs={2} container
                       direction="row"
@@ -46,7 +47,7 @@ const DocItem: React.FC<DocItemProps> = ({doc, user}) => {
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <DocOptionMenu doc={doc} user={user}/>
+                    <DocOptionMenu doc={doc} user={user} path={path}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

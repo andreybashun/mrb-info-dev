@@ -144,14 +144,14 @@ const DraftCard = (props) => {
 
 export default DraftCard;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'document/' + params.draft);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             doc: response.data,
             document: params.draft,
-            user: resUser.data
+            user: resUser.data,
         }
     }
 }

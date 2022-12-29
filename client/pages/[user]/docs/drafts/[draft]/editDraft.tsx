@@ -88,12 +88,12 @@ const EditDraft = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put (process.env.SERVER_HOST + 'document/' + props.document, {
+            axios.put (props.serverHost + 'document/' + props.document, {
                 type: type,
                 name: name.value,
                 author: author.value,
                 status: status,
-                discription: discription.value,
+                description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
                 organization: organization.value,
@@ -318,14 +318,15 @@ const EditDraft = (props) => {
 
 export default EditDraft;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'document/' + params.draft);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             doc: response.data,
             document: params.draft,
-            user: resUser.data
+            user: resUser.data,
+            serverHost:process.env.SERVER_HOST,
         }
     }
 }

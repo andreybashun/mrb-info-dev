@@ -12,10 +12,11 @@ import {IUser} from "../../types/user";
 
 interface DocListProps {
     docs: IDoc[],
-    user: IUser
+    user: IUser,
+    path:string
 }
 
-const DocList: React.FC<DocListProps> = ({docs, user}) => {
+const DocList: React.FC<DocListProps> = ({docs, user, path}) => {
     const router = useRouter ();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -71,7 +72,7 @@ const DocList: React.FC<DocListProps> = ({docs, user}) => {
                             // {
                             //     return (<DocItem key={docs._id} doc={docs}/>)
                             // }
-                            return (<DocItem key={docs._id} doc={docs} user={user}/>)
+                            return (<DocItem key={docs._id} doc={docs} user={user} path={path}/>)
                         }
                     )}
                 </Box>

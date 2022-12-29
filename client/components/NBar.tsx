@@ -26,14 +26,25 @@ interface NBarProps {
 }
 
 const NBar: React.FC<NBarProps> = ({user}) => {
+
+    const [SelectedIndex, setSelectedIndex] = React.useState(1);
+
+    const handleListItemClick = (
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number,
+    ) => {
+        setSelectedIndex(index);
+    };
+
+
     const menuItems = [
-        {text: 'Инфопанель', href: '/' + user._id, icon: <HomeIcon />},
-        {text: 'Задачи', href: '/'+ user._id +'/tasks', icon: <WorkHistoryIcon />},
-        {text: 'Документы', href: '/'+ user._id +'/docs', icon: <LibraryBooksIcon />},
-        {text: 'Совещания', href:'/'+ user._id + '/meetings', icon: <HandshakeIcon/>},
-        {text: 'Группы', href: '/'+ user._id +'/groups', icon: <GroupsIcon/>},
-        {text: 'Удостоверяющий центр', href: '/' + user._id +'/certificationCenter', icon: <PolicyIcon/>},
-        {text: 'Репозиторий', href: '/' + user._id +'/repository', icon:  <InventoryIcon/>},
+        {index:1, text: 'Инфопанель', href: '/' + user._id, icon: <HomeIcon />},
+        {index:2, text: 'Задачи', href: '/'+ user._id +'/tasks', icon: <WorkHistoryIcon />},
+        {index:3, text: 'Документы', href: '/'+ user._id +'/docs', icon: <LibraryBooksIcon />},
+        {index:4, text: 'Совещания', href:'/'+ user._id + '/meetings', icon: <HandshakeIcon/>},
+        {index:5, text: 'Группы', href: '/'+ user._id +'/groups', icon: <GroupsIcon/>},
+        {index:6, text: 'Удостоверяющий центр', href: '/' + user._id +'/certificationCenter', icon: <PolicyIcon/>},
+        {index:7, text: 'Репозиторий', href: '/' + user._id +'/repository', icon:  <InventoryIcon/>},
     ]
     const router = useRouter ()
     return (
@@ -43,8 +54,12 @@ const NBar: React.FC<NBarProps> = ({user}) => {
             <Box sx={{overflow: 'auto'}}>
                 <List  sx={{marginBottom:0}}>
                     {menuItems.map ((menuItems) => (
-                        <ListItem key={menuItems.href} disablePadding onClick={() => router.push (menuItems.href)}>
-                            <ListItemButton>
+                        <ListItem key={menuItems.href}  disablePadding onClick={() => {
+                            router.push (menuItems.href)
+                        }}
+                        >
+                            <ListItemButton  selected={SelectedIndex === 2}
+                                             onClick={(event) => handleListItemClick(event, 2)}>
                                 <ListItemIcon>
                                     {menuItems.icon}
                                 </ListItemIcon>
@@ -59,7 +74,7 @@ const NBar: React.FC<NBarProps> = ({user}) => {
 }
 export default NBar;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     console.log (response.data)
     return {

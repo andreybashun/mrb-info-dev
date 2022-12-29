@@ -19,9 +19,10 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import {IUser} from "../../types/user";
 
-interface DocItemProps {
+interface DocOptionMenuProps {
     doc: IDoc;
     user:IUser;
+    path: string;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -78,7 +79,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocOptionMenu: React.FC<DocItemProps> = ({doc, user}) => {
+const DocOptionMenu: React.FC<DocOptionMenuProps> = ({doc, user, path}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -184,8 +185,8 @@ const DocOptionMenu: React.FC<DocItemProps> = ({doc, user}) => {
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete(process.env.SERVER_HOST + 'document/' + doc._id)
-                                            .then(resp => router.push('/' + user._id + '/docs/drafts'))
+                                        axios.delete(path + 'document/'+ doc._id)
+                                            .then(() => router.push('/' + user._id + '/docs/drafts'))
                                             .catch(e => console.log(e))
                                         // router.push ('/docs/drafts/' + doc._id)
                                     }

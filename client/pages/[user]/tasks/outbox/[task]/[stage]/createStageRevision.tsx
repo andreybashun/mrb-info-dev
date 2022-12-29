@@ -136,7 +136,7 @@ const CreateStageRevision = ({docs, task, stage, user}) => {
                 name: name.value,
                 author: author.value,
                 status: status,
-                discription: discription.value,
+                description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
                 organization: organization.value,
@@ -486,7 +486,7 @@ const CreateStageRevision = ({docs, task, stage, user}) => {
 
 export default CreateStageRevision;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'document/')
     const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
     const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage)

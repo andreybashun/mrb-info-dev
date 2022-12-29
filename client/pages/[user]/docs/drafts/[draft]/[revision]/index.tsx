@@ -19,10 +19,10 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../../layouts/MLayout";
 
 
-const Index = ({docRevision, user}) => {
+const Index = ({docRevision, user, serverHost}) => {
     const router = useRouter ()
-    const path = process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision.key
-    const certificatePath = process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision.certificateFile
+    const path = serverHost + 'document/' + docRevision.docId + '/' + docRevision.key
+    const certificatePath = serverHost + 'document/' + docRevision.docId + '/' + docRevision.certificateFile
     return (
         <MLayout user={user}>
             <div>
@@ -151,7 +151,7 @@ const Index = ({docRevision, user}) => {
                                       justifyContent="flex-start"
                                       alignItems="center">
                                     <IconButton color="info" onClick={() => axios.get (path)
-                                        .then (resp => router.push ('/' + user._id + '/docs/drafts'))
+                                        .then (() => router.push ('/' + user._id + '/docs/drafts'))
                                         .catch (e => console.log (e))
                                     }>
 
@@ -173,7 +173,7 @@ const Index = ({docRevision, user}) => {
                                       alignItems="center"
                                 >
                                     <IconButton color="warning" onClick={() => axios.get (path)
-                                        .then (resp => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
+                                        .then (() => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/view'))
                                         .catch (e => console.log (e))
                                     }>
                                         <PictureAsPdfIcon/>
@@ -215,7 +215,7 @@ const Index = ({docRevision, user}) => {
                                       alignItems="center"
                                 >
                                     <IconButton color="warning" onClick={() => axios.get (certificatePath)
-                                        .then (resp => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/certificateView'))
+                                        .then (() => router.push ('/' + user._id + '/docs/drafts/' + docRevision.docId + '/' + docRevision._id + '/certificateView'))
                                         .catch (e => console.log (e))
                                     }>
                                         <PictureAsPdfIcon/>
@@ -247,7 +247,8 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
     return {
         props: {
             docRevision: response.data,
-            user: resUser.data
+            user: resUser.data,
+            serverHost:process.env.SERVER_HOST,
         }
     }
 }

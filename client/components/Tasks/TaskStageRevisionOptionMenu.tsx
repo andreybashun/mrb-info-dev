@@ -19,7 +19,7 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import {IUser} from "../../types/user";
 
-interface TaskStageRevisionItemProps {
+interface TaskStageRevisionOptionMenuProps {
     taskStageRevision: ITaskStageRevision;
     user:IUser;
 }
@@ -78,7 +78,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, user}) => {
+const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = ({taskStageRevision, user}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -158,8 +158,9 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
+                                        console.log(process.env.SERVER_HOST + 'task/revision/'  + taskStageRevision._id)
                                         axios.delete(process.env.SERVER_HOST + 'task/revision/'  + taskStageRevision._id)
-                                            .then(resp => router.push('/' + user._id +'/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
+                                            .then(() => router.push('/' + user._id +'/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
                                             .catch(e => console.log(e))
                                     }
                                     }
@@ -188,5 +189,5 @@ const DocRevisionOptionMenu: React.FC<TaskStageRevisionItemProps> = ({taskStageR
     );
 }
 
-export default DocRevisionOptionMenu
+export default TaskStageRevisionOptionMenu
 

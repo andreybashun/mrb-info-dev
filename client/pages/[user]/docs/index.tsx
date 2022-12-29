@@ -15,8 +15,6 @@ import {GetServerSideProps} from "next";
 import axios from "axios";
 import MLayout from "../../../layouts/MLayout";
 
-
-
 const Index =  (props) => {
     const router = useRouter ()
     return (
@@ -167,7 +165,7 @@ const Index =  (props) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {

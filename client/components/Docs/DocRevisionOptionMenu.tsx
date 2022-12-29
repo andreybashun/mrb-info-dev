@@ -18,9 +18,12 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import {GetServerSideProps} from "next";
+import {IUser} from "../../types/user";
 
-interface DocRevisionItemProps {
+interface DocRevisionOptionMenuProps {
     docRevision: IDocRevision;
+    user:IUser;
+    serverHost:string;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -77,7 +80,7 @@ const style = {
     borderRadius: 2
 };
 
-const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, user) => {
+const DocRevisionOptionMenu: React.FC<DocRevisionOptionMenuProps> = ({docRevision, user, serverHost}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -155,8 +158,8 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, us
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete(process.env.SERVER_HOST + 'document/' + docRevision.docId + '/' + docRevision._id)
-                                            .then(resp => router.push('/' + user._id + '/docs/drafts/' + docRevision.docId))
+                                        axios.delete(serverHost + 'document/' + docRevision.docId + '/' + docRevision._id)
+                                            .then(() => router.push('/' + user._id + '/docs/drafts/' + docRevision.docId))
                                             .catch(e => console.log(e))
                                     }
                                     }
@@ -187,11 +190,13 @@ const DocRevisionOptionMenu: React.FC<DocRevisionItemProps> = ({docRevision}, us
 
 export default DocRevisionOptionMenu
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    console.log('ответ сервера:',response)
     return {
         props: {
             user: response.data,
+            serverHost:process.env.SERVER_HOST,
         }
     }
 }
