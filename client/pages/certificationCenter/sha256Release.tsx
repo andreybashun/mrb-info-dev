@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import {useRouter} from "next/router";
 import axios from "axios";
 import FileUpload from "../../components/FileUpload";
 import ShaReleaseStepWraper from "../../components/CertificationCenter/ShaReleaseStepWraper";
@@ -21,20 +20,15 @@ import {GetServerSideProps} from "next";
 import MLayout from "../../layouts/MLayout";
 
 
-const Sha256Release = ({user}) => {
+const Sha256Release = ({user, serverHost}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState (null)
-    const [certificate, setCertificate] = useState (null)
-    const router = useRouter ()
 
     const [SuccessModalOpen, setSuccessModalOpen] = React.useState (false);
     const [modalText, setModalText] = React.useState (null)
-    const handleSuccessModalOpen = () => setSuccessModalOpen (true);
     const handleSuccessModalClose = () => setSuccessModalOpen (false);
 
     const [FailModalOpen, setFailModalOpen] = React.useState (false);
-    const handleFailModalOpen = () => setFailModalOpen (true);
-    const handleFailModalClose = () => setFailModalOpen (false);
 
     const [checked, setChecked] = React.useState (false);
 
@@ -70,7 +64,7 @@ const Sha256Release = ({user}) => {
         } else {
             const SHA256Data = new FormData ()
             SHA256Data.append ('file', file)
-            axios.post (process.env.SERVER_HOST + 'crypto/sha256', SHA256Data)
+            axios.post (serverHost + 'crypto/sha256', SHA256Data)
                 .then (resp => {
                     const calculatedHash = resp.data
                     if (calculatedHash) {
@@ -190,7 +184,8 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
-            user: resUser.data
+            user: resUser.data,
+            serverHost: process.env.SERVER_HOST
         }
     }
 }

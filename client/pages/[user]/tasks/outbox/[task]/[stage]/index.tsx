@@ -5,7 +5,7 @@ import TaskStageRevisionList from "../../../../../../components/Tasks/TaskStageR
 import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../../layouts/MLayout";
 
-const Index = ({taskStageRevision, taskId, stageId, stage, task, user}) => {
+const Index = ({taskStageRevision, taskId, stageId, stage, task, user, serverHost}) => {
     return (
         <MLayout user={user}>
             <div>
@@ -21,14 +21,14 @@ const Index = ({taskStageRevision, taskId, stageId, stage, task, user}) => {
                     }
                 />
             </div>
-            <TaskStageRevisionList taskStageRevisions={taskStageRevision} task={task} taskStage={stage} user={user}/>
+            <TaskStageRevisionList taskStageRevisions={taskStageRevision} task={task} taskStage={stage} user={user} serverHost={serverHost}/>
         </MLayout>
     );
 };
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
     const response = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage);
     const res = await axios.get (process.env.SERVER_HOST + 'task/' + response.data.taskId)
@@ -42,6 +42,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
             stage: response.data,
             task: res.data,
             user: resUser.data,
+            serverHost:process.env.SERVER_HOST
 
         }
     }

@@ -33,7 +33,7 @@ const TaskStageCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom:2}} variant="contained" onClick={() =>
-                        router.push ('/user/tasks/outbox/' + props.stage.taskId + '/' + props.stage._id + '/editStage/')}
+                        router.push ('/' + props.user._id + '/tasks/outbox/' + props.stage.taskId + '/' + props.stage._id + '/editStage/')}
                     >
                         Редактировать
                     </Button>
@@ -102,7 +102,7 @@ const TaskStageCard = (props) => {
                         Автор
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/persons/a_bashun">{props.stage.author}</Link>
+                        <Link href="/repository/Cards/persons/a_bashun">{props.stage.author}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -128,7 +128,7 @@ const TaskStageCard = (props) => {
                         Тип воздушного судна
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/AircraftType/rrj-95new">{props.stage.aircraftType}</Link>
+                        <Link href="/repository/Cards/AircraftType/rrj-95new">{props.stage.aircraftType}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -174,7 +174,7 @@ const TaskStageCard = (props) => {
 
 export default TaskStageCard;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
     const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);

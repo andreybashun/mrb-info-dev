@@ -18,7 +18,7 @@ import {GetServerSideProps} from "next";
 import MLayout from "../../../../../layouts/MLayout";
 
 
-const CreateSatge = (props) => {
+const CreateStage = (props) => {
     const [activeStep, setActiveStep] = useState (0);
     const name = useInput ('');
     const author = useInput ('A.Bashun');
@@ -92,7 +92,7 @@ const CreateSatge = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post (process.env.SERVER_HOST + '/task/stage', {
+            axios.post (props.serverHost + 'task/stage', {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -109,7 +109,7 @@ const CreateSatge = (props) => {
             })
                 .then (resp => {
                     setOpen (true)
-                    router.push ({pathname: '/user/tasks/outbox/' + resp.data.taskId + '/' + resp.data._id})
+                    router.push ({pathname: '/' + props.user._id + '/tasks/outbox/' + resp.data.taskId + '/' + resp.data._id})
                 })
                 .catch (e => console.log (e))
         }
@@ -172,7 +172,6 @@ const CreateSatge = (props) => {
                             />
                         </FormControl>
 
-                        {/*<DocDescription/>*/}
 
                         <Box sx={{p: 1, width: '95ch'}}>
                             <TextField
@@ -318,7 +317,7 @@ const CreateSatge = (props) => {
     );
 };
 
-export default CreateSatge;
+export default CreateStage;
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
@@ -327,6 +326,7 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
         props: {
             task: resTask.data,
             user: resUser.data,
+            serverHost: process.env.SERVER_HOST,
         }
     }
 }

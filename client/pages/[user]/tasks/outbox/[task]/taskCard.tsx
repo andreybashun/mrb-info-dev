@@ -123,7 +123,7 @@ const taskCard = (props) => {
                         Тип воздушного судна
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/AircraftType/rrj-95new">{props.task.aircraftType}</Link>
+                        <Link href="repository/Cards/AircraftType/rrj-95new">{props.task.aircraftType}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -156,12 +156,14 @@ const taskCard = (props) => {
 
 export default taskCard;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
             task: response.data,
-            taskId: params.task
+            taskId: params.task,
+            user: resUser.data,
         }
     }
 }

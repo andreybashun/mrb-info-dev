@@ -1,13 +1,15 @@
 import React from 'react';
-import MainLayout from "../../../../../layouts/MainLayout";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import {Stack} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
+import MLayout from "../../../../../layouts/MLayout";
+import {GetServerSideProps} from "next";
+import axios from "axios";
 
-const ABashun = () => {
+const ABashun = ({user}) => {
     return (
-        <MainLayout>
+        <MLayout user={user}>
             <Breadcrumbs
                 useDefaultStyle
                 replaceCharacterList={[
@@ -125,8 +127,18 @@ const ABashun = () => {
                     </Grid>
                 </Grid>
             </Stack>
-        </MainLayout>
+        </MLayout>
     )
 };
 
 export default ABashun;
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    return {
+        props: {
+            user: resUser.data,
+        }
+    }
+}

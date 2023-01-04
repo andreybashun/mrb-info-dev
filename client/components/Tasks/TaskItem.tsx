@@ -12,9 +12,10 @@ import {ITasks} from "../../types/task";
 interface TaskItemProps {
     user:IUser;
     task:ITasks;
+    serverHost: string;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({task, user}) => {
+const TaskItem: React.FC<TaskItemProps> = ({task, user, serverHost}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -45,7 +46,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, user}) => {
                   justifyContent="flex-end"
                   alignItems="center">
 
-                    <TaskOptionMenu task={task} user={user}/>
+                    <TaskOptionMenu task={task} user={user} serverHost={serverHost}/>
 
             </Grid>
             <Divider/>

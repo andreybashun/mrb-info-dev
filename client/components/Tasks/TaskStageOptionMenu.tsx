@@ -24,6 +24,7 @@ interface TaskStageItemProps {
     user: IUser;
     task: ITasks;
     taskStage: ITaskStage;
+    serverHost: string;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -80,7 +81,7 @@ const style = {
     borderRadius: 2
 };
 
-const TaskStageOptionMenu: React.FC<TaskStageItemProps> = ({taskStage, task, user}) => {
+const TaskStageOptionMenu: React.FC<TaskStageItemProps> = ({taskStage,  user, serverHost}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -187,8 +188,8 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps> = ({taskStage, task, use
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete (process.env.SERVER_HOST + 'task/stage/' + taskStage._id)
-                                            .then (resp => router.push ('/' + user._id + '/tasks/outbox/' + taskStage.taskId))
+                                        axios.delete (serverHost + 'task/stage/' + taskStage._id)
+                                            .then (() => router.push ('/' + user._id + '/tasks/outbox/' + taskStage.taskId))
                                             .catch (e => console.log (e))
                                     }
                                     }

@@ -14,9 +14,10 @@ interface TaskStageRevisionItemProps {
     task: ITasks;
     taskStage: ITaskStage;
     taskStageRevision:ITaskStageRevision;
+    serverHost:string
 }
 
-const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, task, user}) => {
+const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, task, user, serverHost}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -25,7 +26,8 @@ const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRe
                       direction="row"
                       justifyContent="flex-start"
                       alignItems="center">
-                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/' +
+                            user._id + '/tasks/outbox/' + task._id + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
                             <AssignmentIcon/>
                         </IconButton>
                     {taskStageRevision.name}
@@ -52,7 +54,7 @@ const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRe
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <TaskStageRevisionOptionMenu taskStageRevision={taskStageRevision} user={user}/>
+                    <TaskStageRevisionOptionMenu taskStageRevision={taskStageRevision} user={user} serverHost={serverHost}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

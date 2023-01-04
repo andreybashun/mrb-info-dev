@@ -77,7 +77,19 @@ export class S3Service {
 
     async deleteFile (key): Promise<any>{
         const s3 = this.getS3 ()
-        return s3.deleteObject ({Bucket: process.env.BUCKET_S3, Key: key});
+        const params = {
+            Bucket: 'mrb-doc',
+            Key: String (key),
+        };
+        return new Promise ((resolve, reject) => {
+            s3.deleteObject (params, (err, data) => {
+                if (err) {
+                    console.log (err);
+                    reject (err.message);
+                }
+                resolve (data);
+            });
+        });
     }
 
     getS3 () {

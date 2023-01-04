@@ -18,7 +18,7 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../../layouts/MLayout";
 
 
-const CreateStageRevision = ({docs, task, stage, user}) => {
+const CreateStageRevision = ({docs, task, stage, user, serverHost}) => {
 
     const [activeStep, setActiveStep] = useState (0);
     const name = useInput ('');
@@ -86,11 +86,8 @@ const CreateStageRevision = ({docs, task, stage, user}) => {
 
         setDoc (event.target.value.toString ());
 
-        const response = await axios.get (process.env.SERVER_HOST + 'document/' + event.target.value.toString ())
+        const response = await axios.get (serverHost + 'document/' + event.target.value.toString ())
 
-        await console.log ('документ', doc)
-        await console.log ('ревизии ', response.data.docRevisions)
-        await console.log ('ревизии ', response.data.docRevisions)
         if (event.target.value.toString () === '' || doc !== '') {
             await setDocRevision ('')
         } else {
@@ -131,7 +128,7 @@ const CreateStageRevision = ({docs, task, stage, user}) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post (process.env.SERVER_HOST + 'task/revision', {
+            axios.post (serverHost + 'task/revision', {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -417,13 +414,12 @@ const CreateStageRevision = ({docs, task, stage, user}) => {
                             </Select>
                         </FormControl>
                         <FormControl sx={{m: 1, width: '55ch'}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование ревизии
-                                документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Наименование ревизии</InputLabel>
                             <Select
                                 onChange={handleDocRevisionChange}
                                 labelId="select-small"
                                 id="select-small"
-                                label="Наименование ревизии документа"
+                                label="Наименование ревизии"
                                 value={docRevision}
 
                             >
@@ -496,7 +492,8 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
             docs: response.data,
             task: resTask.data,
             stage: resStage.data,
-            user: resUser.data
+            user: resUser.data,
+            serverHost: process.env.SERVER_HOST
 
         }
     }

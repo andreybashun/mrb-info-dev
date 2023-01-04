@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import {useRouter} from "next/router";
 import axios from "axios";
 import FileUpload from "../../components/FileUpload";
 import ShaCheckStepWraper from "../../components/CertificationCenter/ShaCheckStepWraper";
@@ -24,15 +23,13 @@ import MLayout from "../../layouts/MLayout";
 
 
 
-const Sha256Check = ({user}) => {
+const Sha256Check = ({user, serverHost}) => {
     const [activeStep, setActiveStep] = useState (0)
     const [file, setFile] = useState (null)
     const [certificate, setCertificate] = useState (null)
     const [SuccessModalOpen, setSuccessModalOpen] = React.useState (false);
-    const handleSuccessModalOpen = () => setSuccessModalOpen (true);
     const handleSuccessModalClose = () => setSuccessModalOpen (false);
     const [FailModalOpen, setFailModalOpen] = React.useState (false);
-    const handleFailModalOpen = () => setFailModalOpen (true);
     const handleFailModalClose = () => setFailModalOpen (false);
     const [checked, setChecked] = React.useState (false);
     const [pdf, setpdf] = React.useState (null)
@@ -67,12 +64,12 @@ const Sha256Check = ({user}) => {
         } else {
             const HashData = new FormData ()
             HashData.append ('file', certificate)
-            axios.post (process.env.SERVER_HOST + 'crypto/pdf', HashData)
+            axios.post (serverHost + 'crypto/pdf', HashData)
                 .then (resp => {
                     const uploadedHash = resp.data
                     const SHA256Data = new FormData ()
                     SHA256Data.append ('file', file)
-                    axios.post (process.env.SERVER_HOST + 'crypto/sha256', SHA256Data)
+                    axios.post (serverHost + 'crypto/sha256', SHA256Data)
                         .then (resp => {
                             const calculatedHash = resp.data
                             setpdf (calculatedHash)
@@ -167,7 +164,7 @@ const Sha256Check = ({user}) => {
                             if (checked === true) {
                                 console.log ('переход к формированию протокола')
                                 const doc = new jsPDF ();
-                                let certStatus = '';
+                                let certStatus;
                                 if (SuccessModalOpen === true) {
                                     certStatus = "the certificate is validated"
                                 } else {
@@ -235,7 +232,7 @@ const Sha256Check = ({user}) => {
                             if (checked === true) {
                                 console.log ('переход к формированию протокола')
                                 const doc = new jsPDF ();
-                                let certStatus = "";
+                                let certStatus;
                                 if (SuccessModalOpen === true) {
                                     certStatus = "the certificate is validated"
                                 } else {
@@ -272,7 +269,8 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
-            user: resUser.data
+            user: resUser.data,
+            serverHost:process.env.SERVER_HOST
         }
     }
 }

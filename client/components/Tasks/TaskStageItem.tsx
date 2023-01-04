@@ -13,10 +13,11 @@ interface TaskStageItemProps {
     user:IUser;
     task:ITasks;
     taskStage:ITaskStage;
+    serverHost:string;
 }
 
 
-const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user}) => {
+const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user, serverHost}) => {
     const router = useRouter();
     return (
         <Grid container spacing={2}>
@@ -49,7 +50,7 @@ const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user}) =>
                       direction="row"
                       justifyContent="flex-end"
                       alignItems="center">
-                    <TaskStageOptionMenu taskStage={taskStage} task={task} user={user}/>
+                    <TaskStageOptionMenu taskStage={taskStage} task={task} user={user} serverHost={serverHost}/>
                 </Grid>
                 <Divider/>
             </ListItemButton>

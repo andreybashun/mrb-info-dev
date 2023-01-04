@@ -14,9 +14,10 @@ import {ITasks} from "../../types/task";
 interface TaskListProps {
     user:IUser;
     tasks:ITasks[];
+    serverHost: string
 }
 
-const TaskList: React.FC<TaskListProps>= ({tasks, user}) => {
+const TaskList: React.FC<TaskListProps>= ({tasks, user, serverHost}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -67,7 +68,7 @@ const TaskList: React.FC<TaskListProps>= ({tasks, user}) => {
 
                 <Box p={2}>
                     {tasks.map (task => {
-                                return(<TaskItem key={task._id} task={task} user={user}/>)
+                                return(<TaskItem key={task._id} task={task} user={user} serverHost={serverHost}/>)
                         }
                     )}
                 </Box>

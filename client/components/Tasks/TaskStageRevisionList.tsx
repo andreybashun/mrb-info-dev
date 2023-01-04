@@ -16,10 +16,11 @@ interface TaskStageRevisionListProps {
     task: ITasks;
     taskStage: ITaskStage;
     taskStageRevisions:ITaskStageRevision[];
+    serverHost: string;
 }
 
 const TaskStageRevisionList:React.FC<TaskStageRevisionListProps> =
-    ({taskStageRevisions, task, taskStage, user}) => {
+    ({taskStageRevisions, task, taskStage, user, serverHost}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -31,7 +32,7 @@ const TaskStageRevisionList:React.FC<TaskStageRevisionListProps> =
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/user/tasks/outbox/' + task._id + '/' + taskStage._id +  '/taskStageCard')}>
+                        onClick={()=> router.push('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id +  '/taskStageCard')}>
                     Карточка этапа
                 </Button>
             </Stack>
@@ -82,7 +83,8 @@ const TaskStageRevisionList:React.FC<TaskStageRevisionListProps> =
                 <Divider/>
                 <Box p={2}>
                     {taskStageRevisions.map(taskStageRevision =>
-                        <TaskStageRevisionItem key={taskStageRevision._id} taskStageRevision={taskStageRevision} task={task} user={user} taskStage={taskStage}/>
+                        <TaskStageRevisionItem key={taskStageRevision._id}
+                                               taskStageRevision={taskStageRevision} task={task} user={user} taskStage={taskStage} serverHost={serverHost}/>
                     )}
                 </Box>
             </List>

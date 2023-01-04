@@ -50,7 +50,7 @@ export class DocumentController {
         return this.documentService.getFile(key)
     }
 
-    @Delete(':id/:id')
+    @Delete('revision/:id')
     deleteRevision (@Param('id') id:ObjectId) {
         return this.documentService.deleteRevision(id);
     }

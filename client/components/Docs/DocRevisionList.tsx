@@ -24,7 +24,6 @@ interface DocRevisionListProps{
 const DocRevisionList: React.FC<DocRevisionListProps> = ({docRevisions, user, serverHost}) => {
     const router = useRouter();
     const {draft} = router.query;
-    console.log(draft);
     return (
         <Stack direction={"column"} spacing={2} sx={{
             padding: 5,

@@ -18,7 +18,7 @@ import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../../../layouts/MLayout";
 
 
-const CreateStageRevision = ({docs, task, stage, revision, user}) => {
+const CreateStageRevision = ({docs, task, stage, revision, user, serverHost}) => {
 
     const [activeStep, setActiveStep] = useState (0);
     const name = useInput (revision.name);
@@ -84,7 +84,7 @@ const CreateStageRevision = ({docs, task, stage, revision, user}) => {
     const handleDocChange = async (event: SelectChangeEvent) => {
 
         setDoc (event.target.value.toString ());
-        const response = await axios.get (process.env.SERVER_HOST + 'document/' + event.target.value.toString ())
+        const response = await axios.get (serverHost + 'document/' + event.target.value.toString ())
         // await setDocRevisions( response.data.docRevisions);
 
         if ((event.target.value.toString () === '' || doc !== '')) {
@@ -127,7 +127,7 @@ const CreateStageRevision = ({docs, task, stage, revision, user}) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put (process.env.SERVER_HOST + 'task/revision/' + revision._id, {
+            axios.put (serverHost + 'task/revision/' + revision._id, {
                 type: type,
                 name: name.value,
                 author: author.value,
@@ -492,6 +492,7 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
             stage: resStage.data,
             revision: resRevision.data,
             user: resUser.data,
+            serverHost: process.env.SERVER_HOST,
         }
     }
 }

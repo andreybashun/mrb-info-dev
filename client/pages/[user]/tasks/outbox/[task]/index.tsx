@@ -5,7 +5,7 @@ import axios from "axios";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import MLayout from "../../../../../layouts/MLayout";
 
-const Index = ({taskStage, task, user}) => {
+const Index = ({taskStage, task, user, serverHost}) => {
     return (
         <MLayout user={user}>
             <div>
@@ -20,7 +20,7 @@ const Index = ({taskStage, task, user}) => {
                     }
                 />
             </div>
-            <TaskStageList taskStages={taskStage} task={task} user={user}/>
+            <TaskStageList taskStages={taskStage} task={task} user={user} serverHost={serverHost}/>
         </MLayout>
     );
 };
@@ -28,7 +28,7 @@ const Index = ({taskStage, task, user}) => {
 export default Index;
 
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
     const response = await axios.get (process.env.SERVER_HOST +'task/' + params.task);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
@@ -38,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
             task:response.data,
             taskId: params.task,
             user:resUser.data,
+            serverHost: process.env.SERVER_HOST,
         }
     }
 }

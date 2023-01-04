@@ -327,7 +327,7 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
             task: response.data,
             taskId: params.task,
             user: resUser.data,
-            path:process.env.SERVER_HOST + 'task/',
+            serverHost:process.env.SERVER_HOST,
         }
     }
 }

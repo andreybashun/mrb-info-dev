@@ -22,6 +22,7 @@ import {IUser} from "../../types/user";
 interface TaskStageRevisionOptionMenuProps {
     taskStageRevision: ITaskStageRevision;
     user:IUser;
+    serverHost: string;
 }
 
 const StyledMenu = styled ((props: MenuProps) => (
@@ -78,7 +79,7 @@ const style = {
     borderRadius: 2
 };
 
-const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = ({taskStageRevision, user}) => {
+const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = ({taskStageRevision, user, serverHost}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -158,8 +159,7 @@ const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = 
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        console.log(process.env.SERVER_HOST + 'task/revision/'  + taskStageRevision._id)
-                                        axios.delete(process.env.SERVER_HOST + 'task/revision/'  + taskStageRevision._id)
+                                        axios.delete(serverHost + 'task/revision/'  + taskStageRevision._id)
                                             .then(() => router.push('/' + user._id +'/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
                                             .catch(e => console.log(e))
                                     }

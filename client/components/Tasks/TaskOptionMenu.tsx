@@ -77,9 +77,10 @@ const style = {
 interface TaskOptionMenuProps {
     user: IUser;
     task: ITasks;
+    serverHost:string;
 }
 
-const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user}) => {
+const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user, serverHost}) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement> (null);
     const open = Boolean (anchorEl);
@@ -186,8 +187,8 @@ const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user}) => {
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete (process.env.SERVER_HOST + 'task/' + task._id)
-                                            .then (resp => router.push ('/' + user._id + '/user/tasks/outbox'))
+                                        axios.delete (serverHost + 'task/' + task._id)
+                                            .then (() => router.push ('/' + user._id + '/tasks/outbox'))
                                             .catch (e => console.log (e))
                                     }
                                     }

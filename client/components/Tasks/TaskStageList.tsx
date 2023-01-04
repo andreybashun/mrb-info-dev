@@ -15,9 +15,10 @@ interface TaskStageListProps {
     user:IUser;
     task:ITasks;
     taskStages:ITaskStage[];
+    serverHost:string;
 }
 
-const TaskStageList: React.FC <TaskStageListProps> = ({taskStages, task, user}) => {
+const TaskStageList: React.FC <TaskStageListProps> = ({taskStages, task, user, serverHost}) => {
     const router = useRouter();
     return (
         <Stack direction={"column"} spacing={2} sx={{
@@ -72,7 +73,7 @@ const TaskStageList: React.FC <TaskStageListProps> = ({taskStages, task, user}) 
                 <Divider/>
                 <Box p={2}>
                     {taskStages.map(taskStage =>
-                        <TaskStageItem key={taskStage._id} taskStage={taskStage} task={task} user = {user}/>
+                        <TaskStageItem key={taskStage._id} taskStage={taskStage} task={task} user = {user} serverHost={serverHost}/>
                     )}
                 </Box>
             </List>

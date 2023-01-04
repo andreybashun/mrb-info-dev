@@ -1,5 +1,3 @@
-import {ObjectId} from "mongoose";
-
 
 export class CreateDocRevisionDto{
     readonly name;
@@ -7,4 +5,5 @@ export class CreateDocRevisionDto{
     readonly author;
     readonly status;
     readonly docId;
+    readonly description;
 }

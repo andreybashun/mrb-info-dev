@@ -32,7 +32,7 @@ const StageCard = (props) => {
             }}>
                 <Stack direction="row" spacing={2}>
                     <Button size="small" sx={{marginBottom: 2}} variant="contained" onClick={() =>
-                        router.push ('/user/tasks/outbox/' + props.stage.taskId + '/' + stage + '/editStage/')}
+                        router.push ('/' + props.user._id + '/tasks/outbox/' + props.stage.taskId + '/' + stage + '/editStage/')}
                     >
                         Редактировать
                     </Button>
@@ -152,7 +152,7 @@ const StageCard = (props) => {
 
 export default StageCard;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'task/stage' + params.stage);
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {

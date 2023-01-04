@@ -54,6 +54,9 @@ export class DocRevision {
     @Prop()
     engineType:string;   // тип воздушного судна
 
+    @Prop()
+    description:string // описание ревизии
+
 }
 
 export const DocRevisionSchema = SchemaFactory.createForClass (DocRevision);

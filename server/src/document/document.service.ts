@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
 import {Doc, DocDocument} from "./schemas/document.schema";
-import {Model, ObjectId, Schema, Types} from "mongoose";
+import {Model, ObjectId} from "mongoose";
 import {CreateDocDto} from "./dto/create-doc.dto";
 import {S3Service} from "../s3/s3.service";
 import {DocRevision, DocRevisionDocument} from "./schemas/docrevision.schema";
@@ -46,15 +46,16 @@ export class DocumentService {
 
     // удаление ревизии
 
-    async deleteRevision (id: ObjectId): Promise<ObjectId> {
-
-        const revision = await this.docRevisionModel.findByIdAndDelete (id)
-        const doc = await this.docModel.findById (revision.docId)
-        await this.s3Servise.deleteFile (revision.key)
-        const docRevisionIndex = doc.docRevisions.indexOf(revision)
+    async deleteRevision (id: ObjectId): Promise<any> {
+        const rev = await this.docRevisionModel.findById(id)
+        const doc = await this.docModel.findById (rev.docId)
+        await this.s3Servise.deleteFile (rev.key)
+        await this.s3Servise.deleteFile(rev.certificateFile)
+        const docRevisionIndex = doc.docRevisions.indexOf(rev._id)
         doc.docRevisions.splice(docRevisionIndex,1)
         await doc.save ();
-        return revision._id
+        await rev.delete();
+        return rev.certificateFile
 
 
     }
@@ -77,12 +78,12 @@ export class DocumentService {
         cert.text("Certificate released:" , 10, 20 )
         cert.text("id: " + Date.now() , 10, 30 )
         cert.text("date: " + date.toLocaleDateString() +" "+ date.toLocaleTimeString(),10, 40);
-        cert.text("revision name: " + key.name, 10, 50);
+        cert.text("revision name: " + dto.name, 10, 50);
         cert.text("author: " + dto.author, 10, 60);
         cert.text("Document ID: " + dto.docId, 10, 70);
         cert.text("Document type: " + dto.type, 10, 80);
         cert.text("Document status: " + dto.status, 10, 90);
-        //cert.text("Document type: " + dto.description, 10, 100);
+        cert.text("Document type: " + dto.description, 10, 100);
         cert.cell(10,280,190,10,"Creation Request                    MRB Platform                https://mrb-info.ru",1,"")
         cert.save('fileHash.pdf');
 
@@ -99,9 +100,8 @@ export class DocumentService {
     // получение файла из s3
 
     async getFile (key) {
-        const filePath = await this.s3Servise.getFile (key)
-        return filePath
-    }
+        return await this.s3Servise.getFile (key)
+ }
 
     //получение ревизии
 
@@ -112,8 +112,7 @@ export class DocumentService {
     //редактирвоание ревизии
 
     async editRevision (id: ObjectId, dto: CreateDocDto){
-        const doc = await this.docModel.findOneAndUpdate(id, {...dto})
-        return doc
+        return this.docModel.findOneAndUpdate(id, {...dto})
     }
 }
 

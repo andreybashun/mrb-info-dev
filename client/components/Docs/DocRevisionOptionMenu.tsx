@@ -158,7 +158,7 @@ const DocRevisionOptionMenu: React.FC<DocRevisionOptionMenuProps> = ({docRevisio
                                     <Button onClick={() => {
                                         handleDialogClose ()
                                         handleClose ()
-                                        axios.delete(serverHost + 'document/' + docRevision.docId + '/' + docRevision._id)
+                                        axios.delete(serverHost + 'document/revision/' + docRevision._id)
                                             .then(() => router.push('/' + user._id + '/docs/drafts/' + docRevision.docId))
                                             .catch(e => console.log(e))
                                     }
@@ -192,7 +192,6 @@ export default DocRevisionOptionMenu
 
 export const getServerSideProps: GetServerSideProps = async ({ params}) => {
     const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
-    console.log('ответ сервера:',response)
     return {
         props: {
             user: response.data,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import FileUpload from "../../../../../components/FileUpload";
@@ -8,13 +8,13 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import {FormControl, InputLabel} from "@mui/material";
 import TextField from "@mui/material/TextField";
-import {jsPDF} from "jspdf";
 import {GetServerSideProps} from "next";
 import MLayout from "../../../../../layouts/MLayout";
 import Breadcrumbs from "nextjs-breadcrumbs";
 import DocRevisionStepWrapper from "../../../../../components/Docs/DocRevisionStepWraper";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Snackbar from "@mui/material/Snackbar";
 
 const CreateRevision = ({user, serverHost, draft}) => {
     const [activeStep, setActiveStep] = useState (0);
@@ -23,9 +23,6 @@ const CreateRevision = ({user, serverHost, draft}) => {
     const description = useInput ('');
     const author = user._id;
     const router = useRouter ();
-    const [certificateFile, setCertificateFile] = useState (null);
-    const [hash, setHash] = useState (null);
-    const decId = useInput ('');
     const lastChangeDate = useInput ('');
     const creationDate = useInput ('');
     const organization = user.organization;
@@ -34,10 +31,26 @@ const CreateRevision = ({user, serverHost, draft}) => {
     const engineType = draft.engineType;
     const type = draft.type;
 
+    function delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+    }
+
+    const [open, setOpen] = useState (false);
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen (false);
+    };
 
     const next = () => {
 
         if (activeStep !== 4) {
+            if (activeStep === 3) {
+                (async () => {
+                    await delay(2000);
+                })();
+            }
             setActiveStep (prev => prev + 1)
         } else {
             const formData = new FormData ()
@@ -48,14 +61,13 @@ const CreateRevision = ({user, serverHost, draft}) => {
             formData.append ('status', status);
             formData.append ('docId', draft._id);
             formData.append ('file', file);
-            formData.append ('hash', hash);
-            formData.append ('certificateList', certificateFile);
             formData.append ('ata', ata);
             formData.append ('aircraftType', draft.aircraftType);
             formData.append ('engineType', draft.engineType);
             formData.append ('description', description.value);
             formData.append ('lastChangeDate ',date.toLocaleDateString ());
             formData.append ('creationDate', date.toLocaleDateString ());
+            formData.append('decId', decId);
             axios.post (serverHost + 'document/revision', formData)
                 .then (() => router.push ('/' + user._id + '/docs/drafts/' + draft._id))
                 .catch (e => console.log (e))
@@ -66,33 +78,24 @@ const CreateRevision = ({user, serverHost, draft}) => {
     }
     const date = new Date ();
 
-    const [certificateSheet, setCertificateSheet] = useState (false);
-    const handleCertificateSheet = () => {
-        axios.post (serverHost + 'crypto/sha256', file)
-            .then (resp => {
-                setHash (resp.data)
-                const doc = new jsPDF ();
-                const date = new Date ();
-                doc.text (resp.data, 10, 10);
-                doc.text ("Certificate released:", 10, 20)
-                doc.text ("id: " + Date.now (), 10, 30)
-                doc.text ("date: " + date.toLocaleDateString () + " " + date.toLocaleTimeString (), 10, 40);
-                doc.text ("file: " + file.name, 10, 50);
-                doc.cell (10, 280, 190, 10, "Creation Request                    MRB Platform                https://mrb-info.ru", 1, "")
-                setCertificateFile (doc)
-                setCertificateSheet (true)
-            })
-            .catch (e => console.log (e))
-    }
+    const [decId, setDecimalNumber] = React.useState ('number')
+
+    useEffect (() => {
+        if (draft.docRevisions.length === 0){
+            setDecimalNumber(draft.decId + '/Rev001')
+        }
+        else {
+                    const maxIndex = draft.docRevisions[draft.docRevisions.length-1].decId.slice(-3)
+                    const nextIndex = 100 * Number(maxIndex.slice(-3,-2)) + 10 * Number(maxIndex.slice(-2,-1)) + Number(maxIndex.slice(-1))
+                    const num = (1000 + nextIndex + 1).toString ().slice (1)
+                    setDecimalNumber(draft.decId + '/Rev' + num)
+        }
+    })
 
     const [status, setStatus] = React.useState ('');
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log ('document status', event.target.value);
-
         setStatus (event.target.value);
-
-        console.log ('document status', event.target.value);
     };
 
     return (
@@ -166,11 +169,12 @@ const CreateRevision = ({user, serverHost, draft}) => {
 
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
                             <TextField
-                                {...decId}
                                 id={"decId"}
                                 label={"Децимальный номер ревизии"}
                                 variant={"outlined"}
                                 size={"small"}
+                                value={decId}
+                                disabled={true}
                             />
                         </FormControl>
 
@@ -267,14 +271,32 @@ const CreateRevision = ({user, serverHost, draft}) => {
                 {activeStep === 3 &&
                     <Box>
                         <FileUpload setFile={setFile} next={next}>
-                            <Button onClick={handleCertificateSheet}>Загрузите Файл</Button>
+                            <Button>Загрузите Файл</Button>
                         </FileUpload>
                     </Box>
 
                 }
                 {activeStep === 4 &&
                     <Box>
-                        <Button>Выпустить удостоверяющий лист</Button>
+                        <Button onClick={()=>{
+                            (async () => {
+                                setOpen(true)
+                                await delay(2000);
+                                next();
+                            })();
+                        }
+                        }
+                            >
+                            Выпустить удостоверяющий лист
+                            </Button>
+                        <div>
+                            <Snackbar
+                                open={open}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                                message="Удостоверяющий лист создан"
+                            />
+                        </div>
                     </Box>
 
                 }

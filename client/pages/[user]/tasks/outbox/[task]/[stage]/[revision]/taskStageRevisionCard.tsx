@@ -103,7 +103,7 @@ const TaskStageRevisionCard = (props) => {
                         Автор
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/persons/a_bashun">{props.revision.author}</Link>
+                        <Link href="/repository/Cards/persons/a_bashun">{props.revision.author}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -129,7 +129,7 @@ const TaskStageRevisionCard = (props) => {
                         Тип воздушного судна
                     </Grid>
                     <Grid item xs={8}  fontSize={12}>
-                        <Link href="/user/repository/Cards/AircraftType/rrj-95new">{props.revision.aircraftType}</Link>
+                        <Link href="/repository/Cards/AircraftType/rrj-95new">{props.revision.aircraftType}</Link>
                     </Grid>
 
                     <Grid item xs={4} fontSize={12}>
@@ -165,7 +165,7 @@ const TaskStageRevisionCard = (props) => {
 
 export default TaskStageRevisionCard;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task);
     const resStage = await axios.get (process.env.SERVER_HOST+ 'task/stage/' + params.stage);
     const resRevision = await axios.get (process.env.SERVER_HOST+ 'task/revision/' + params.revision);

@@ -68,16 +68,30 @@ const CreateDraft = ({user, serverHost}) => {
     useEffect (() => {
         axios.get (serverHost + 'document')
             .then (resp => {
-                let i = 0
+                let maxIndex = 0
+
+                // индекс нового документа (последнее поле доцемального номера)
+                // присваивается следующему нибольшему индексу документа с совпадающими полями 1-4.
+                //  в случае удаления последнего документа в массиве с совпадающими полями 1-4,
+                // его индекс забирается с задвоением истории. Нужно сделать глобальный счетчик на событие для
+                // их уникальной нумерации
+
                 resp.data.map (doc => {
-                    if (doc.decId.include ('Doc' + type + '.' + aircraftType + '.' + ata.value)) {
-                        i++
+                    // if (doc.decId.includes ('Doc.' + type + '.' + aircraftType + '.' + ata.value)) {
+                    //     i++
+                    // }
+                    if (doc.decId.includes('Doc.' + type + '.' + aircraftType + '.' + ata.value)){
+                        const index = 100 * Number(doc.decId.slice(-3,-2)) + 10 * Number(doc.decId.slice(-2,-1)) + Number(doc.decId.slice(-1))
+                        if (index > maxIndex){
+                            maxIndex = index
+                        }
                     }
+
                 })
-                if (i > 999) {
+                if (maxIndex > 999) {
                     console.log ('база не может содержать более 999 объектов')
                 } else {
-                    const num = (1000 + i).toString ().slice (1)
+                    const num = (1000 + maxIndex + 1).toString ().slice (1)
                     setDecimalNumber ('Doc.' + type + '.' + aircraftType + '.' + ata.value + '.' + num)
                 }
             })
