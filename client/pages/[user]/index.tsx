@@ -31,8 +31,8 @@ const Index = (props) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
-    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+    const response = await axios.get (`${process.env.SERVER_HOST}user/${params.user}`);
     console.log (response.data)
     return {
         props: {

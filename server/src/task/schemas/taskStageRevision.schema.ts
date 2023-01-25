@@ -1,9 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-
 import * as mongoose from "mongoose";
 import {Task} from "./task.schema";
 import {DocRevision} from "../../document/schemas/docrevision.schema";
-import {TaskService} from "../task.service";
 import {TaskStage} from "./taskStage.schema";
 import {Doc} from "../../document/schemas/document.schema";
 
@@ -23,6 +21,7 @@ export class TaskStageRevision {
 
     @Prop ()
     status: string;
+    //status: ['created','delivered','signed','rejected', 'withdraw']
 
     @Prop ()
     readonly discription: string;

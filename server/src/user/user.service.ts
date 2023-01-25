@@ -4,12 +4,16 @@ import {Model, ObjectId} from "mongoose";
 import {User, UserDocument} from "./schemas/user.schema";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {S3Service} from "../s3/s3.service";
+import {TaskStageRevision, TaskStageRevisionDocument} from "../task/schemas/taskStageRevision.schema";
+import {CreateTaskStageRevisionDto} from "../task/dto/create-taskStageRevision.dto";
 
 
 
 @Injectable()
 export class UserService {
-    constructor (@InjectModel (User.name) private userModel: Model<UserDocument >, private s3Servise: S3Service
+    constructor (@InjectModel (User.name) private userModel: Model<UserDocument >,
+                 @InjectModel (TaskStageRevision.name) private taskStageRevisionModel: Model<TaskStageRevisionDocument>,
+                 private s3Servise: S3Service
     ) {
 
     }
@@ -34,6 +38,13 @@ export class UserService {
     async delete (id: ObjectId): Promise<ObjectId>{
         return this.userModel.findByIdAndDelete (id);
 
+    }
+
+    async addSigner(id:ObjectId, dto:CreateTaskStageRevisionDto): Promise<User>{
+        const user = await  this.userModel.findById(id);
+        user.taskInBox.push(dto);
+        user.save();
+            return user
     }
 
 }

@@ -91,7 +91,7 @@ const EditTask = (props) => {
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.put (props.path + props.taskId, {
+            axios.put (props.serverHost + 'task/' + props.taskId, {
                 type: type,
                 name: name.value,
                 author: author.value,

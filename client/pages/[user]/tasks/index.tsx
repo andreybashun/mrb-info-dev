@@ -83,7 +83,7 @@ const Index = ({user}) => {
                                       justifyContent="flex-start"
                                       alignItems="center"
                                 >
-                                    <IconButton color="info">
+                                    <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/inbox')}>
                                         <Folder/>
                                     </IconButton>
                                     Входящие задачи
@@ -175,7 +175,7 @@ const Index = ({user}) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {

@@ -5,10 +5,10 @@ import {S3Service} from "../s3/s3.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {Doc, DocSchema} from "../document/schemas/document.schema";
 import {DocRevision, DocRevisionSchema} from "../document/schemas/docrevision.schema";
-import {DocumentModule} from "../document/document.module";
 import {Task, TaskSchema} from "./schemas/task.schema";
 import {TaskStageRevision, TaskStageRevisionSchema} from "./schemas/taskStageRevision.schema";
 import {TaskStage, TaskStageSchema} from "./schemas/taskStage.schema";
+import {User, UserSchema} from "../user/schemas/user.schema";
 
 @Module ({
     imports: [
@@ -17,6 +17,7 @@ import {TaskStage, TaskStageSchema} from "./schemas/taskStage.schema";
         MongooseModule.forFeature ([{name: Task.name, schema: TaskSchema}],),
         MongooseModule.forFeature ([{name: TaskStage.name, schema: TaskStageSchema}],),
         MongooseModule.forFeature ([{name: TaskStageRevision.name, schema: TaskStageRevisionSchema}],),
+        MongooseModule.forFeature([{name:User.name, schema:UserSchema}]),
     ],
     controllers: [TaskController],
     providers: [TaskService, S3Service]

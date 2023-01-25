@@ -45,15 +45,15 @@ const CreateTask = ({user}) => {
         setType (event.target.value);
     };
 
-    const [status, setStatus] = React.useState ('');
-
-    const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log ('document status', event.target.value);
-
-        setStatus (event.target.value);
-
-        console.log ('document status', event.target.value);
-    };
+    // const [status, setStatus] = React.useState ('');
+    //
+    // const handleStatusChange = (event: SelectChangeEvent) => {
+    //     console.log ('document status', event.target.value);
+    //
+    //     setStatus (event.target.value);
+    //
+    //     console.log ('document status', event.target.value);
+    // };
 
     const [aircraftType, setAircraftType] = React.useState ('');
 
@@ -96,7 +96,7 @@ const CreateTask = ({user}) => {
                 type: type,
                 name: name.value,
                 author: author.value,
-                status: status,
+                status: 'created',
                 description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
@@ -205,24 +205,24 @@ const CreateTask = ({user}) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус задачи</InputLabel>
-                            <Select
-                                onChange={handleStatusChange}
-                                labelId="select-small"
-                                id="select-small"
-                                value={status}
-                                label="Статус задачи"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem value={"Active"}>Active</MenuItem>
+                        {/*<FormControl fullWidth sx={{paddingBottom: 2}} size="small">*/}
+                        {/*    <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус задачи</InputLabel>*/}
+                        {/*    <Select*/}
+                        {/*        onChange={handleStatusChange}*/}
+                        {/*        labelId="select-small"*/}
+                        {/*        id="select-small"*/}
+                        {/*        value={status}*/}
+                        {/*        label="Статус задачи"*/}
+                        {/*    >*/}
+                        {/*        <MenuItem value="">*/}
+                        {/*            <em>None</em>*/}
+                        {/*        </MenuItem>*/}
+                        {/*        <MenuItem value={"Archived"}>Archived</MenuItem>*/}
+                        {/*        <MenuItem value={"Active"}>Active</MenuItem>*/}
 
-                            </Select>
+                        {/*    </Select>*/}
 
-                        </FormControl>
+                        {/*</FormControl>*/}
 
                     </Box>
                 }

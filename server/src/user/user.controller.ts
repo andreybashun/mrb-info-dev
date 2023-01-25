@@ -1,8 +1,9 @@
-import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {ObjectId} from "mongoose";
 import {UserService} from "./user.service";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {FileInterceptor} from "@nestjs/platform-express";
+import {CreateTaskStageRevisionDto} from "../task/dto/create-taskStageRevision.dto";
 
 @Controller('user')
 export class UserController {
@@ -29,6 +30,11 @@ export class UserController {
     @Delete(':id')
     delete (@Param('id') id:ObjectId) {
         return this.userService.delete(id);
+    }
+
+    @Put(':id')
+    addSigner(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageRevisionDto){
+        return this.userService.addSigner(id, dto);
     }
 
 

@@ -18,7 +18,7 @@ import {useRouter} from "next/router";
 import MLayout from "../../../../../../../layouts/MLayout";
 
 
-const Index = ({task, stage, revision, user}) => {
+const Index = ({task, stage, revision, user, serverHost}) => {
     const router = useRouter ()
     return (
         <MLayout user={user}>
@@ -46,7 +46,14 @@ const Index = ({task, stage, revision, user}) => {
                     <Button size="small" variant="contained">
                         Отозвать
                     </Button>
-                    <Button size="small" variant="contained">
+                    <Button size="small" variant="contained" onClick={() => {
+                        axios.put(serverHost + 'user/' + user._id, {...revision})
+                            .then (() => {
+                                router.push ({pathname: '/' + user._id})
+                            })
+                            .catch (e => console.log (e))
+                    }
+                    }>
                         Направить
                     </Button>
                 </Stack>
@@ -215,7 +222,7 @@ const Index = ({task, stage, revision, user}) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
 
     const resTask = await axios.get (process.env.SERVER_HOST + 'task/' + params.task)
     const resStage = await axios.get (process.env.SERVER_HOST + 'task/stage/' + params.stage)
@@ -227,7 +234,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
             stage: resStage.data,
             revision: resRevision.data,
             user: resUser.data,
-
+            serverHost:process.env.SERVER_HOST
         }
     }
 }

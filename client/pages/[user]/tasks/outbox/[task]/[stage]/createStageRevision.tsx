@@ -50,15 +50,13 @@ const CreateStageRevision = ({docs, task, stage, user, serverHost}) => {
         setType (event.target.value);
     };
 
-    const [status, setStatus] = React.useState ('');
-
-    const handleStatusChange = (event: SelectChangeEvent) => {
-        console.log ('document status', event.target.value);
-
-        setStatus (event.target.value);
-
-        console.log ('document status', event.target.value);
-    };
+    // const [status, setStatus] = React.useState ('');
+    //
+    // const handleStatusChange = (event: SelectChangeEvent) => {
+    //     console.log ('document status', event.target.value);
+    //
+    //     setStatus (event.target.value);
+    // };
 
     const [aircraftType, setAircraftType] = React.useState ('');
 
@@ -132,7 +130,7 @@ const CreateStageRevision = ({docs, task, stage, user, serverHost}) => {
                 type: type,
                 name: name.value,
                 author: author.value,
-                status: status,
+                status: 'created',
                 description: discription.value,
                 decId: decId.value,
                 lastChangeDate: date.toLocaleDateString (),
@@ -250,24 +248,22 @@ const CreateStageRevision = ({docs, task, stage, user, serverHost}) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус ревизии</InputLabel>
-                            <Select
-                                onChange={handleStatusChange}
-                                labelId="select-small"
-                                id="select-small"
-                                value={status}
-                                label="Статус ревизии"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem value={"Active"}>Active</MenuItem>
-
-                            </Select>
-
-                        </FormControl>
+                        {/*<FormControl fullWidth sx={{paddingBottom: 2}} size="small">*/}
+                        {/*    <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус ревизии</InputLabel>*/}
+                        {/*    <Select*/}
+                        {/*        onChange={handleStatusChange}*/}
+                        {/*        labelId="select-small"*/}
+                        {/*        id="select-small"*/}
+                        {/*        value={status}*/}
+                        {/*        label="Статус ревизии"*/}
+                        {/*    >*/}
+                        {/*        <MenuItem value="">*/}
+                        {/*            <em>None</em>*/}
+                        {/*        </MenuItem>*/}
+                        {/*        <MenuItem value={"Archived"}>Archived</MenuItem>*/}
+                        {/*        <MenuItem value={"Active"}>Active</MenuItem>*/}
+                        {/*    </Select>*/}
+                        {/*</FormControl>*/}
 
                     </Box>
                 }
