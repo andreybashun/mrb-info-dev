@@ -1,5 +1,4 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import mongoose from "mongoose";
 import {TaskStageRevision} from "../../task/schemas/taskStageRevision.schema";
 
 
@@ -30,8 +29,14 @@ export class User {
     @Prop ()
     avatar: string
 
-    @Prop ({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'TaskStageRevision'}]})
+    @Prop ()
     taskInBox: TaskStageRevision[];
+
+    @Prop ()
+    draftsInBox: TaskStageRevision[];
+
+    @Prop ()
+    taskOutBox: TaskStageRevision[];
 
 }
 

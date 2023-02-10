@@ -9,6 +9,8 @@ import {Task, TaskSchema} from "./schemas/task.schema";
 import {TaskStageRevision, TaskStageRevisionSchema} from "./schemas/taskStageRevision.schema";
 import {TaskStage, TaskStageSchema} from "./schemas/taskStage.schema";
 import {User, UserSchema} from "../user/schemas/user.schema";
+import {UserController} from "../user/user.controller";
+import {UserService} from "../user/user.service";
 
 @Module ({
     imports: [
@@ -19,8 +21,8 @@ import {User, UserSchema} from "../user/schemas/user.schema";
         MongooseModule.forFeature ([{name: TaskStageRevision.name, schema: TaskStageRevisionSchema}],),
         MongooseModule.forFeature([{name:User.name, schema:UserSchema}]),
     ],
-    controllers: [TaskController],
-    providers: [TaskService, S3Service]
+    controllers: [TaskController, UserController],
+    providers: [TaskService, S3Service, UserService]
 })
 export class TaskModule {
 }

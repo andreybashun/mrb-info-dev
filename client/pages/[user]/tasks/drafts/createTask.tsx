@@ -13,12 +13,12 @@ import Snackbar from "@mui/material/Snackbar";
 import DocStepWrapper from "../../../../components/Docs/DocStepWraper";
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
+import Breadcrumbs from "nextjs-breadcrumbs";
 import {GetServerSideProps} from "next";
 import MLayout from "../../../../layouts/MLayout";
-import Breadcrumbs from "nextjs-breadcrumbs";
 
 
-const CreateDraft = ({user, serverHost}) => {
+const CreateTask = ({user, serverHost}) => {
     const [activeStep, setActiveStep] = useState (0);
     const name = useInput ('');
     const author = user._id;
@@ -28,10 +28,6 @@ const CreateDraft = ({user, serverHost}) => {
     const ata = useInput ('');
     const creationDate = useInput ('');
     const router = useRouter ();
-
-    function delay(ms: number) {
-        return new Promise( resolve => setTimeout(resolve, ms) );
-    }
 
     const [open, setOpen] = useState (false);
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -46,13 +42,6 @@ const CreateDraft = ({user, serverHost}) => {
     const handleTypeChange = (event: SelectChangeEvent) => {
 
         setType (event.target.value);
-    };
-
-    const [status, setStatus] = React.useState ('');
-
-    const handleStatusChange = (event: SelectChangeEvent) => {
-
-        setStatus (event.target.value);
     };
 
     const [aircraftType, setAircraftType] = React.useState ('');
@@ -70,22 +59,19 @@ const CreateDraft = ({user, serverHost}) => {
     const [decimalNumber, setDecimalNumber] = React.useState ('number')
 
     useEffect (() => {
-        axios.get (serverHost + 'document')
+        axios.get (serverHost + 'task')
             .then (resp => {
                 let maxIndex = 0
 
-                // индекс нового документа (последнее поле доцемального номера)
+                // индекс новой задачи (последнее поле доцемального номера)
                 // присваивается следующему нибольшему индексу документа с совпадающими полями 1-4.
                 //  в случае удаления последнего документа в массиве с совпадающими полями 1-4,
                 // его индекс забирается с задвоением истории. Нужно сделать глобальный счетчик на событие для
                 // их уникальной нумерации
 
-                resp.data.map (doc => {
-                    // if (doc.decId.includes ('Doc.' + type + '.' + aircraftType + '.' + ata.value)) {
-                    //     i++
-                    // }
-                    if (doc.decId.includes('Doc.' + type + '.' + aircraftType + '.' + ata.value)){
-                        const index = 100 * Number(doc.decId.slice(-3,-2)) + 10 * Number(doc.decId.slice(-2,-1)) + Number(doc.decId.slice(-1))
+                resp.data.map (task => {
+                    if (task.decId.includes('TASK.' + type + '.' + aircraftType + '.' + ata.value)){
+                        const index = 100 * Number(task.decId.slice(-3,-2)) + 10 * Number(task.decId.slice(-2,-1)) + Number(task.decId.slice(-1))
                         if (index > maxIndex){
                             maxIndex = index
                         }
@@ -96,7 +82,7 @@ const CreateDraft = ({user, serverHost}) => {
                     console.log ('база не может содержать более 999 объектов')
                 } else {
                     const num = (1000 + maxIndex + 1).toString ().slice (1)
-                    setDecimalNumber ('Doc.' + type + '.' + aircraftType + '.' + ata.value + '.' + num)
+                    setDecimalNumber ('TASK.' + type + '.' + aircraftType + '.' + ata.value + '.' + num)
                 }
             })
             .catch (e => console.log (e))
@@ -118,23 +104,20 @@ const CreateDraft = ({user, serverHost}) => {
     );
     const date = new Date ();
 
+    function delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+    }
+
     const next = () => {
 
         if (activeStep !== 2) {
-
-            if (activeStep === 3) {
-                (async () => {
-                    await delay(2000);
-                })();
-            }
             setActiveStep (prev => prev + 1)
         } else {
 
-            axios.post (serverHost + 'document', {
+            axios.post ('http://localhost:5000/task', {
                 type: type,
                 name: name.value,
                 author: user._id,
-                status: status,
                 description: description.value,
                 decId: decimalNumber,
                 lastChangeDate: date.toLocaleDateString (),
@@ -143,10 +126,15 @@ const CreateDraft = ({user, serverHost}) => {
                 aircraftType: aircraftType,
                 engineType: engineType,
                 creationDate: date.toLocaleDateString (),
+                status: 'draft',
             })
                 .then (resp => {
-                    setOpen (true)
-                    router.push ({pathname: '/' + user._id + '/docs/drafts/' + resp.data._id})
+                    setOpen (true);
+                    (async () => {
+                        await delay(2000);
+                        router.push ({pathname: '/' + user._id +  '/tasks/drafts/' + resp.data._id})
+                    })();
+
                 })
                 .catch (e => console.log (e))
         }
@@ -161,10 +149,10 @@ const CreateDraft = ({user, serverHost}) => {
                 <Breadcrumbs
                     useDefaultStyle
                     replaceCharacterList={[
-                        {from: 'docs', to: 'мои документы'},
-                        {from: 'drafts', to: 'проекты'},
+                        {from: 'tasks', to: 'мои задачи'},
+                        {from: 'drafts', to: 'драфты'},
                         {from: user._id, to: user.firstName[0] + '.' + user.secondName},
-                        {from: 'createDraft', to: 'создание драфта'},
+                        {from: 'createTask', to: 'создание задачи'},
                     ]
                     }
                 />
@@ -221,13 +209,13 @@ const CreateDraft = ({user, serverHost}) => {
 
                     <Box sx={{p: 1}}>
                         <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип документа</InputLabel>
+                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Тип задачи</InputLabel>
                             <Select
                                 onChange={handleTypeChange}
                                 labelId="select-small"
                                 id="select-small"
                                 value={type}
-                                label="Тип документа"
+                                label="Тип задачи"
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -252,7 +240,7 @@ const CreateDraft = ({user, serverHost}) => {
                             <TextField
                                 {...name}
                                 id={"name"}
-                                label={"Наименование документа"}
+                                label={"Наименование задачи"}
                                 variant={"outlined"}
                                 size={"small"}
                             />
@@ -262,7 +250,7 @@ const CreateDraft = ({user, serverHost}) => {
                             <TextField
                                 {...description}
                                 id="task_revision_name"
-                                label="описание документа"
+                                label="описание задачи"
                                 multiline
                                 fullWidth
                                 rows={3}
@@ -290,25 +278,6 @@ const CreateDraft = ({user, serverHost}) => {
                                 size={"small"}
                                 value={date.toLocaleDateString ()}
                             />
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{paddingBottom: 2}} size="small">
-                            <InputLabel id="select-small" sx={{paddingRight: 1}}>Статус документа</InputLabel>
-                            <Select
-                                onChange={handleStatusChange}
-                                labelId="select-small"
-                                id="select-small"
-                                value={status}
-                                label="Статус документа"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={"Archived"}>Archived</MenuItem>
-                                <MenuItem value={"Active"}>Active</MenuItem>
-
-                            </Select>
-
                         </FormControl>
 
                     </Box>
@@ -350,7 +319,7 @@ const CreateDraft = ({user, serverHost}) => {
                     open={open}
                     autoHideDuration={6000}
                     onClose={handleClose}
-                    message="Note archived"
+                    message="Задача создана"
                     action={action}
                 />
             </div>
@@ -358,13 +327,13 @@ const CreateDraft = ({user, serverHost}) => {
     );
 };
 
-export default CreateDraft;
+export default CreateTask;
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
-    const response = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
+    const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {
-            user: response.data,
+            user: resUser.data,
             serverHost: process.env.SERVER_HOST
         }
     }

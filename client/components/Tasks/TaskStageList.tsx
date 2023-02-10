@@ -26,11 +26,11 @@ const TaskStageList: React.FC <TaskStageListProps> = ({taskStages, task, user, s
         }}>
             <Stack direction="row"  justifyContent={"space-between"}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/createStage')}>
+                    router.push ('/' + user._id + '/tasks/drafts/' + task._id + '/createStage')}>
                     Создать этап
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/' + user._id + '/tasks/outbox/' + task._id + '/taskCard')}>
+                        onClick={()=> router.push('/' + user._id + '/tasks/drafts/' + task._id + '/taskCard')}>
                     Карточка задачи
                 </Button>
             </Stack>

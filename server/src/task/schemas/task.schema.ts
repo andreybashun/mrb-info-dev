@@ -1,7 +1,6 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
 import mongoose from "mongoose";
-import {TaskStageRevision} from "./taskStageRevision.schema";
 import {TaskStage} from "./taskStage.schema";
 
 

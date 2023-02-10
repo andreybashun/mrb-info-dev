@@ -20,7 +20,7 @@ const Index = ({tasks, user, serverHost}) => {
                     }
                 />
             </div>
-            <TaskList tasks={tasks} user={user} serverHost={serverHost}/>
+            <TaskList tasks={tasks} user={user} taskStatus={'draft'} serverHost={serverHost}/>
         </MLayout>
     );
 };

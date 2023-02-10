@@ -24,7 +24,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, user, serverHost}) => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="center">
-                <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/outbox/' + task._id)}>
+                <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/drafts/' + task._id)}>
                     <AssignmentIcon/>
                 </IconButton>
                 {task.name}
@@ -33,7 +33,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, user, serverHost}) => {
                   direction="row"
                   justifyContent="center"
                   alignItems="center">
-                {task.author}
+                {`${user.firstName[0]}.${user.secondName}`}
             </Grid>
             <Grid xs={2} container
                   direction="row"

@@ -27,7 +27,7 @@ const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user, ser
                       justifyContent="flex-start"
                       alignItems="center">
 
-                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id)}>
+                        <IconButton color="info"  onClick={() => router.push ('/' + user._id + '/tasks/drafts/' + task._id + '/' + taskStage._id)}>
                             <AssignmentIcon/>
                         </IconButton>
 
@@ -37,7 +37,7 @@ const TaskStageItem: React.FC<TaskStageItemProps> = ({taskStage, task, user, ser
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStage.author}
+                    {`${user.firstName[0]}.${user.secondName}`}
                 </Grid>
 
                 <Grid xs={3} container

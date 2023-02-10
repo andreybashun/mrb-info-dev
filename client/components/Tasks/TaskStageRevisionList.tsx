@@ -28,11 +28,11 @@ const TaskStageRevisionList:React.FC<TaskStageRevisionListProps> =
         }}>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button size="small" variant="contained" onClick={() =>
-                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id + '/createStageRevision')}>
+                    router.push ('/' + user._id + '/tasks/drafts/' + task._id + '/' + taskStage._id + '/createStageRevision')}>
                     Создать ревизию
                 </Button>
                 <Button startIcon={<ArticleIcon color="info"/>} size="small" variant="contained"
-                        onClick={()=> router.push('/' + user._id + '/tasks/outbox/' + task._id + '/' + taskStage._id +  '/taskStageCard')}>
+                        onClick={()=> router.push('/' + user._id + '/tasks/drafts/' + task._id + '/' + taskStage._id +  '/taskStageCard')}>
                     Карточка этапа
                 </Button>
             </Stack>

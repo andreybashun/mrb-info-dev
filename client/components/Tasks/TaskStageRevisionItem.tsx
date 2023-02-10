@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useRouter} from "next/router";
 import Grid from "@mui/material/Grid";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -8,6 +8,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskStageRevisionOptionMenu from "./TaskStageRevisionOptionMenu";
 import {IUser} from "../../types/user";
 import {ITasks, ITaskStage, ITaskStageRevision} from "../../types/task";
+import axios from "axios";
+
 
 interface TaskStageRevisionItemProps {
     user: IUser;
@@ -19,6 +21,16 @@ interface TaskStageRevisionItemProps {
 
 const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRevision, task, user, serverHost}) => {
     const router = useRouter();
+    const [signer, setSigner] = React.useState ('')
+
+    useEffect(() => {
+         axios.get(`${serverHost}user/${taskStageRevision.signer}`)
+             .then (resp => {
+                 setSigner(`${resp.data.firstName[0]}.${resp.data.secondName}`)
+             })
+             .catch (e => console.log (e))
+        return
+    })
     return (
         <Grid container spacing={2}>
             <ListItemButton>
@@ -27,7 +39,7 @@ const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRe
                       justifyContent="flex-start"
                       alignItems="center">
                         <IconButton color="info"  onClick={() => router.push ('/' +
-                            user._id + '/tasks/outbox/' + task._id + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
+                            user._id + '/tasks/drafts/' + task._id + '/'+ taskStageRevision.taskStageId + '/' + taskStageRevision._id)}>
                             <AssignmentIcon/>
                         </IconButton>
                     {taskStageRevision.name}
@@ -36,19 +48,19 @@ const TaskStageRevisionItem:React.FC<TaskStageRevisionItemProps> = ({taskStageRe
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStageRevision.author}
+                    {`${user.firstName[0]}.${user.secondName}`}
                 </Grid>
                 <Grid xs={2} container
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStageRevision.signer}
+                    {signer}
                 </Grid>
                 <Grid xs={2} container
                       direction="row"
                       justifyContent="center"
                       alignItems="center">
-                    {taskStageRevision.duedate}
+                    {taskStageRevision.lastChangeDate}
                 </Grid>
                 <Grid xs={1} container
                       direction="row"

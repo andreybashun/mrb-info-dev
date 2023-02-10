@@ -119,7 +119,7 @@ const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = 
             >
                 <MenuItem onClick={() => {
                     handleClose()
-                    router.push ('/' + user._id + '/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId + '/' + taskStageRevision._id + '/editStageRevision')
+                    router.push ('/' + user._id + '/tasks/drafts/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId + '/' + taskStageRevision._id + '/editStageRevision')
                 }
                 } disableRipple>
                     <EditIcon />
@@ -152,7 +152,7 @@ const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = 
                                     }
                                     }
                                             variant="outlined" color={"info"}
-                                            sx={{mt: 2, marginTop: 2}}>Нет
+                                            sx={{mt: 2, marginTop: 2}}>
                                     </Button>
                                 </Grid>
                                 <Grid >
@@ -160,7 +160,7 @@ const TaskStageRevisionOptionMenu: React.FC<TaskStageRevisionOptionMenuProps> = 
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete(serverHost + 'task/revision/'  + taskStageRevision._id)
-                                            .then(() => router.push('/' + user._id +'/tasks/outbox/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
+                                            .then(() => router.push('/' + user._id +'/tasks/drafts/' + taskStageRevision.taskId + '/' + taskStageRevision.taskStageId))
                                             .catch(e => console.log(e))
                                     }
                                     }

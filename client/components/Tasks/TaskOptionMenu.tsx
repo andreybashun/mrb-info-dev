@@ -93,7 +93,6 @@ const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user, serverHost})
     const router = useRouter ();
 
     const [modalOpen, setModalOpen] = React.useState (false);
-    const handleModalOpen = () => setModalOpen (true);
     const handleModalClose = () => setModalOpen (false);
 
     const [dialogOpen, setDialogOpen] = React.useState (false);
@@ -123,7 +122,7 @@ const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user, serverHost})
             >
                 <MenuItem onClick={() => {
                     handleClose ()
-                    router.push ('/' + user._id + '/tasks/outbox/' + task._id + '/editTask')
+                    router.push ('/' + user._id + '/tasks/drafts/' + task._id + '/editTask')
                 }
                 } disableRipple>
                     <EditIcon/>
@@ -188,7 +187,7 @@ const TaskOptionMenu: React.FC<TaskOptionMenuProps> = ({task, user, serverHost})
                                         handleDialogClose ()
                                         handleClose ()
                                         axios.delete (serverHost + 'task/' + task._id)
-                                            .then (() => router.push ('/' + user._id + '/tasks/outbox'))
+                                            .then (() => router.push ('/' + user._id + '/tasks/drafts'))
                                             .catch (e => console.log (e))
                                     }
                                     }

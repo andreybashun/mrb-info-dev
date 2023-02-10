@@ -9,6 +9,7 @@ import {CreateTaskDto} from "./dto/create-task.dto";
 import {CreateTaskStageRevisionDto} from "./dto/create-taskStageRevision.dto";
 import {TaskStage, TaskStageDocument} from "./schemas/taskStage.schema";
 import {CreateTaskStageDto} from "./dto/create-taskStage.dto";
+import {User, UserDocument} from "../user/schemas/user.schema";
 
 
 @Injectable()
@@ -19,9 +20,10 @@ export class TaskService {
                  @InjectModel (Task.name) private taskModel: Model<TaskDocument>,
                  @InjectModel (TaskStage.name) private taskStageModel: Model<TaskStageDocument>,
                  @InjectModel (TaskStageRevision.name) private taskStageRevisionModel: Model<TaskStageRevisionDocument>,
+                 @InjectModel (User.name) private userModel: Model<UserDocument>,
     ) {
     }
-    // создание заадчи
+    // создание задчи
     async create (dto: CreateTaskDto): Promise<Task> {
         return await this.taskModel.create ({...dto});
     }
@@ -46,8 +48,8 @@ export class TaskService {
     //редактирвоание задачи
 
     async editTask (id: ObjectId, dto: CreateTaskDto){
-        const task = await this.taskModel.findOneAndUpdate(id, {...dto})
-        return task
+        return this.taskModel.findOneAndUpdate (id, {...dto});
+
     }
 
 
@@ -93,13 +95,16 @@ export class TaskService {
 
     // создание ревизии
     async createRevision (dto: CreateTaskStageRevisionDto): Promise<TaskStageRevision>{
+        const user = await this.userModel.findById(dto.author)
         const  taskStage = await  this.taskStageModel.findById(dto.taskStageId);
         const  docRevForSign = await  this.docModel.findById(dto.docRevForSignId);
         const  docRevForAttach = await  this.docModel.findById(dto.docRevForAttachId);
         const docForSign = await  this.docModel.findById(dto.docForSignId)
         const taskStageRevision =  await this.taskStageRevisionModel.create({...dto, docRevForSign, docRevForAttach, docForSign});
         taskStage.taskStageRevisions.push(taskStageRevision);
+        user.draftsInBox.push(taskStageRevision)
         await taskStage.save();
+        await user.save();
         return taskStageRevision;
     }
 
@@ -113,11 +118,15 @@ export class TaskService {
     async deleteRevision (id: ObjectId): Promise<ObjectId> {
 
         const revision = await this.taskStageRevisionModel.findByIdAndDelete (id);
+        const revisionSigner = await this.userModel.findById(revision.signer);
         const taskStage = await this.taskStageModel.findById (revision.taskStageId);
         const taskStageRevisionIndex = taskStage.taskStageRevisions.indexOf(revision);
         taskStage.taskStageRevisions.splice(taskStageRevisionIndex,1);
+        const draftIndex = revisionSigner.draftsInBox.indexOf(revision);
+        revisionSigner.draftsInBox.splice(draftIndex,1)
         await taskStage.save ();
-        return taskStage._id
+        await revisionSigner.save();
+        return
     }
 
     //редактирвоание ревизии

@@ -40,11 +40,19 @@ export class UserService {
 
     }
 
-    async addSigner(id:ObjectId, dto:CreateTaskStageRevisionDto): Promise<User>{
-        const user = await  this.userModel.findById(id);
+    // добовление входящей задачи
+
+    async addTaskInBox(id:ObjectId, dto:CreateTaskStageRevisionDto): Promise<User>{
+        const user = await  this.userModel.findById(id)
         user.taskInBox.push(dto);
         user.save();
-            return user
+        return user
+    }
+
+    async editUser(id:ObjectId, dto:CreateTaskStageRevisionDto): Promise<User>{
+        const user = await  this.userModel.findByIdAndUpdate(id, dto);
+        user.save();
+        return user
     }
 
 }

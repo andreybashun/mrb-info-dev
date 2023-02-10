@@ -1,12 +1,10 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors} from '@nestjs/common';
-import {FileInterceptor} from "@nestjs/platform-express";
-import {CreateDocRevisionDto} from "../document/dto/create-docRevision.dto";
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {CreateTaskDto} from "./dto/create-task.dto";
 import {TaskService} from "./task.service";
 import {CreateTaskStageRevisionDto} from "./dto/create-taskStageRevision.dto";
 import {CreateTaskStageDto} from "./dto/create-taskStage.dto";
 import {ObjectId} from "mongoose";
-import {CreateDocDto} from "../document/dto/create-doc.dto";
+
 
 @Controller('task')
 export class TaskController {

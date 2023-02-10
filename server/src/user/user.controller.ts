@@ -33,8 +33,13 @@ export class UserController {
     }
 
     @Put(':id')
-    addSigner(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageRevisionDto){
-        return this.userService.addSigner(id, dto);
+    editUser(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageRevisionDto){
+        return this.userService.editUser(id, dto);
+    }
+
+    @Put(':id/taskInBox')
+    addTaskInBox(@Param('id') id:ObjectId, @Body () dto: CreateTaskStageRevisionDto){
+        return this.userService.addTaskInBox(id, dto);
     }
 
 

@@ -115,7 +115,7 @@ const Index = ({user}) => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
                                             icon={<VerifiedUserIcon
                                                 fontSize="medium"
@@ -128,7 +128,7 @@ const Index = ({user}) => {
                                             проверить
                                         </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
                                             icon={<HistoryEduIcon
                                                 fontSize="medium"
@@ -182,7 +182,7 @@ const Index = ({user}) => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
                                             icon={<VerifiedUserIcon
                                                 fontSize="medium"
@@ -195,7 +195,7 @@ const Index = ({user}) => {
                                             проверить
                                         </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
                                             icon={<HistoryEduIcon
                                                 fontSize="medium"
@@ -247,7 +247,7 @@ const Index = ({user}) => {
                                        justifyContent="space-between"
                                        alignItems="center"
                                 >
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Check')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Check')}>
                                         <MouseOverPopover
                                             icon={<VerifiedUserIcon
                                                 fontSize="medium"
@@ -260,7 +260,7 @@ const Index = ({user}) => {
                                             проверить
                                         </Typography>
                                     </IconButton>
-                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/certificationCenter/sha256Release')}>
+                                    <IconButton aria-label="delete" size="small" sx={{borderRadius:5}}  onClick={() => router.push ('/user/certificationCenter/sha256Release')}>
                                         <MouseOverPopover
                                             icon={<HistoryEduIcon
                                                 fontSize="medium"
@@ -296,7 +296,7 @@ const Index = ({user}) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async ({req, params}) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const resUser = await axios.get (process.env.SERVER_HOST + 'user/' + params.user);
     return {
         props: {

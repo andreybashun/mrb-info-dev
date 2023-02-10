@@ -124,7 +124,7 @@ const TaskStageOptionMenu: React.FC<TaskStageItemProps> = ({taskStage,  user, se
             >
                 <MenuItem onClick={() => {
                     handleClose ()
-                    router.push ('/' + user._id + '/tasks/outbox/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
+                    router.push ('/' + user._id + '/tasks/drafts/' + taskStage.taskId + '/' + taskStage._id + '/editStage/')
                 }
                 } disableRipple>
                     <EditIcon/>
